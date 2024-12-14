@@ -1,1 +1,30 @@
 @import 'custom';
+
+header, footer {
+    background-color: $color1;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1440px;
+    padding: 10px;
+}
+
+body {
+    background-color: $base-color;
+}
+
+main {
+    width: 100%;
+    max-width: 1440px;
+    padding: 10px;
+}   
+
+
+.navbar {
+    display: flex;
+    margin: 0 auto;
+    justify-content: space-around;
+}
+
+.navbar-toggler {
+    background-color: $color5;
+}

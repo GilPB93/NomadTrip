@@ -11964,4 +11964,31 @@ textarea.form-control-lg {
   .d-print-none {
     display: none !important;
   }
+}
+header, footer {
+  background-color: #2C3E50;
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1440px;
+  padding: 10px;
+}
+
+body {
+  background-color: #F8F4EF;
+}
+
+main {
+  width: 100%;
+  max-width: 1440px;
+  padding: 10px;
+}
+
+.navbar {
+  display: flex;
+  margin: 0 auto;
+  justify-content: space-around;
+}
+
+.navbar-toggler {
+  background-color: #E9C46A;
 }/*# sourceMappingURL=main.css.map */

@@ -2,7 +2,7 @@ import Route from "./Route.js";
 
 //Définir ici les routes
 export const allRoutes = [
-    new Route("/", "Accueil", "/NomadTripFrontEnd/pages/home.html"),
+    new Route("/", "Accueil", "/pages/home.html"),
 
 
 ];

@@ -2,10 +2,17 @@
 
 header, footer {
     background-color: $color1;
+    width: 100%;  
+    padding: 15px;
     margin: 0 auto;
+    align-items: center;  
+}
+
+footer.footer {
+    position: absolute;
+    bottom: 0;
     width: 100%;
-    max-width: 1440px;
-    padding: 10px;
+    justify-items: center;
 }
 
 body {
@@ -13,18 +20,62 @@ body {
 }
 
 main {
+    margin: 0 auto;
     width: 100%;
     max-width: 1440px;
     padding: 10px;
 }   
 
 
+h1 {
+    font-family: $family-title;
+    font-size: 2.25rem;
+    margin: 5px;
+}
+
+h2 {
+    font-family: $family-title;
+    font-size: 1.75rem;
+    margin: 5px;
+}   
+
+h3 {
+    font-family: $family-title;
+    font-size: 1.5rem;
+    margin: 5px;
+}
+
+h4 {
+    font-family: $family-title;
+    font-size: 1.25rem;
+    margin: 5px;
+}
+
+p {
+    font-family: $family-text;
+    font-size: 1rem;
+    margin: 5px;
+}
+
+footer p {
+    font-family: $family-text;
+    font-size: 0.65rem;
+    margin: 0;
+}
+
+
 .navbar {
     display: flex;
     margin: 0 auto;
     justify-content: space-around;
+    max-width: 1440px;
 }
 
 .navbar-toggler {
     background-color: $color5;
+}
+
+.navbar-nav {
+    font-size: 1.75rem;
+    font-family: $family-title;
 }

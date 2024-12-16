@@ -3,16 +3,32 @@
 header, footer {
     background-color: $color1;
     width: 100%;  
-    padding: 15px;
     margin: 0 auto;
     align-items: center;  
 }
 
+header {
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
+
 footer.footer {
-    position: absolute;
+    position: relative;
     bottom: 0;
     width: 100%;
     justify-items: center;
+    height: 110px;
+    padding: 5px;
+}
+
+footer h4{
+    margin: 0;
+    margin: 5px;
+}
+
+footer p {
+    font-family: $family-text;
+    font-size: 0.65rem;
+    margin: 0;
 }
 
 body {
@@ -57,12 +73,6 @@ p {
     margin: 5px;
 }
 
-footer p {
-    font-family: $family-text;
-    font-size: 0.65rem;
-    margin: 0;
-}
-
 
 .navbar {
     display: flex;
@@ -79,3 +89,82 @@ footer p {
     font-size: 1.75rem;
     font-family: $family-title;
 }
+
+.navbar-brand {
+    margin: 0;
+    padding: 0;
+}
+
+.logo {
+    padding: 5px;
+    border-radius: 10px;
+    margin: 0;
+}
+
+.welcome, .logs {
+    max-width: 1000px;
+    width: 100%;
+    position: relative;
+    border-radius: 10px;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    align-items: center;
+}
+
+.welcome img {
+    width: 100%;
+    border-radius: 10px;
+    max-width: 450px;
+    margin: 0 auto;
+    display: block;
+}
+.welcome h1 {
+    margin: 10px;
+    font-weight: bolder;
+}
+.welcome {
+    background-color: $color4;
+    align-content: center;
+    padding: 15px;
+
+}
+.inscription {
+    background-color: $color5;
+    border-radius: 10px;
+    padding: 10px;
+    align-content: center;
+    margin-bottom: 10px;
+    height: 350px;
+    max-width: 490px;
+    width: 100%;
+}
+.connexion {
+    background-color: $color6;
+    border-radius: 10px;
+    padding: 10px;
+    align-content: center;
+    margin-bottom: 10px;
+    height: 350px;
+    max-width: 490px;
+    width: 100%;
+}
+.connexion h2, .inscription h2 {
+    margin: 10px;
+    font-weight: bolder;
+}
+.connexion p, .inscription p {
+    margin: 20px;
+}
+.inscription button, .connexion button {
+    font-family: $family-title;
+    font-size: 1.5rem;
+    margin: 10px auto;
+    width: 200px;
+    display: block;
+}
+
+.logs {
+    justify-content: space-between;
+}
+

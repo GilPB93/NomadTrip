@@ -12143,6 +12143,7 @@ p {
   width: 200px;
   display: block;
   border-radius: 15px 30px;
+  border: none;
 }
 
 .inscription button:hover, .connexion button:hover {
@@ -12202,6 +12203,7 @@ p {
   width: 200px;
   display: block;
   border-radius: 30px 15px;
+  border: none;
 }
 
 .connexion-form button:hover {
@@ -12238,6 +12240,7 @@ p {
   border-radius: 30px 15px;
   background-color: black;
   color: white;
+  border: none;
 }
 
 .inscription-form button:hover {
@@ -12253,4 +12256,73 @@ p {
   max-width: 800px;
   width: 100%;
   color: black;
+}
+
+.custom-line {
+  border: none;
+  height: 2px;
+  background-color: black;
+  width: 70%;
+  margin: 10px auto;
+}
+
+.account-page {
+  max-width: 1000px;
+  width: 100%;
+  position: relative;
+  border-radius: 10px;
+  margin: 0 auto;
+  background-color: #9CA69E;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  padding: 20px;
+  display: block;
+}
+
+.current-info {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  margin: 10px;
+  padding: 10px;
+}
+
+.current-info h2, .current-info .h2, .current-info p {
+  margin: 0;
+}
+
+.new-pseudo button, .new-email button, .new-password button {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 1.5rem;
+  margin: 10px;
+  width: 200px;
+  display: block;
+  border-radius: 10px 30px;
+  background-color: black;
+  color: white;
+  border: none;
+  margin-left: auto;
+}
+
+.new-pseudo button:hover, .new-email button:hover, .new-password button:hover {
+  background-color: #E9C46A;
+  color: black;
+  border: none;
+}
+
+.delete-account button {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 1.5rem;
+  margin: 10px auto;
+  width: 350px;
+  display: block;
+  border-radius: 10px 30px;
+  background-color: red;
+  color: white;
+  border: none;
+}
+
+.delete-account button:hover {
+  background-color: #A26D94;
+  color: black;
+  border: none;
 }/*# sourceMappingURL=main.css.map */

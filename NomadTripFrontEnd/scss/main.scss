@@ -13,7 +13,7 @@ header {
 
 footer.footer {
     position: relative;
-    bottom: 0;
+    top: 0 !important;
     width: 100%;
     justify-items: center;
     height: 110px;
@@ -31,8 +31,15 @@ footer p {
     margin: 0;
 }
 
-body {
+body, html {
     background-color: $base-color;
+    height: 100%;
+
+}
+
+body {
+    display: flex;
+    flex-direction: column;
 }
 
 main {
@@ -40,6 +47,11 @@ main {
     width: 100%;
     max-width: 1440px;
     padding: 10px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }   
 
 
@@ -101,6 +113,7 @@ p {
     margin: 0;
 }
 
+//HOME PAGE SECTION
 .welcome, .logs {
     max-width: 1000px;
     width: 100%;
@@ -111,7 +124,6 @@ p {
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
     align-items: center;
 }
-
 .welcome img {
     width: 100%;
     border-radius: 10px;
@@ -162,9 +174,107 @@ p {
     margin: 10px auto;
     width: 200px;
     display: block;
+    border-radius: 15px 30px;
 }
-
+.inscription button:hover, .connexion button:hover {
+    background-color: $color4;
+    color: black;
+    border: none;
+}
 .logs {
     justify-content: space-between;
+    margin: 0;
 }
 
+
+//CONNEXION SECTION
+.connexion-form {
+    max-width: 1000px;
+    width: 100%;
+    position: relative;
+    border-radius: 10px;
+    margin: 0 auto;
+    background-color: $color6;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    padding: 20px;
+    display: block;
+}
+.form-label {
+    font-family: $family-title;
+    font-size: 1.5rem;
+    padding: 5px;
+    max-width: 800px;
+    width: 100%;
+    margin: 0;
+}
+.form-control {
+    font-family: $family-text;
+    font-size: 0.8rem;
+    margin: 0;
+    max-width: 950px;
+    width: 100%;
+    padding: 5px;
+}
+.redirect-signup {
+    font-family: $family-text;
+    font-size: 1rem;
+    padding: 5px;
+    max-width: 800px;
+    width: 100%;
+    color: black;
+}
+.connexion-form button {
+    font-family: $family-title;
+    font-size: 1.5rem;
+    margin: 10px auto;
+    width: 200px;
+    display: block;
+    border-radius: 30px 15px;
+}
+.connexion-form button:hover {
+    background-color: $color4;
+    color: black;
+    border: none;
+}
+
+//INSCRIPTION SECTION
+.inscription-form {
+    max-width: 1000px;
+    width: 100%;
+    position: relative;
+    border-radius: 10px;
+    margin: 0 auto;
+    background-color: $color4;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    padding: 20px;
+    display: block;
+}
+.password-input p {
+    font-family: $family-text;
+    font-size: 0.8rem;
+    margin: 0;
+    padding: 5px;
+}
+.inscription-form button {
+    font-family: $family-title;
+    font-size: 1.5rem;
+    margin: 10px auto;
+    width: 200px;
+    display: block;
+    border-radius: 30px 15px;
+    background-color: black;
+    color: white;
+}
+.inscription-form button:hover {
+    background-color: $color5;
+    color: black;
+    border: none;
+}
+.redirect-signin {
+    font-family: $family-text;
+    font-size: 1rem;
+    padding: 5px;
+    max-width: 800px;
+    width: 100%;
+    color: black;
+}

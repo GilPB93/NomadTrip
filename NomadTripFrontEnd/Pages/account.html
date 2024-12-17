@@ -2,11 +2,19 @@
     <h1 class="text-center">Mon compte</h1>
     <p class="text-center">Bienvenue dans votre espace personnel. Ici, vous pouvez mettre à jour votre pseudo, modifier votre adresse email ou changer votre mot de passe pour garder votre compte NomadTrip toujours à jour.</p>
     <div class="current-info">
-        <h2 class="text-center">Mes informations actuelles</h2>
-        <p class="text-center">Nom : John</p>
-        <p class="text-center">Prénom : Doe</p>
-        <p class="text-center">Pseudo : pseudo123</p>
-        <p class="text-center">Email : exemple@email.com</p>
+        <h2 class="text-center text-decoration-underline">Mes informations actuelles</h2>
+        <div>
+            <h3 class="text-center">Nom : </h3>
+        </div>
+        <div>
+            <h3 class="text-center">Prénom : </h3>
+        </div>
+        <div>
+            <h3 class="text-center">Pseudo :  </h3>
+        </div>
+        <div>
+            <h3 class="text-center">Email : </h3>
+        </div>
     </div>
     <form>
         <div class="change-pseudo mb-3">
@@ -21,7 +29,7 @@
         </div>
         <div class="change-email mb-3">
             <div>
-                <label for="NewEmailInput" class="form-label">Email</label>
+                <label for="NewEmailInput" class="form-label">Nouvel Email</label>
                 <input type="email" class="form-control" id="NewEmailInput" placeholder="Saissisez votre nouvel email" name="NewEmail"> 
             </div>
             <div class="text-center new-email">
@@ -31,7 +39,7 @@
         </div>
         <div class="change-password mb-3">
             <div class="password-input">
-                <label for="NewPasswordInput" class="form-label">Password</label>
+                <label for="NewPasswordInput" class="form-label">Nouveau Password</label>
                 <input type="password" class="form-control" id="NewPasswordInput" placeholder="Saissisez votre nouveau mot de passe" name="NewPassword">
                 <p>Votre mot de passe doit contenir au moins 8 caractères, incluant une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.</p>
             </div>

@@ -1,1 +1,51 @@
-<h1>Mon espace</h1>
+<section class="account-page">
+    <h1 class="text-center">Mon compte</h1>
+    <p class="text-center">Bienvenue dans votre espace personnel. Ici, vous pouvez mettre à jour votre pseudo, modifier votre adresse email ou changer votre mot de passe pour garder votre compte NomadTrip toujours à jour.</p>
+    <div class="current-info">
+        <h2 class="text-center">Mes informations actuelles</h2>
+        <p class="text-center">Nom : John</p>
+        <p class="text-center">Prénom : Doe</p>
+        <p class="text-center">Pseudo : pseudo123</p>
+        <p class="text-center">Email : exemple@email.com</p>
+    </div>
+    <form>
+        <div class="change-pseudo mb-3">
+            <div>
+                <label for="NewPseudoInput" class="form-label">Nouveau Pseudo</label>
+                <input type="text" class="form-control" id="NewPseudoInput" placeholder="Saissisez un nouveau pseudo" name="NewPseudo">
+            </div>
+            <div class="text-center new-pseudo">
+                <button type="submit" class="btn btn-black">Modifier Pseudo</button>
+            </div>
+            <hr class="custom-line">
+        </div>
+        <div class="change-email mb-3">
+            <div>
+                <label for="NewEmailInput" class="form-label">Email</label>
+                <input type="email" class="form-control" id="NewEmailInput" placeholder="Saissisez votre nouvel email" name="NewEmail"> 
+            </div>
+            <div class="text-center new-email">
+                <button type="submit" class="btn btn-black">Modifier Email</button>
+            </div>
+            <hr class="custom-line">
+        </div>
+        <div class="change-password mb-3">
+            <div class="password-input">
+                <label for="NewPasswordInput" class="form-label">Password</label>
+                <input type="password" class="form-control" id="NewPasswordInput" placeholder="Saissisez votre nouveau mot de passe" name="NewPassword">
+                <p>Votre mot de passe doit contenir au moins 8 caractères, incluant une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.</p>
+            </div>
+            <div class="mb-3">
+                <label for="ValidateNewPasswordInput" class="form-label">Confirmation Password</label>
+                <input type="password" class="form-control" id="ValidateNewPasswordInput" placeholder="Confirmez votre nouveau mot de passe" name="NewPasswordConfirm">
+            </div>
+            <div class="text-center new-password">
+                <button type="submit" class="btn btn-black">Modifier Password</button>
+            </div>
+            <hr class="custom-line">
+        </div>
+        <div class="text-center delete-account">
+            <button type="submit" class="btn btn-warning">Supprimer mon compte</button>
+        </div>
+    </form>
+</section>

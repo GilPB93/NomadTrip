@@ -59,24 +59,28 @@ h1 {
     font-family: $family-title;
     font-size: 2.25rem;
     margin: 5px;
+    font-weight: 700;
 }
 
 h2 {
     font-family: $family-title;
     font-size: 1.75rem;
     margin: 5px;
+    font-weight: 700;
 }   
 
 h3 {
     font-family: $family-title;
     font-size: 1.5rem;
     margin: 5px;
+    font-weight: 700;
 }
 
 h4 {
     font-family: $family-title;
     font-size: 1.25rem;
     margin: 5px;
+    font-weight: 700;
 }
 
 p {
@@ -84,7 +88,6 @@ p {
     font-size: 1rem;
     margin: 5px;
 }
-
 
 .navbar {
     display: flex;
@@ -100,6 +103,7 @@ p {
 .navbar-nav {
     font-size: 1.75rem;
     font-family: $family-title;
+    font-weight: 600;
 }
 
 .navbar-brand {
@@ -171,6 +175,7 @@ p {
 .inscription button, .connexion button {
     font-family: $family-title;
     font-size: 1.5rem;
+    font-weight: 700;
     margin: 10px auto;
     width: 200px;
     display: block;
@@ -203,6 +208,7 @@ p {
 .form-label {
     font-family: $family-title;
     font-size: 1.5rem;
+    font-weight: 700;
     padding: 5px;
     max-width: 800px;
     width: 100%;
@@ -211,6 +217,7 @@ p {
 .form-control {
     font-family: $family-text;
     font-size: 0.8rem;
+    font-weight: 700;
     margin: 0;
     max-width: 950px;
     width: 100%;
@@ -227,6 +234,7 @@ p {
 .connexion-form button {
     font-family: $family-title;
     font-size: 1.5rem;
+    font-weight: 700;
     margin: 10px auto;
     width: 200px;
     display: block;
@@ -260,6 +268,7 @@ p {
 .inscription-form button {
     font-family: $family-title;
     font-size: 1.5rem;
+    font-weight: 700;
     margin: 10px auto;
     width: 200px;
     display: block;
@@ -344,3 +353,39 @@ p {
     color: black;
     border: none;
 }
+
+//CONTACT SECTION
+.contact-form {
+    max-width: 1000px;
+    width: 100%;
+    position: relative;
+    border-radius: 10px;
+    margin: 0 auto;
+    background-color: $color6;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    padding: 20px;
+    display: block;
+}
+.contact-form button {
+    font-family: $family-title;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 10px auto;
+    width: 300px;
+    display: block;
+    border-radius: 30px 15px;
+    border: none;
+    background-color: black;
+    color: white;
+}   
+.contact-form button:hover {
+    background-color: $color5;
+    color: black;
+    border: none;
+}
+
+
+//LIBRARY SECTION
+
+
+//ADMIN SECTION

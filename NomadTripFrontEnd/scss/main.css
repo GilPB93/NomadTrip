@@ -12300,6 +12300,21 @@ p {
   margin: 0;
 }
 
+.current-info span {
+  font-family: "Arial", sans-serif;
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 5px;
+  margin-right: 5px;
+  background-color: #ECE2D0;
+  border-radius: 10px;
+  color: black;
+  max-width: 500px;
+  min-width: 250px;
+  width: 100%;
+  max-height: 25px;
+}
+
 .new-pseudo button, .new-email button, .new-password button {
   font-family: "Bebas Neue", sans-serif;
   font-size: 1.5rem;
@@ -12323,7 +12338,7 @@ p {
   font-family: "Bebas Neue", sans-serif;
   font-size: 1.5rem;
   margin: 10px auto;
-  width: 350px;
+  width: 280px;
   display: block;
   border-radius: 10px 30px;
   background-color: red;
@@ -12507,6 +12522,7 @@ p {
 }
 
 .btn-group {
+  display: flex;
   margin: 10px;
   padding: 5px;
 }

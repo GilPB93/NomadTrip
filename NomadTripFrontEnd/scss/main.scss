@@ -292,7 +292,7 @@ p {
 }
 
 //ACCOUNT SECTION
-.custom-line {
+.separator {
     border: none;
     height: 2px;
     background-color: black;
@@ -386,6 +386,159 @@ p {
 
 
 //LIBRARY SECTION
+.library {
+    max-width: 1000px;
+    width: 100%;
+    position: relative;
+    border-radius: 10px;
+    margin: 0 auto;
+    background-color: $color2;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    padding: 20px;
+    display: block;
+    color: white;
+}
+.create-travelbook button {
+    font-family: $family-title;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 20px auto;
+    width: 300px;
+    display: block;
+    border-radius: 15px 30px;
+    border: none;
+    background-color: black;
+    color: white;
+}
+.search-travelbook h2 {
+    margin: 10px;
+    padding-top: 20px;
+}
+.search-travelbook select {
+    font-family: $family-text;
+    font-size: 1rem;
+    margin: 10px;
+    padding: 5px;
+    border-radius: 10px;
+    border: none;
+    background-color: $color3;
+}
+.search-travelbook option {
+    font-family: $family-text;
+    font-size: 1rem;
+    border: none;
+}
+.travel-card {
+    max-width: 230px;
+    width: 100%;
+    max-height: 320px;
+    position: relative;
+    border-radius: 10px;
+    margin: 10px auto;
+    background-color: $color3;
+    padding: 5px;
+    display: block;
+    color: white;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    
+    &:hover{
+        .title-image{
+            opacity: 1;
+        }
+        img{
+            filter: brightness(0.3);
+        }
+    }
+
+    img{
+        transition: all 0.3s;
+    }
+
+    .title-image{
+        position: absolute;
+        top:90%;
+        left:50%;
+        transform: translate(-50%, -50%);
+        opacity: 0;
+        transition: all 0.3s;
+        font-family: $family-title;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: white;
+    }
+
+}
+.travel-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    margin: 0 auto;
+    display: block;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
 
 
 //ADMIN SECTION
+.admin-page {
+    max-width: 1000px;
+    width: 100%;
+    position: relative;
+    border-radius: 10px;
+    margin: 0 auto;
+    background-color: $color4;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    padding: 20px;
+    display: block;
+}
+.admin-page div {
+    padding: 2px;
+    margin: 0;
+}
+.stats-admin span {
+    font-family: $family-text;
+    font-size: 1rem;
+    font-weight: bolder;
+    padding: 5px;
+    margin-right: 5px;
+    background-color: $color5;
+    border-radius: 10px;
+    color: black;
+    width: 70px;
+    height: 25px;
+}
+.select-user select, .select-travelbook select {
+    font-family: $family-text;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 5px;
+    margin: 5px;
+    border-radius: 10px;
+    background-color: $color3;
+    border: none;
+}
+.textarea {
+    font-family: $family-text;
+    font-size: 1rem;
+    padding: 5px;
+}
+.btn-group {
+    margin: 10px;
+    padding: 5px;
+}
+.btn-group button {
+    font-family: $family-title;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 10px;
+    width: 200px;
+    border-radius: 30px 15px;
+    border: none;
+    background-color: black;
+    color: white;
+}
+.btn-group button:hover {
+    background-color: $color5;
+    color: black;
+    border: none;
+}
+

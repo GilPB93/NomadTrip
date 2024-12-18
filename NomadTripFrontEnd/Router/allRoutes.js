@@ -8,7 +8,7 @@ export const allRoutes = [
     new Route("/signin", "Connexion", "/pages/signin.html"),
     new Route("/account", "Mon Compte", "/pages/account.html"),
     new Route("/admin", "Mon Espace Admin", "/pages/admin.html"),
-    new Route("/library", "Mes Carnets", "/pages/library.html"),
+    new Route("/library", "Mes Carnets", "/pages/library.html", "/js/library.js"),
 
 ];
 

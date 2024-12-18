@@ -12409,24 +12409,66 @@ p {
   color: white;
 }
 
-.search-travelbook h2, .search-travelbook .h2 {
-  margin: 10px;
-  padding-top: 20px;
+.create-travelbook button:hover {
+  background-color: #E9C46A;
+  color: black;
+  border: none;
 }
 
-.search-travelbook select {
-  font-family: "Arial", sans-serif;
-  font-size: 1rem;
+.collapse-create-travelbook {
+  max-width: 900px;
+  width: 100%;
+  position: relative;
+  border-radius: 10px;
+  margin: 10px auto;
+  background-color: #ECE2D0;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  padding: 10px;
+  display: block;
+  color: black;
+}
+
+.new-travelbook-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  margin: 5px;
+}
+
+.new-travelbook-group div {
+  padding: 5px;
+  max-width: 300px;
+  width: 100%;
+}
+
+.h2-new-travelbook {
+  margin: 10px;
+  display: flex;
+}
+
+.btn-group-new-travelbook {
+  display: flex;
+  justify-content: space-evenly;
   margin: 10px;
   padding: 5px;
-  border-radius: 10px;
-  border: none;
-  background-color: #ECE2D0;
 }
 
-.search-travelbook option {
-  font-family: "Arial", sans-serif;
-  font-size: 1rem;
+.btn-create, .btn-cancel {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 10px;
+  width: 200px;
+  border-radius: 10px 30px;
+  border: none;
+  background-color: black;
+  color: white;
+}
+
+.btn-create:hover, .btn-cancel:hover {
+  background-color: #E9C46A;
+  color: black;
   border: none;
 }
 
@@ -12443,7 +12485,7 @@ p {
   color: white;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
 }
-.travel-card:hover .title-image {
+.travel-card:hover .title-image, .travel-card:hover .btn-show, .travel-card:hover .btn-modif {
   opacity: 1;
 }
 .travel-card:hover img {
@@ -12454,15 +12496,47 @@ p {
 }
 .travel-card .title-image {
   position: absolute;
-  top: 90%;
+  top: 75%;
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-60%, -50%);
   opacity: 0;
   transition: all 0.3s;
   font-family: "Bebas Neue", sans-serif;
   font-size: 1.5rem;
   font-weight: 700;
   color: white;
+}
+.travel-card .btn-show {
+  position: absolute;
+  top: 85%;
+  left: 10%;
+  opacity: 0;
+  transition: all 0.3s;
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: black;
+  border-radius: 10px;
+  padding: 2px;
+  border: none;
+  background-color: #E9C46A;
+  width: 80px;
+}
+.travel-card .btn-modif {
+  position: absolute;
+  top: 85%;
+  right: 10%;
+  opacity: 0;
+  transition: all 0.3s;
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: black;
+  border-radius: 10px;
+  padding: 2px;
+  border: none;
+  background-color: #A26D94;
+  width: 80px;
 }
 
 .travel-img {
@@ -12472,6 +12546,50 @@ p {
   margin: 0 auto;
   display: block;
   filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
+
+.modal-content-edit {
+  background-color: #ECE2D0;
+  border-radius: 10px;
+  padding: 20px;
+  border: 7px solid #5D3A2D;
+  color: black;
+}
+
+.modal-header-edit {
+  background-color: #ECE2D0;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  text-decoration: underline;
+  font-weight: bolder;
+}
+
+.modal-content-show {
+  background-color: #2C3E50;
+  border-radius: 10px;
+  padding: 20px;
+  border: 7px solid #ECE2D0;
+  color: white;
+}
+
+.modal-header-show {
+  background-color: #2C3E50;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  text-decoration: underline;
+  font-weight: bolder;
+}
+
+.travel-photo {
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  margin: 10px auto;
+  display: block;
+  filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+  border: 5px solid #ECE2D0;
 }
 
 .admin-page {

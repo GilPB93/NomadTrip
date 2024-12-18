@@ -15,3 +15,4 @@ EditionTravelbookModal.addEventListener('hidden.bs.modal', function () {
         editTravelbookForm.reset();
 });
 
+

@@ -424,23 +424,55 @@ p {
     background-color: black;
     color: white;
 }
-.search-travelbook h2 {
-    margin: 10px;
-    padding-top: 20px;
+.create-travelbook button:hover {
+    background-color: $color5;
+    color: black;
+    border: none;
 }
-.search-travelbook select {
-    font-family: $family-text;
-    font-size: 1rem;
+.collapse-create-travelbook {
+    max-width: 900px;
+    width: 100%;
+    position: relative;
+    border-radius: 10px;
+    margin: 10px auto;
+    background-color: $color3;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    padding: 10px;
+    display: block;
+    color: black;
+}
+.new-travelbook-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    margin: 5px;
+}
+.new-travelbook-group div {
+    padding: 5px;
+    max-width: 300px;
+    width: 100%;
+}
+.h2-new-travelbook {
+    margin: 10px;
+    display: flex;
+}
+.btn-group-new-travelbook {
+    display: flex;
+    justify-content: space-evenly;
     margin: 10px;
     padding: 5px;
-    border-radius: 10px;
-    border: none;
-    background-color: $color3;
 }
-.search-travelbook option {
-    font-family: $family-text;
-    font-size: 1rem;
+.btn-create, .btn-cancel {
+    font-family: $family-title;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 10px;
+    width: 200px;
+    border-radius: 10px 30px;
     border: none;
+    background-color: black;
+    color: white;
 }
 .travel-card {
     max-width: 230px;
@@ -456,7 +488,7 @@ p {
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
     
     &:hover{
-        .title-image{
+        .title-image, .btn-show, .btn-modif{
             opacity: 1;
         }
         img{
@@ -470,15 +502,47 @@ p {
 
     .title-image{
         position: absolute;
-        top:90%;
+        top:75%;
         left:50%;
-        transform: translate(-50%, -50%);
+        transform: translate(-60%, -50%);
         opacity: 0;
         transition: all 0.3s;
         font-family: $family-title;
         font-size: 1.5rem;
         font-weight: 700;
         color: white;
+    }
+    .btn-show{
+        position: absolute;
+        top:85%;
+        left:10%;
+        opacity: 0;
+        transition: all 0.3s;
+        font-family: $family-title;
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: black;
+        border-radius: 10px;
+        padding: 2px;
+        border: none;
+        background-color: $color5;
+        width: 80px;
+    }
+    .btn-modif{
+        position: absolute;
+        top:85%;
+        right:10%;
+        opacity: 0;
+        transition: all 0.3s;
+        font-family: $family-title;
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: black;
+        border-radius: 10px;
+        padding: 2px;
+        border: none;
+        background-color: $color6;
+        width: 80px;
     }
 
 }

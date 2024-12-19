@@ -12592,11 +12592,6 @@ p {
   border: 5px solid #ECE2D0;
 }
 
-.container {
-  margin: 0 auto;
-  padding: 0;
-}
-
 .add-button-places, .add-button-fb, .add-button-souvenirs {
   font-family: "Bebas Neue", sans-serif;
   font-size: 1.5rem;

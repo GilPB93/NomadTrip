@@ -247,7 +247,7 @@ p {
     border: none;
 }
 
-//INSCRIPTION SECTION
+//SIGNUP SECTION
 .inscription-form {
     max-width: 1000px;
     width: 100%;
@@ -598,10 +598,7 @@ p {
     filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
     border: 5px solid $color3;
 }
-.container {
-    margin: 0 auto;
-    padding: 0;
-}
+
 .add-button-places, .add-button-fb, .add-button-souvenirs {
     font-family: $family-title;
     font-size: 1.5rem;
@@ -741,4 +738,3 @@ p {
     color: black;
     border: none;
 }
-

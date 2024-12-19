@@ -12607,7 +12607,7 @@ p {
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 30px 15px;
+  border-radius: 50%;
   border: none;
   background-color: black;
   color: white;
@@ -12637,6 +12637,7 @@ p {
 .btn-popover {
   display: flex;
   justify-content: space-evenly;
+  border-radius: 50%;
 }
 
 .popover button {

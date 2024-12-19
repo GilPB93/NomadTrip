@@ -6,9 +6,10 @@ btnSignIn.addEventListener("click", checkCredentials);
 
 function checkCredentials() {
     
-    if (inputEmail.value == "test@email.com" && inputPassword.value == "123") {
-        const token = "1234567890";
+    if (inputEmail.value == "test@email.com" && inputPassword.value == "123") { //temporary
+        const token = "1234567890"; //temporary
         setToken(token);
+        setCookie(RoleCookieName, "user", 7); //temporary
         window.location.replace("/"); 
         alert("Bienvenue sur votre espace personnel");
     }

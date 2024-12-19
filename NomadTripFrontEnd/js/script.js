@@ -33,6 +33,10 @@ function eraseCookie(name) {
     document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
 }
 
+//SIGNIN MANAGEMENT
+function userConnected(){
+    return !(getToken() == null || getToken == undefined);
+}
 
 //SIGNOUT MANAGEMENT
 const btnSignout = document.getElementById('btnSignout');
@@ -41,5 +45,53 @@ btnSignout.addEventListener("click", signOut);
 
 function signOut() {
     eraseCookie(tokenCookieName);
+    eraseCookie(RoleCookieName);
     window.location.replace("/");
 }
+
+//ROLE MANAGEMENT
+const RoleCookieName = "role"; //temporary
+
+function getRole(){
+    return getCookie(RoleCookieName); 
+}
+
+
+//HIDE AND SHOW ELEMENTS BASED ON ROLE
+function hideAndShowElementsByRoles() {
+    const isUserConnected = userConnected();
+    const role = getRole();
+
+    const allElementsToEdit = document.querySelectorAll('[data-show]');
+
+    allElementsToEdit.forEach(element => {
+        element.classList.remove("d-none");
+
+        switch (element.dataset.show) {
+            case "disconnected":
+                if (isUserConnected) {
+                    element.classList.add("d-none");
+                }
+                break;
+            case "connected":
+                if (!isUserConnected) {
+                    element.classList.add("d-none");
+                }
+                break;
+            case "admin":
+                if (!isUserConnected || role !== "admin") {
+                    element.classList.add("d-none");
+                }
+                break;
+            case "user":
+                if (!isUserConnected || role !== "user") {
+                    element.classList.add("d-none");
+                }
+                break;
+        }
+    });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    hideAndShowElementsByRoles();
+});

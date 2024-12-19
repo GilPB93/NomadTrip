@@ -4,7 +4,7 @@ const inputPseudo = document.getElementById('PseudoInput');
 const inputEmail = document.getElementById('EmailInput');
 const inputPassword = document.getElementById('PasswordInput');
 const inputPasswordValidate = document.getElementById('ValidatePasswordInput');
-const btnValidate = document.getElementById('btn-validate-signup');
+const btnValidate = document.getElementById('btnValidateSignup');
 
 inputName.addEventListener("keyup", validateForm);
 inputFirstName.addEventListener("keyup", validateForm);

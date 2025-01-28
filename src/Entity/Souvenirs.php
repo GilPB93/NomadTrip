@@ -19,6 +19,9 @@ class Souvenirs
     #[ORM\Column(length: 255)]
     private ?string $forWho = null;
 
+    #[ORM\ManyToOne(inversedBy: 'souvenirs')]
+    private ?Travelbook $travelbook = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,6 +47,18 @@ class Souvenirs
     public function setForWho(string $forWho): static
     {
         $this->forWho = $forWho;
+
+        return $this;
+    }
+
+    public function getTravelbook(): ?Travelbook
+    {
+        return $this->travelbook;
+    }
+
+    public function setTravelbook(?Travelbook $travelbook): static
+    {
+        $this->travelbook = $travelbook;
 
         return $this;
     }

@@ -19,6 +19,9 @@ class Photos
     #[ORM\Column]
     private ?\DateTimeImmutable $addedAt = null;
 
+    #[ORM\ManyToOne(inversedBy: 'photos')]
+    private ?Travelbook $travelbook = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -44,6 +47,18 @@ class Photos
     public function setAddedAt(\DateTimeImmutable $addedAt): static
     {
         $this->addedAt = $addedAt;
+
+        return $this;
+    }
+
+    public function getTravelbook(): ?Travelbook
+    {
+        return $this->travelbook;
+    }
+
+    public function setTravelbook(?Travelbook $travelbook): static
+    {
+        $this->travelbook = $travelbook;
 
         return $this;
     }

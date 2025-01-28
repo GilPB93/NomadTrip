@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\UserRepository;
 use App\Enum\AccountStatus;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Random\RandomException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -51,10 +53,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $apiToken = null;
 
+    /**
+     * @var Collection<int, Travelbook>
+     */
+    #[ORM\OneToMany(targetEntity: Travelbook::class, mappedBy: 'user')]
+    private Collection $travelbooks;
+
+    /**
+     * @var Collection<int, ActivityLog>
+     */
+    #[ORM\OneToMany(targetEntity: ActivityLog::class, mappedBy: 'user')]
+    private Collection $activityLogs;
+
     /** @throws RandomException */
     public function __construct()
     {
         $this->apiToken = bin2hex(random_bytes(20));
+        $this->travelbooks = new ArrayCollection();
+        $this->activityLogs = new ArrayCollection();
     }
 
 
@@ -201,6 +217,66 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setApiToken(string $apiToken): static
     {
         $this->apiToken = $apiToken;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Travelbook>
+     */
+    public function getTravelbooks(): Collection
+    {
+        return $this->travelbooks;
+    }
+
+    public function addTravelbook(Travelbook $travelbook): static
+    {
+        if (!$this->travelbooks->contains($travelbook)) {
+            $this->travelbooks->add($travelbook);
+            $travelbook->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTravelbook(Travelbook $travelbook): static
+    {
+        if ($this->travelbooks->removeElement($travelbook)) {
+            // set the owning side to null (unless already changed)
+            if ($travelbook->getUser() === $this) {
+                $travelbook->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ActivityLog>
+     */
+    public function getActivityLogs(): Collection
+    {
+        return $this->activityLogs;
+    }
+
+    public function addActivityLog(ActivityLog $activityLog): static
+    {
+        if (!$this->activityLogs->contains($activityLog)) {
+            $this->activityLogs->add($activityLog);
+            $activityLog->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeActivityLog(ActivityLog $activityLog): static
+    {
+        if ($this->activityLogs->removeElement($activityLog)) {
+            // set the owning side to null (unless already changed)
+            if ($activityLog->getUser() === $this) {
+                $activityLog->setUser(null);
+            }
+        }
 
         return $this;
     }

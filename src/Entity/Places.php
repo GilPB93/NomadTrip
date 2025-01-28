@@ -22,6 +22,9 @@ class Places
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $visitAt = null;
 
+    #[ORM\ManyToOne(inversedBy: 'places')]
+    private ?Travelbook $travelbook = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -59,6 +62,18 @@ class Places
     public function setVisitAt(?\DateTimeImmutable $visitAt): static
     {
         $this->visitAt = $visitAt;
+
+        return $this;
+    }
+
+    public function getTravelbook(): ?Travelbook
+    {
+        return $this->travelbook;
+    }
+
+    public function setTravelbook(?Travelbook $travelbook): static
+    {
+        $this->travelbook = $travelbook;
 
         return $this;
     }

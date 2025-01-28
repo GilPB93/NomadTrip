@@ -20,6 +20,9 @@ class ActivityLog
     #[ORM\Column(type: Types::TIME_MUTABLE)]
     private ?\DateTimeInterface $totalConnectionTime = null;
 
+    #[ORM\ManyToOne(inversedBy: 'activityLogs')]
+    private ?User $user = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -45,6 +48,18 @@ class ActivityLog
     public function setTotalConnectionTime(\DateTimeInterface $totalConnectionTime): static
     {
         $this->totalConnectionTime = $totalConnectionTime;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

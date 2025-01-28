@@ -1,0 +1,21 @@
+// Custom.scss
+// Option A: Include all of Bootstrap
+
+// Include any default variable overrides here (though functions won't be available)
+$color1: #2C3E50;
+$color2: #5D3A2D;
+$color3: #ECE2D0;
+$color4: #9CA69E;
+$color5: #E9C46A;
+$color6: #A26D94;
+$base-color: #F8F4EF;
+$warning-color: #FF4136;
+
+$family-title: 'Bebas Neue', sans-serif;
+$family-text: 'Arial', sans-serif;
+
+
+
+@import "../node_modules/bootstrap/scss/bootstrap";
+
+// Then add additional custom code here

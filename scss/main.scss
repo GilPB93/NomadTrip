@@ -1,0 +1,782 @@
+@import 'custom';
+
+header, footer {
+    background-color: $color1;
+    width: 100%;  
+    margin: 0 auto;
+    align-items: center;  
+}
+
+header {
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
+
+footer.footer {
+    position: relative;
+    top: 0 !important;
+    width: 100%;
+    justify-items: center;
+    height: 110px;
+    padding: 5px;
+}
+
+footer h4{
+    margin: 0;
+    margin: 5px;
+}
+
+footer p {
+    font-family: $family-text;
+    font-size: 0.65rem;
+    margin: 0;
+}
+
+body, html {
+    background-color: $base-color;
+    height: 100%;
+
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1440px;
+    padding: 10px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}   
+
+
+h1 {
+    font-family: $family-title;
+    font-size: 2.25rem;
+    margin: 5px;
+    font-weight: 700;
+}
+
+h2 {
+    font-family: $family-title;
+    font-size: 1.75rem;
+    margin: 5px;
+    font-weight: 700;
+}   
+
+h3 {
+    font-family: $family-title;
+    font-size: 1.5rem;
+    margin: 5px;
+    font-weight: 700;
+}
+
+h4 {
+    font-family: $family-title;
+    font-size: 1.25rem;
+    margin: 5px;
+    font-weight: 700;
+}
+
+p {
+    font-family: $family-text;
+    font-size: 1rem;
+    margin: 5px;
+}
+
+.navbar {
+    display: flex;
+    margin: 0 auto;
+    justify-content: space-around;
+    max-width: 1440px;
+}
+
+.navbar-toggler {
+    background-color: $color5;
+}
+
+.navbar-nav {
+    font-size: 1.75rem;
+    font-family: $family-title;
+    font-weight: 600;
+}
+
+.navbar-brand {
+    margin: 0;
+    padding: 0;
+}
+
+.logo {
+    padding: 5px;
+    border-radius: 10px;
+    margin: 0;
+}
+
+//HOME PAGE SECTION
+.welcome, .logs {
+    max-width: 1000px;
+    width: 100%;
+    position: relative;
+    border-radius: 10px;
+    margin: 0 auto;
+    margin-bottom: 10px;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    align-items: center;
+}
+.welcome img {
+    width: 100%;
+    border-radius: 10px;
+    max-width: 450px;
+    margin: 0 auto;
+    display: block;
+}
+.welcome h1 {
+    margin: 5px;
+    font-weight: bolder;
+}
+.welcome {
+    background-color: $color4;
+    align-content: center;
+    padding: 15px;
+
+}
+.inscription {
+    background-color: $color5;
+    border-radius: 10px;
+    padding: 10px;
+    align-content: center;
+    margin-bottom: 10px;
+    height: 350px;
+    max-width: 490px;
+    width: 100%;
+}
+.connexion {
+    background-color: $color6;
+    border-radius: 10px;
+    padding: 10px;
+    align-content: center;
+    margin-bottom: 10px;
+    height: 350px;
+    max-width: 490px;
+    width: 100%;
+}
+.connexion h2, .inscription h2 {
+    margin: 10px;
+    font-weight: bolder;
+}
+.connexion p, .inscription p {
+    margin: 20px;
+}
+.inscription button, .connexion button {
+    font-family: $family-title;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 10px auto;
+    width: 200px;
+    display: block;
+    border-radius: 15px 30px;
+    border: none;
+}
+.inscription button:hover, .connexion button:hover {
+    background-color: $color4;
+    color: black;
+    border: none;
+}
+.logs {
+    justify-content: space-between;
+    margin: 0;
+}
+
+
+//CONNEXION SECTION
+.connexion-form {
+    max-width: 1000px;
+    width: 100%;
+    position: relative;
+    border-radius: 10px;
+    margin: 0 auto;
+    background-color: $color6;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    padding: 20px;
+    display: block;
+}
+.form-label {
+    font-family: $family-title;
+    font-size: 1.5rem;
+    font-weight: 700;
+    padding: 5px;
+    max-width: 800px;
+    width: 100%;
+    margin: 0;
+}
+.form-control {
+    font-family: $family-text;
+    font-size: 0.8rem;
+    font-weight: 700;
+    margin: 0;
+    max-width: 950px;
+    width: 100%;
+    padding: 5px;
+}
+.redirect-signup {
+    font-family: $family-text;
+    font-size: 1rem;
+    padding: 5px;
+    max-width: 800px;
+    width: 100%;
+    color: black;
+}
+.connexion-form button {
+    font-family: $family-title;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 10px auto;
+    width: 200px;
+    display: block;
+    border-radius: 30px 15px;
+    border: none;
+}
+.connexion-form button:hover {
+    background-color: $color4;
+    color: black;
+    border: none;
+}
+
+//SIGNUP SECTION
+.inscription-form {
+    max-width: 1000px;
+    width: 100%;
+    position: relative;
+    border-radius: 10px;
+    margin: 0 auto;
+    background-color: $color4;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    padding: 20px;
+    display: block;
+}
+.password-input p {
+    font-family: $family-text;
+    font-size: 0.8rem;
+    margin: 0;
+    padding: 5px;
+}
+.inscription-form button {
+    font-family: $family-title;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 10px auto;
+    width: 200px;
+    display: block;
+    border-radius: 30px 15px;
+    background-color: black;
+    color: white;
+    border: none;
+}
+.inscription-form button:hover {
+    background-color: $color5;
+    color: black;
+    border: none;
+}
+.redirect-signin {
+    font-family: $family-text;
+    font-size: 1rem;
+    padding: 5px;
+    max-width: 800px;
+    width: 100%;
+    color: black;
+}
+
+//ACCOUNT SECTION
+.separator {
+    border: none;
+    height: 2px;
+    background-color: black;
+    width: 70%;
+    margin: 10px auto;
+}
+.account-page {
+    max-width: 1000px;
+    width: 100%;
+    position: relative;
+    border-radius: 10px;
+    margin: 0 auto;
+    background-color: $color4;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    padding: 20px;
+    display: block;
+}
+.current-info {
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    margin: 10px;
+    padding: 10px;
+}
+.current-info h2, .current-info p {
+    margin: 0;
+}
+.current-info span {
+    font-family: $family-text;
+    font-size: 1rem;
+    font-weight: bold;
+    padding: 5px;
+    margin-right: 5px;
+    background-color: $color3;
+    border-radius: 10px;
+    color: black;
+    max-width: 500px;
+    min-width: 250px;
+    width: 100%;
+    max-height: 25px;
+}
+.new-pseudo button, .new-email button, .new-password button {
+    font-family: $family-title;
+    font-size: 1.5rem;
+    margin: 10px;
+    width: 200px;
+    display: block;
+    border-radius: 10px 30px;
+    background-color: black;
+    color: white;
+    border: none;
+    margin-left: auto;
+}
+.new-pseudo button:hover, .new-email button:hover, .new-password button:hover {
+    background-color: $color5;
+    color: black;
+    border: none;
+}
+.delete-account button {
+    font-family: $family-title;
+    font-size: 1.5rem;
+    margin: 10px auto;
+    width: 280px;
+    display: block;
+    border-radius: 10px 30px;
+    background-color: red;
+    color: white;
+    border: none;
+}
+.delete-account button:hover {
+    background-color: $color6;
+    color: black;
+    border: none;
+}
+
+//CONTACT SECTION
+.contact-form {
+    max-width: 1000px;
+    width: 100%;
+    position: relative;
+    border-radius: 10px;
+    margin: 0 auto;
+    background-color: $color6;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    padding: 20px;
+    display: block;
+}
+.contact-form button {
+    font-family: $family-title;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 10px auto;
+    width: 300px;
+    display: block;
+    border-radius: 30px 15px;
+    border: none;
+    background-color: black;
+    color: white;
+}   
+.contact-form button:hover {
+    background-color: $color5;
+    color: black;
+    border: none;
+}
+
+
+//LIBRARY SECTION
+.library {
+    max-width: 1000px;
+    width: 100%;
+    position: relative;
+    border-radius: 10px;
+    margin: 0 auto;
+    background-color: $color2;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    padding: 20px;
+    display: block;
+    color: white;
+}
+.create-travelbook button {
+    font-family: $family-title;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 20px auto;
+    width: 300px;
+    display: block;
+    border-radius: 15px 30px;
+    border: none;
+    background-color: black;
+    color: white;
+}
+.create-travelbook button:hover {
+    background-color: $color5;
+    color: black;
+    border: none;
+}
+.collapse-create-travelbook {
+    max-width: 900px;
+    width: 100%;
+    position: relative;
+    border-radius: 10px;
+    margin: 10px auto;
+    background-color: $color3;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    padding: 10px;
+    display: block;
+    color: black;
+}
+.new-travelbook-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    margin: 5px;
+}
+.new-travelbook-group div {
+    padding: 5px;
+    max-width: 300px;
+    width: 100%;
+}
+.h2-new-travelbook {
+    margin: 10px;
+    display: flex;
+}
+.btn-group-new-travelbook {
+    display: flex;
+    justify-content: space-evenly;
+    margin: 10px;
+    padding: 5px;
+}
+.btn-create, .btn-cancel {
+    font-family: $family-title;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 10px;
+    width: 200px;
+    border-radius: 10px 30px;
+    border: none;
+    background-color: black;
+    color: white;
+}
+.btn-create:hover, .btn-cancel:hover {
+    background-color: $color5;
+    color: black;
+    border: none;
+}
+.travel-card {
+    max-width: 230px;
+    width: 100%;
+    max-height: 320px;
+    position: relative;
+    border-radius: 10px;
+    margin: 10px auto;
+    background-color: $color3;
+    padding: 5px;
+    display: block;
+    color: white;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    
+    &:hover{
+        .title-image, .btn-show, .btn-modif{
+            opacity: 1;
+        }
+        img{
+            filter: brightness(0.3);
+        }
+    }
+
+    img{
+        transition: all 0.3s;
+    }
+
+    .title-image{
+        position: absolute;
+        top:75%;
+        left:50%;
+        transform: translate(-60%, -50%);
+        opacity: 0;
+        transition: all 0.3s;
+        font-family: $family-title;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: white;
+    }
+    .btn-show{
+        position: absolute;
+        top:85%;
+        left:10%;
+        opacity: 0;
+        transition: all 0.3s;
+        font-family: $family-title;
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: black;
+        border-radius: 10px;
+        padding: 2px;
+        border: none;
+        background-color: $color5;
+        width: 80px;
+    }
+    .btn-modif{
+        position: absolute;
+        top:85%;
+        right:10%;
+        opacity: 0;
+        transition: all 0.3s;
+        font-family: $family-title;
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: black;
+        border-radius: 10px;
+        padding: 2px;
+        border: none;
+        background-color: $color6;
+        width: 80px;
+    }
+
+}
+.travel-img {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    margin: 0 auto;
+    display: block;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
+.edit-content {
+    background-color: $color3;
+    border-radius: 10px;
+    padding: 10px;
+    border: 7px solid $color2;
+    color: black;
+}
+.edit-header {
+    background-color: $color3;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    text-decoration: underline;
+    font-weight: bolder;
+}
+.show-content {
+    background-color: $color1;
+    border-radius: 10px;
+    padding: 20px;
+    border: 7px solid $color3;
+    color: white;
+}
+.show-header {
+    background-color: $color1;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    text-decoration: underline;
+    font-weight: bolder;
+}
+.travel-photo {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    margin: 10px auto;
+    display: block;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    border: 5px solid $color3;
+}
+
+.add-button-places, .add-button-fb, .add-button-souvenirs, .add-button-photos {
+    font-family: $family-title;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 10px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    border: none;
+    background-color: black;
+    color: white;
+}
+.popover {
+    max-width: 500px;
+    width: 100%;
+    position: relative;
+    border-radius: 10px;
+    margin: 5px auto;
+    background-color: white;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    padding: 5px;
+    display: flex;
+}
+.popover-places, .popover-fb, .popover-souvenirs {
+    display: flex;
+    flex-direction: column;
+    margin: 10px auto;
+    width: 100%;
+    font-family: $family-text;
+    font-size: 0.8rem;    
+}
+.btn-popover {
+    display: flex;
+    justify-content: space-evenly;
+    border-radius: 50%;
+}
+.popover button {
+    font-family: $family-title;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 10px;
+    width: 200px;
+    display: block;
+    border-radius: 10px 30px;
+    border: none;
+    background-color: black;
+    color: white;
+}
+.popover button:hover {
+    background-color: $color5;
+    color: black;
+    border: none;
+}
+.delete-button {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px;
+    margin-left: 10px;
+    cursor: pointer;
+    border-radius: 10px;
+    width: 20px;
+    height: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.delete-button:hover {
+    background-color: darkred;
+}
+.checkmark {
+    margin-right: 10px;
+    width: 20px;
+    height: 20px;
+}
+.places-to-visit ul, .fb-to-do ul, .souvenirs-to-buy ul {
+    list-style-type: none;
+    padding: 0;
+}
+.thumbnail-item {
+    position: relative; 
+    display: inline-block; 
+    margin: 5px;
+}
+.thumbnail {
+    width: 100px; 
+    height: 100px;
+    object-fit: cover; 
+    border-radius: 10px; 
+}
+.delete-button-photos {
+    position: absolute; 
+    top: 5px;
+    right: 5px;
+    background-color: black;
+    color: white;
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+}
+.delete-button-photo.hidden {
+    display: none; 
+}
+
+.thumbnail-item:hover .delete-button {
+    display: flex; 
+}
+
+//ADMIN SECTION
+.admin-page {
+    max-width: 1000px;
+    width: 100%;
+    position: relative;
+    border-radius: 10px;
+    margin: 0 auto;
+    background-color: $color4;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    padding: 20px;
+    display: block;
+}
+.admin-page div {
+    padding: 2px;
+    margin: 0;
+}
+.stats-admin span {
+    font-family: $family-text;
+    font-size: 1rem;
+    font-weight: bolder;
+    padding: 5px;
+    margin-right: 5px;
+    background-color: $color5;
+    border-radius: 10px;
+    color: black;
+    width: 70px;
+    height: 25px;
+}
+.select-user select, .select-travelbook select {
+    font-family: $family-text;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 5px;
+    margin: 5px;
+    border-radius: 10px;
+    background-color: $color3;
+    border: none;
+}
+.textarea {
+    font-family: $family-text;
+    font-size: 1rem;
+    padding: 5px;
+}
+.btn-group {
+    display: flex;
+    margin: 10px;
+    padding: 5px;
+}
+.btn-group button {
+    font-family: $family-title;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 10px;
+    width: 200px;
+    border-radius: 30px 15px;
+    border: none;
+    background-color: black;
+    color: white;
+}
+.btn-group button:hover {
+    background-color: $color5;
+    color: black;
+    border: none;
+}

@@ -6,6 +6,7 @@ use App\Entity\ActivityLog;
 use App\Entity\User;
 use App\Repository\ActivityLogRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,6 +21,53 @@ class ActivityLogController extends AbstractController
 
     //LAST LOGIN
     #[Route('/lastlogin', name: 'lastlogin', methods: ['POST'])]
+    #[OA\Post(
+        path: '/api/activitylog/lastlogin',
+        summary: 'Log the last login of the user',
+        requestBody: new OA\RequestBody(
+            description: 'The last login data',
+            required: true,
+            content: new OA\JsonContent(
+                properties: [
+                    new OA\Property(property: 'lastLogin', type: 'string', format: 'date-time')
+                ],
+                type: 'object'
+            )
+        ),
+        tags: ['Activity Log'],
+        responses: [
+            new OA\Response(
+                response: '200',
+                description: 'Last login updated successfully',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string')
+                    ],
+                    type: 'object'
+                )
+            ),
+            new OA\Response(
+                response: '404',
+                description: 'User not found',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string')
+                    ],
+                    type: 'object'
+                )
+            ),
+            new OA\Response(
+                response: '400',
+                description: 'Invalid input data',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string')
+                    ],
+                    type: 'object'
+                )
+            )
+        ]
+    )]
     public function logLastLogin(): JsonResponse
     {
         $user = $this->getUser();
@@ -46,6 +94,43 @@ class ActivityLogController extends AbstractController
 
     //INCREMENT CONNECTION TIME
     #[Route('/incrementconnectiontime', name: 'increment_connection_time', methods: ['POST'])]
+    #[OA\Post(
+        path: '/api/activitylog/incrementconnectiontime',
+        summary: 'Increment the total connection time of the user',
+        requestBody: new OA\RequestBody(
+            description: 'The additional connection time',
+            required: true,
+            content: new OA\JsonContent(
+                properties: [
+                    new OA\Property(property: 'connectionTime', type: 'integer')
+                ],
+                type: 'object'
+            )
+        ),
+        tags: ['Activity Log'],
+        responses: [
+            new OA\Response(
+                response: '200',
+                description: 'Connection time updated successfully',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string')
+                    ],
+                    type: 'object'
+                )
+            ),
+            new OA\Response(
+                response: '404',
+                description: 'User not found',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string')
+                    ],
+                    type: 'object'
+                )
+            )
+        ]
+    )]
     public function incrementConnectionTime(Request $request): JsonResponse
     {
         $user = $this->getUser(); // Récupère l'utilisateur connecté
@@ -75,6 +160,34 @@ class ActivityLogController extends AbstractController
 
     //USER ACTIVITY LOG
     #[Route('/activitylog/{userId}', name: 'user_activity', methods: ['GET'])]
+    #[OA\Get(
+        path: '/api/activitylog/activitylog/{userId}',
+        summary: 'Get the activity log of a user',
+        tags: ['Activity Log'],
+        responses: [
+            new OA\Response(
+                response: '200',
+                description: 'Activity log found',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'lastLogin', type: 'string', format: 'date-time'),
+                        new OA\Property(property: 'totalConnectionTime', type: 'integer')
+                    ],
+                    type: 'object'
+                )
+            ),
+            new OA\Response(
+                response: '404',
+                description: 'Activity log not found',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string')
+                    ],
+                    type: 'object'
+                )
+            )
+        ]
+    )]
     public function getUserActivity(int $userId, ActivityLogRepository $activityLogRepository): JsonResponse
     {
         $activityLog = $activityLogRepository->findOneBy(['user' => $userId]);

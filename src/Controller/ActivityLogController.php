@@ -29,7 +29,7 @@ class ActivityLogController extends AbstractController
             required: true,
             content: new OA\JsonContent(
                 properties: [
-                    new OA\Property(property: 'lastLogin', type: 'string', format: 'date-time')
+                    new OA\Property(property: 'lastLogin', type: 'string', format: 'date-time', example: '2021-09-01T12:00:00+00:00')
                 ],
                 type: 'object'
             )
@@ -41,7 +41,7 @@ class ActivityLogController extends AbstractController
                 description: 'Last login updated successfully',
                 content: new OA\JsonContent(
                     properties: [
-                        new OA\Property(property: 'message', type: 'string')
+                        new OA\Property(property: 'message', type: 'string', example: 'Last login updated successfully')
                     ],
                     type: 'object'
                 )
@@ -51,7 +51,7 @@ class ActivityLogController extends AbstractController
                 description: 'User not found',
                 content: new OA\JsonContent(
                     properties: [
-                        new OA\Property(property: 'message', type: 'string')
+                        new OA\Property(property: 'message', type: 'string', example: 'User not found')
                     ],
                     type: 'object'
                 )
@@ -61,7 +61,7 @@ class ActivityLogController extends AbstractController
                 description: 'Invalid input data',
                 content: new OA\JsonContent(
                     properties: [
-                        new OA\Property(property: 'message', type: 'string')
+                        new OA\Property(property: 'message', type: 'string', example: 'Invalid input data')
                     ],
                     type: 'object'
                 )
@@ -102,7 +102,7 @@ class ActivityLogController extends AbstractController
             required: true,
             content: new OA\JsonContent(
                 properties: [
-                    new OA\Property(property: 'connectionTime', type: 'integer')
+                    new OA\Property(property: 'connectionTime', type: 'integer', example: 10)
                 ],
                 type: 'object'
             )
@@ -114,7 +114,7 @@ class ActivityLogController extends AbstractController
                 description: 'Connection time updated successfully',
                 content: new OA\JsonContent(
                     properties: [
-                        new OA\Property(property: 'message', type: 'string')
+                        new OA\Property(property: 'message', type: 'string', example: 'Connection time updated successfully')
                     ],
                     type: 'object'
                 )
@@ -124,7 +124,7 @@ class ActivityLogController extends AbstractController
                 description: 'User not found',
                 content: new OA\JsonContent(
                     properties: [
-                        new OA\Property(property: 'message', type: 'string')
+                        new OA\Property(property: 'message', type: 'string', example: 'User not found')
                     ],
                     type: 'object'
                 )
@@ -170,8 +170,8 @@ class ActivityLogController extends AbstractController
                 description: 'Activity log found',
                 content: new OA\JsonContent(
                     properties: [
-                        new OA\Property(property: 'lastLogin', type: 'string', format: 'date-time'),
-                        new OA\Property(property: 'totalConnectionTime', type: 'integer')
+                        new OA\Property(property: 'lastLogin', type: 'string', format: 'date-time', example: '2021-09-01T12:00:00+00:00'),
+                        new OA\Property(property: 'totalConnectionTime', type: 'integer', example: 10)
                     ],
                     type: 'object'
                 )
@@ -181,7 +181,7 @@ class ActivityLogController extends AbstractController
                 description: 'Activity log not found',
                 content: new OA\JsonContent(
                     properties: [
-                        new OA\Property(property: 'message', type: 'string')
+                        new OA\Property(property: 'message', type: 'string', example: 'Activity log not found')
                     ],
                     type: 'object'
                 )

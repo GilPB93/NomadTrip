@@ -44,8 +44,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 128)]
     private ?string $pseudo = null;
 
-    #[ORM\Column]
-    private array $role = [];
 
     #[ORM\Column(type: 'account_status', length: 20)]
     private ?AccountStatus $accountStatus = null;
@@ -74,7 +72,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     /** @throws RandomException */
     public function __construct()
     {
-        $this->apiToken = bin2hex(random_bytes(20));
+        $this->apiToken = bin2hex(random_bytes(32));
         $this->travelbooks = new ArrayCollection();
         $this->activityLogs = new ArrayCollection();
     }
@@ -187,18 +185,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPseudo(string $pseudo): static
     {
         $this->pseudo = $pseudo;
-
-        return $this;
-    }
-
-    public function getRole(): array
-    {
-        return $this->role;
-    }
-
-    public function setRole(array $role): static
-    {
-        $this->role = $role;
 
         return $this;
     }

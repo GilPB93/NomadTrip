@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\FB;
+use App\Entity\Travelbook;
 use App\Repository\FBRepository;
 use App\Repository\TravelbookRepository;
 use DateTimeImmutable;
@@ -13,6 +14,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route('/api/fb', name: 'app_api_fb_')]
@@ -20,7 +23,6 @@ class FBController extends AbstractController
 {
     public function __construct(
         private FBRepository $fbRepository,
-        private TravelbookRepository $travelbookRepository,
         private SerializerInterface $serializer,
         private EntityManagerInterface $manager,
     ){
@@ -61,22 +63,30 @@ class FBController extends AbstractController
     )]
     public function new(Request $request): JsonResponse
     {
+        $data = json_decode($request->getContent(), true);
+        $travelbook = $this->manager->getRepository(Travelbook::class)->find($data['travelbook']);
+        if (!$travelbook) {
+            return new JsonResponse('Travelbook not found', Response::HTTP_BAD_REQUEST);
+        }
+
         $fb = $this->serializer->deserialize($request->getContent(), FB::class, 'json');
+        $fb->setVisitAt(new DateTimeImmutable($data['visitAt']));
+        $fb->setTravelbook($travelbook);
 
         $this->manager->persist($fb);
         $this->manager->flush();
 
         return new JsonResponse(
-            $this->serializer->serialize($fb, 'json'),
+            $this->serializer->serialize($fb, 'json', ['groups' => 'fb:read']),
             Response::HTTP_CREATED);
     }
 
     // SHOW A RESTAURANT/BAR BY ID
     #[Route('/{id}', name: 'show', methods: ['GET'])]
     #[OA\Get(
-        path: "/fb/{id}",
+        path: "/api/fb/{id}",
         summary: "Get an Restaurant/Bar by ID",
-        tags:["Restaurant/Bar for Travelbook"],
+        tags: ["Restaurant/Bar for Travelbook"],
         parameters: [
             new OA\Parameter(
                 name: "id",
@@ -115,14 +125,14 @@ class FBController extends AbstractController
         }
 
         return new JsonResponse(
-            $this->serializer->serialize($fb, 'json'),
+            $this->serializer->serialize($fb, 'json', ['groups' => 'fb:read']),
             Response::HTTP_OK);
     }
 
     // UPDATE A RESTAURANT/BAR BY ID
     #[Route('/{id}', name: 'update', methods: ['PUT'])]
     #[OA\Put(
-        path: "/fb/{id}",
+        path: "/api/fb/{id}",
         summary: "Update an existing Restaurant/Bar",
         requestBody: new OA\RequestBody(
             required: true,
@@ -164,18 +174,18 @@ class FBController extends AbstractController
                 description:"Restaurant not found")
         ]
     )]
-    public function updateFB(int $id, Request $request): JsonResponse
+    public function update(int $id, Request $request): JsonResponse
     {
         $fb = $this->fbRepository->findOneBy(['id' => $id]);
         if ($fb) {
-            $this->serializer->deserialize($request->getContent(), FB::class, 'json', ['object_to_populate' => $fb]
+            $this->serializer->deserialize($request->getContent(), FB::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $fb]
             );
 
             $this->manager->persist($fb);
             $this->manager->flush();
 
             return new JsonResponse(
-                $this->serializer->serialize($fb, 'json'),
+                $this->serializer->serialize($fb, 'json', ['groups' => 'fb:read']),
                 Response::HTTP_OK);
         }
 
@@ -188,7 +198,7 @@ class FBController extends AbstractController
     // DELETE A RESTAURANT/BAR BY ID
     #[Route('/{id}', name: 'delete', methods: ['DELETE'])]
     #[OA\Delete(
-        path: "/fb/{id}",
+        path: "/api/fb/{id}",
         summary: "Delete an existing Restaurant/Bar",
         tags: ["Restaurant/Bar for Travelbook"],
         parameters: [
@@ -211,7 +221,7 @@ class FBController extends AbstractController
             )
         ]
     )]
-    public function deleteFB(int $id): JsonResponse
+    public function delete(int $id): JsonResponse
     {
         $fb = $this->fbRepository->findOneBy(['id' => $id]);
         if ($fb) {

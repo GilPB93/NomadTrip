@@ -6,6 +6,7 @@ use App\Repository\TravelbookRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: TravelbookRepository::class)]
 class Travelbook
@@ -13,54 +14,68 @@ class Travelbook
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['travelbook:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['travelbook:read', 'travelbook:write'])]
     private ?string $title = null;
 
     #[ORM\Column]
+    #[Groups(['travelbook:read', 'travelbook:write'])]
     private ?\DateTimeImmutable $departureAt = null;
 
     #[ORM\Column]
+    #[Groups(['travelbook:read', 'travelbook:write'])]
     private ?\DateTimeImmutable $comebackAt = null;
 
     #[ORM\Column(length: 28, nullable: true)]
+    #[Groups(['travelbook:read', 'travelbook:write'])]
     private ?string $flightNumber = null;
 
     #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['travelbook:read', 'travelbook:write'])]
     private ?string $accommodation = null;
 
     #[ORM\Column]
+    #[Groups(['travelbook:read'])]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column]
+    #[Groups(['travelbook:read'])]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\ManyToOne(inversedBy: 'travelbooks')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'travelbooks')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['travelbook:read', 'travelbook:write'])]
     private ?User $user = null;
 
     /**
      * @var Collection<int, Places>
      */
     #[ORM\OneToMany(targetEntity: Places::class, mappedBy: 'travelbook')]
+    #[Groups(['travelbook:read', 'travelbook:write'])]
     private Collection $places;
 
     /**
      * @var Collection<int, FB>
      */
     #[ORM\OneToMany(targetEntity: FB::class, mappedBy: 'travelbook')]
+    #[Groups(['travelbook:read', 'travelbook:write'])]
     private Collection $fBs;
 
     /**
      * @var Collection<int, Souvenirs>
      */
     #[ORM\OneToMany(targetEntity: Souvenirs::class, mappedBy: 'travelbook')]
+    #[Groups(['travelbook:read', 'travelbook:write'])]
     private Collection $souvenirs;
 
     /**
      * @var Collection<int, Photos>
      */
     #[ORM\OneToMany(targetEntity: Photos::class, mappedBy: 'travelbook')]
+    #[Groups(['travelbook:read', 'travelbook:write'])]
     private Collection $photos;
 
     public function __construct()

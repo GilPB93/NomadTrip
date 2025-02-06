@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\PhotosRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: PhotosRepository::class)]
 class Photos
@@ -11,15 +12,19 @@ class Photos
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['photos:read', 'photos:write'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['photos:read', 'photos:write'])]
     private ?string $imgUrl = null;
 
     #[ORM\Column]
+    #[Groups(['photos:read', 'photos:write'])]
     private ?\DateTimeImmutable $addedAt = null;
 
-    #[ORM\ManyToOne(inversedBy: 'photos')]
+    #[ORM\ManyToOne(targetEntity: Travelbook::class, cascade: ['persist'], inversedBy: 'photos')]
+    #[Groups(['photos:read', 'photos:write'])]
     private ?Travelbook $travelbook = null;
 
     public function getId(): ?int

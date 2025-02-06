@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\PlacesRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: PlacesRepository::class)]
 class Places
@@ -11,18 +12,22 @@ class Places
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['places:read', 'places:write'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['places:read', 'places:write'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['places:read', 'places:write'])]
     private ?string $address = null;
 
     #[ORM\Column(nullable: true)]
+    #[Groups(['places:read', 'places:write'])]
     private ?\DateTimeImmutable $visitAt = null;
 
-    #[ORM\ManyToOne(inversedBy: 'places')]
+    #[ORM\ManyToOne(targetEntity: Travelbook::class, cascade: ['persist'], inversedBy: 'places')]
     private ?Travelbook $travelbook = null;
 
     public function getId(): ?int

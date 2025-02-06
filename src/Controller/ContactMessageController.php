@@ -16,7 +16,7 @@ use OpenApi\Attributes as OA;
 #[Route('/api/contact', name: 'app_api_contact_')]
 class ContactMessageController extends AbstractController
 {
-    #[Route('/send', methods: ['POST'])]
+    #[Route('/send',name: 'sendContactMessage', methods: ['POST'])]
     #[OA\Post(
         path: "/api/contact/send",
         summary: "Send an email with all the message's data",
@@ -24,16 +24,17 @@ class ContactMessageController extends AbstractController
             required: true,
             content: new OA\JsonContent(
                 properties: [
-                    new OA\Property(property: "name", type: "string"),
-                    new OA\Property(property: "email", type: "string"),
-                    new OA\Property(property: "subject", type: "string"),
-                    new OA\Property(property: "message", type: "string")
+                    new OA\Property(property: "name", type: "string", example: "Name example"),
+                    new OA\Property(property: "email", type: "string", example: "example@email.com"),
+                    new OA\Property(property: "subject", type: "string", example: "Subject example"),
+                    new OA\Property(property: "message", type: "string", example: "Message example")
                 ]
             )
         ),
+        tags: ["Contact Message"],
         responses: [new OA\Response(response: 200, description: "Email envoyé")]
     )]
-    public function sendContactEmail(Request $request, MailerInterface $mailer): JsonResponse
+    public function send(Request $request, MailerInterface $mailer): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 
@@ -48,7 +49,7 @@ class ContactMessageController extends AbstractController
         return new JsonResponse(['message' => 'Email envoyé'], 200);
     }
 
-    #[Route('/save', methods: ['POST'])]
+    #[Route('/save',name: 'saveContactMessage', methods: ['POST'])]
     #[OA\Post(
         path: "/api/contact/save",
         summary: "Save a contact message",
@@ -56,16 +57,17 @@ class ContactMessageController extends AbstractController
             required: true,
             content: new OA\JsonContent(
                 properties: [
-                    new OA\Property(property: "name", type: "string"),
-                    new OA\Property(property: "email", type: "string"),
-                    new OA\Property(property: "subject", type: "string"),
-                    new OA\Property(property: "message", type: "string")
+                    new OA\Property(property: "name", type: "string", example: "Name example"),
+                    new OA\Property(property: "email", type: "string", example: "example@email.com"),
+                    new OA\Property(property: "subject", type: "string", example: "Subject example"),
+                    new OA\Property(property: "message", type: "string", example: "Message example")
                 ]
             )
         ),
+        tags: ["Contact Message"],
         responses: [new OA\Response(response: 201, description: "Message enregistré")]
     )]
-    public function saveMessage(Request $request, EntityManagerInterface $entityManager): JsonResponse
+    public function save(Request $request, EntityManagerInterface $entityManager): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
 
@@ -82,13 +84,14 @@ class ContactMessageController extends AbstractController
         return new JsonResponse(['message' => 'Message enregistré'], 201);
     }
 
-    #[Route('/all', methods: ['GET'])]
+    #[Route('/all',name: 'getContactMessage', methods: ['GET'])]
     #[OA\Get(
         path: "/api/contact/all",
         summary: "Get all contact messages",
+        tags: ["Contact Message"],
         responses: [new OA\Response(response: 200, description: "Liste des messages")]
     )]
-    public function getContactMessages(ContactMessageRepository $repository): JsonResponse
+    public function get(ContactMessageRepository $repository): JsonResponse
     {
         $messages = $repository->findAll();
         return new JsonResponse($messages, 200);

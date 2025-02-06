@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Photos;
+use App\Entity\Travelbook;
 use App\Repository\PhotosRepository;
+use App\Repository\TravelbookRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,6 +13,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route('/api/photos', name: 'app_api_photos_')]
@@ -60,16 +63,27 @@ class PhotosController extends AbstractController
             )
         ]
     )]
-    public function new(Request $request): Response
+    public function new(Request $request): JsonResponse
     {
+        $data = json_decode($request->getContent(), true);
+        $travelbook = $this->manager->getRepository(Travelbook::class)->find($data['travelbook']);
+
+        if (!$travelbook) {
+            return new JsonResponse('Travelbook not found', Response::HTTP_BAD_REQUEST);
+        }
+
         $photos = $this->serializer->deserialize($request->getContent(), Photos::class, 'json');
+        $photos->setAddedAt(new \DateTimeImmutable());
+        $photos->setTravelbook($travelbook);
 
         $this->manager->persist($photos);
         $this->manager->flush();
 
         return new JsonResponse(
-            $this->serializer->serialize($photos, 'json'),
-            Response::HTTP_CREATED
+            $this->serializer->serialize($photos, 'json', ['groups' => 'photos:read']),
+            Response::HTTP_CREATED,
+            [],
+            true
         );
     }
 
@@ -109,13 +123,13 @@ class PhotosController extends AbstractController
             )
         ]
     )]
-    public function show(int $id): Response
+    public function show(int $id): JsonResponse
     {
         $photos = $this->photosRepository->findOneBy(['id' => $id]);
 
         if($photos) {
             return new JsonResponse(
-                $this->serializer->serialize($photos, 'json'),
+                $this->serializer->serialize($photos, 'json', ['groups' => 'photos:read']),
                 Response::HTTP_OK
             );
         }
@@ -177,12 +191,12 @@ class PhotosController extends AbstractController
         $photos = $this->photosRepository->findOneBy(['id' => $id]);
 
         if($photos) {
-            $this->serializer->deserialize($request->getContent(), Photos::class, 'json', ['object_to_populate' => $photos]);
+            $this->serializer->deserialize($request->getContent(), Photos::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $photos]);
 
             $this->manager->flush();
 
             return new JsonResponse(
-                $this->serializer->serialize($photos, 'json'),
+                $this->serializer->serialize($photos, 'json', ['groups' => 'photos:read']),
                 Response::HTTP_OK
             );
         }

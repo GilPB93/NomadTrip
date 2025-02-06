@@ -11,6 +11,8 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 
@@ -69,16 +71,18 @@ class TravelbookController extends AbstractController
             )
         ]
     )]
-    public function new(Request $request): JsonResponse
+    public function new(Request $request, #[CurrentUser] $user): JsonResponse
     {
         $travelbook = $this->serializer->deserialize($request->getContent(), Travelbook::class, 'json');
         $travelbook->setCreatedAt(new \DateTimeImmutable());
         $travelbook->setUpdatedAt(new \DateTimeImmutable());
+        $travelbook->setUser($user);
 
         $this->manager->persist($travelbook);
         $this->manager->flush();
 
-        return new JsonResponse($this->serializer->serialize($travelbook, 'json'), Response::HTTP_CREATED, [], true);
+        return new JsonResponse($this->serializer->serialize($travelbook, 'json', ['groups' => 'travelbook:read']),
+            Response::HTTP_CREATED, [], true);
     }
 
 
@@ -132,7 +136,7 @@ class TravelbookController extends AbstractController
         }
 
         return new JsonResponse(
-            $this->serializer->serialize($travelbook, 'json'),
+            $this->serializer->serialize($travelbook, 'json', ['groups' => ['travelbook:read']]),
             Response::HTTP_OK
         );
     }
@@ -202,12 +206,12 @@ class TravelbookController extends AbstractController
             );
         }
 
-        $this->serializer->deserialize($request->getContent(), Travelbook::class, 'json', ['object_to_populate' => $travelbook]);
+        $this->serializer->deserialize($request->getContent(), Travelbook::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $travelbook]);
         $travelbook->setUpdatedAt(new \DateTimeImmutable());
         $this->manager->flush();
 
         return new JsonResponse(
-            $this->serializer->serialize($travelbook, 'json'),
+            $this->serializer->serialize($travelbook, 'json', ['groups' => 'travelbook:read']),
             Response::HTTP_OK
         );
     }

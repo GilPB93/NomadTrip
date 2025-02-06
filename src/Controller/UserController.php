@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route('/api/user', name: 'app_api_user_')]
@@ -120,7 +121,8 @@ class UserController extends AbstractController
                 Response::HTTP_NOT_FOUND);
         }
 
-        $this->serializer->deserialize($request->getContent(), User::class, 'json', ['object_to_populate' => $user]);
+        $user->setUpdatedAt(new \DateTimeImmutable());
+        $this->serializer->deserialize($request->getContent(), User::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $user]);
         $this->manager->flush();
 
         return new JsonResponse(

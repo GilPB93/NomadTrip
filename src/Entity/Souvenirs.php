@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\SouvenirsRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: SouvenirsRepository::class)]
 class Souvenirs
@@ -11,15 +12,18 @@ class Souvenirs
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['souvenirs:read', 'souvenirs:write'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['souvenirs:read', 'souvenirs:write'])]
     private ?string $what = null;
 
     #[ORM\Column(length: 255)]
     private ?string $forWho = null;
 
-    #[ORM\ManyToOne(inversedBy: 'souvenirs')]
+    #[ORM\ManyToOne(targetEntity: Travelbook::class, cascade: ['persist'], inversedBy: 'souvenirs')]
+    #[Groups(['souvenirs:read', 'souvenirs:write'])]
     private ?Travelbook $travelbook = null;
 
     public function getId(): ?int

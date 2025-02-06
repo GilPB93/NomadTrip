@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\FBRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: FBRepository::class)]
 class FB
@@ -22,7 +23,8 @@ class FB
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $visitAt = null;
 
-    #[ORM\ManyToOne(inversedBy: 'fBs')]
+    #[ORM\ManyToOne(targetEntity: Travelbook::class, cascade: ['persist'], inversedBy: 'fBs')]
+    #[Groups(['fb:read', 'fb:write'])]
     private ?Travelbook $travelbook = null;
 
     public function getId(): ?int

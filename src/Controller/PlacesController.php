@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\Places;
+use App\Entity\Travelbook;
 use App\Repository\PlacesRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,6 +13,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route('/api/places', name: 'app_api_places_')]
@@ -63,12 +66,21 @@ class PlacesController extends AbstractController
     )]
     public function new(Request $request): JsonResponse
     {
+        $data = json_decode($request->getContent(), true);
+        $travelbook = $this->manager->getRepository(Travelbook::class)->find($data['travelbook']);
+        if (!$travelbook) {
+            return new JsonResponse('Travelbook not found', Response::HTTP_BAD_REQUEST);
+        }
+
         $places = $this->serializer->deserialize($request->getContent(), Places::class, 'json');
+        $places->setVisitAt(new DateTimeImmutable($data['visitAt']));
+        $places->setTravelbook($travelbook);
+
         $this->manager->persist($places);
         $this->manager->flush();
 
         return new JsonResponse(
-            $this->serializer->serialize($places, 'json'),
+            $this->serializer->serialize($places, 'json', ['groups' => 'places:read']),
             Response::HTTP_CREATED,
         );
     }
@@ -122,7 +134,7 @@ class PlacesController extends AbstractController
         }
 
         return new JsonResponse(
-            $this->serializer->serialize($places, 'json'),
+            $this->serializer->serialize($places, 'json', ['groups' => 'places:read']),
             Response::HTTP_OK,
         );
     }
@@ -176,11 +188,11 @@ class PlacesController extends AbstractController
             );
         }
 
-        $this->serializer->deserialize($request->getContent(), Places::class, 'json', ['object_to_populate' => $places]);
+        $this->serializer->deserialize($request->getContent(), Places::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $places]);
         $this->manager->flush();
 
         return new JsonResponse(
-            $this->serializer->serialize($places, 'json'),
+            $this->serializer->serialize($places, 'json', ['groups' => 'places:read']),
             Response::HTTP_OK,
         );
     }

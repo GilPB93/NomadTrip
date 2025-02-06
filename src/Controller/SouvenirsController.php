@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Souvenirs;
+use App\Entity\Travelbook;
 use App\Repository\SouvenirsRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Attributes as OA;
@@ -11,6 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route('/api/souvenirs', name: 'app_api_souvenirs_')]
@@ -61,12 +63,20 @@ class SouvenirsController extends AbstractController
     )]
     public function new(Request $request): JsonResponse
     {
+        $data = json_decode($request->getContent(), true);
+        $travelbook = $this->manager->getRepository(Travelbook::class)->find($data['travelbook']);
+        if (!$travelbook) {
+            return new JsonResponse('Travelbook not found', Response::HTTP_BAD_REQUEST);
+        }
+
         $souvenirs = $this->serializer->deserialize($request->getContent(), Souvenirs::class, 'json');
+        $souvenirs->setTravelbook($travelbook);
+
         $this->manager->persist($souvenirs);
         $this->manager->flush();
 
         return new JsonResponse(
-            $this->serializer->serialize($souvenirs, 'json'),
+            $this->serializer->serialize($souvenirs, 'json', ['groups' => 'souvenirs:read']),
             Response::HTTP_CREATED
         );
     }
@@ -117,7 +127,7 @@ class SouvenirsController extends AbstractController
         }
 
         return new JsonResponse(
-            $this->serializer->serialize($souvenirs, 'json'),
+            $this->serializer->serialize($souvenirs, 'json', ['groups' => 'souvenirs:read']),
             Response::HTTP_OK
         );
     }
@@ -171,11 +181,11 @@ class SouvenirsController extends AbstractController
             );
         }
 
-        $this->serializer->deserialize($request->getContent(), Souvenirs::class, 'json', ['object_to_populate' => $souvenirs]);
+        $this->serializer->deserialize($request->getContent(), Souvenirs::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $souvenirs]);
         $this->manager->flush();
 
         return new JsonResponse(
-            $this->serializer->serialize($souvenirs, 'json'),
+            $this->serializer->serialize($souvenirs, 'json', ['groups' => 'souvenirs:read']),
             Response::HTTP_OK
         );
     }

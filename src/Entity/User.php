@@ -45,7 +45,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 128)]
     private ?string $pseudo = null;
 
-
     #[ORM\Column(type: 'account_status', length: 20)]
     private ?AccountStatus $accountStatus = null;
 

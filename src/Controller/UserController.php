@@ -173,4 +173,59 @@ class UserController extends AbstractController
             Response::HTTP_OK,
         );
     }
+
+    // TRACK LOGIN
+    #[Route('/{id}/track-login', name: 'user_track_login', methods: ['POST'])]
+    #[OA\Post(
+        path: '/api/user/{id}/track-login',
+        summary: 'Track user login',
+        tags: ['User'],
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                description: 'The user id',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer')
+            )
+        ],
+        responses: [
+            new OA\Response(
+                response: '200',
+                description: 'User login tracked',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'id', type: 'integer', example: 1),
+                        new OA\Property(property: 'email', type: 'string', example: 'example@email.com'),
+                        new OA\Property(property: 'firstName', type: 'string', example: 'User first name'),
+                        new OA\Property(property: 'lastName', type: 'string', example: 'User last name'),
+                        new OA\Property(property: 'pseudo', type: 'string', example: 'User pseudo'),
+                    ],
+                    type: 'object'
+                )
+            ),
+            new OA\Response(
+                response: '404',
+                description: 'User not found',
+            )
+        ]
+    )]
+    public function trackLogin(User $user): JsonResponse
+    {
+        $now = new \DateTimeImmutable();
+
+        if ($user->getLastLogin()) {
+            $diffInSeconds = $now->getTimestamp() - $user->getLastLogin()->getTimestamp();
+            $user->addConnectionTime($diffInSeconds);
+        }
+
+        $user->setLastLogin($now);
+        $this->manager->flush();
+
+        return new JsonResponse(
+            $this->serializer->serialize($user, 'json'),
+            Response::HTTP_OK,
+            );
+    }
+
 }

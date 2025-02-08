@@ -6,6 +6,7 @@ use App\Repository\UserRepository;
 use App\Enum\AccountStatus;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Random\RandomException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -57,24 +58,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Travelbook::class, mappedBy: 'user')]
     private Collection $travelbooks;
 
-    /**
-     * @var Collection<int, ActivityLog>
-     */
-    #[ORM\OneToMany(targetEntity: ActivityLog::class, mappedBy: 'user')]
-    private Collection $activityLogs;
-
     #[ORM\Column]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column]
     private ?\DateTimeImmutable $updatedAt = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $lastLogin = null;
+
+    #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    private int $connectionTime = 0;
+
     /** @throws RandomException */
     public function __construct()
     {
         $this->apiToken = bin2hex(random_bytes(32));
         $this->travelbooks = new ArrayCollection();
-        $this->activityLogs = new ArrayCollection();
     }
 
 
@@ -243,35 +243,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int, ActivityLog>
-     */
-    public function getActivityLogs(): Collection
-    {
-        return $this->activityLogs;
-    }
-
-    public function addActivityLog(ActivityLog $activityLog): static
-    {
-        if (!$this->activityLogs->contains($activityLog)) {
-            $this->activityLogs->add($activityLog);
-            $activityLog->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeActivityLog(ActivityLog $activityLog): static
-    {
-        if ($this->activityLogs->removeElement($activityLog)) {
-            // set the owning side to null (unless already changed)
-            if ($activityLog->getUser() === $this) {
-                $activityLog->setUser(null);
-            }
-        }
-
-        return $this;
-    }
 
     public function getCreatedAt(): ?\DateTimeImmutable
     {
@@ -294,6 +265,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->updatedAt = $updatedAt;
 
+        return $this;
+    }
+
+    public function getLastLogin(): ?\DateTimeInterface
+    {
+        return $this->lastLogin;
+    }
+
+    public function setLastLogin(\DateTimeInterface $lastLogin): static
+    {
+        $this->lastLogin = $lastLogin;
+
+        return $this;
+    }
+
+    public function getConnectionTime(): int
+    {
+        return $this->connectionTime;
+    }
+
+    public function addConnectionTime(int $seconds): static
+    {
+        $this->connectionTime += $seconds;
         return $this;
     }
 

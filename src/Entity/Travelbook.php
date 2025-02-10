@@ -78,6 +78,9 @@ class Travelbook
     #[Groups(['travelbook:read', 'travelbook:write'])]
     private Collection $photos;
 
+    #[ORM\Column(length: 255)]
+    private ?string $imgCouverture = null;
+
     public function __construct()
     {
         $this->places = new ArrayCollection();
@@ -303,6 +306,18 @@ class Travelbook
                 $photo->setTravelbook(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getImgCouverture(): ?string
+    {
+        return $this->imgCouverture;
+    }
+
+    public function setImgCouverture(string $imgCouverture): static
+    {
+        $this->imgCouverture = $imgCouverture;
 
         return $this;
     }

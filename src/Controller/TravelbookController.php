@@ -38,6 +38,7 @@ class TravelbookController extends AbstractController
             content: new OA\JsonContent(
                 properties: [
                     new OA\Property(property: "title", type: "string", example: "My trip to Paris"),
+                    new OA\Property(property: "imgCouverture", description: "URL of the image in the cover of the travelbook", type: "string", example: "https://www.example.com/image.jpg"),
                     new OA\Property(property: "departureAt", type: "string", example: "2022-12-01"),
                     new OA\Property(property: "comebackAt", type: "string", example: "2022-12-10"),
                     new OA\Property(property: "flightNumber", type: "string", example: "AF1234"),
@@ -109,6 +110,7 @@ class TravelbookController extends AbstractController
                     properties: [
                         new OA\Property(property: "id", type: "integer", example: 1),
                         new OA\Property(property: "title", type: "string", example: "My trip to Paris"),
+                        new OA\Property(property: "imgCouverture", description: "URL of the image in the cover of the travelbook", type: "string", example: "https://www.example.com/image.jpg"),
                         new OA\Property(property: "departureAt", type: "string", example: "2022-12-01"),
                         new OA\Property(property: "comebackAt", type: "string", example: "2022-12-10"),
                         new OA\Property(property: "flightNumber", type: "string", example: "AF1234"),
@@ -153,6 +155,7 @@ class TravelbookController extends AbstractController
             content: new OA\JsonContent(
                 properties: [
                     new OA\Property(property: "title", type: "string", example: "My trip to Paris"),
+                    new OA\Property(property: "imgCouverture", description: "URL of the image in the cover of the travelbook", type: "string", example: "https://www.example.com/image.jpg"),
                     new OA\Property(property: "departureAt", type: "string", example: "2022-12-01"),
                     new OA\Property(property: "comebackAt", type: "string", example: "2022-12-10"),
                     new OA\Property(property: "flightNumber", type: "string", example: "AF1234"),
@@ -179,6 +182,7 @@ class TravelbookController extends AbstractController
                     properties: [
                         new OA\Property(property: "id", type: "integer", example: 1),
                         new OA\Property(property: "title", type: "string", example: "My trip to Paris"),
+                        new OA\Property(property: "imgCouverture", description: "URL of the image in the cover of the travelbook", type: "string", example: "https://www.example.com/image.jpg"),
                         new OA\Property(property: "departureAt", type: "string", example: "2022-12-01"),
                         new OA\Property(property: "comebackAt", type: "string", example: "2022-12-10"),
                         new OA\Property(property: "flightNumber", type: "string", example: "AF1234"),

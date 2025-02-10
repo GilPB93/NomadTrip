@@ -9,13 +9,12 @@ const formSignup = document.getElementById('signupForm');
 
 const inputs = [inputLastName, inputFirstName, inputPseudo, inputEmail, inputPassword, inputPasswordValidate];
 
-// Mettre les champs en rouge par défaut
 inputs.forEach(input => {
     input.classList.add('is-invalid');
     input.addEventListener("keyup", validateForm);
 });
 
-btnValidate.addEventListener("click", signupForm); // Correction ici
+btnValidate.addEventListener("click", signupForm);
 
 function validateForm() {
     const lastnameOk = validateRequired(inputLastName);

@@ -3,7 +3,7 @@
         <h1>Mes Carnets</h1>
         <p>Tous vos souvenirs au même endroit ! Explorez, modifiez ou ajoutez de nouveaux carnets de voyage pour revivre vos aventures. Chaque carnet est une porte ouverte sur vos plus belles découvertes.</p>
     </div>
-    <div class="create-travelbook text-center"> <!--Button to create a new travelbook-->
+    <div class="create-travelbook text-center" id="createTravelbook"> <!--Button to create a new travelbook-->
         <p class="d-inline-flex gap-1">
             <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCreateTravelbook" aria-expanded="false" aria-controls="collapseCreateTravelbook">
               Créer un nouveau carnet
@@ -20,31 +20,29 @@
                         </div>
                         <div class="col-12 col-lg-4">
                             <h2>Couverture</h2>
-                            <input type="file" class="form-control" id="cover" placeholder="Choisissez une image">
+                            <input type="file" class="form-control" id="imgCouverture" placeholder="Choisissez une image">
                         </div>
                     </div>
                     <div>
                         <h2 class="h2-new-travelbook">Date et heure de départ</h2>
-                        <input type="date" class="form-control" id="date" placeholder="Quand partez-vous ?">
-                        <input type="time" class="form-control" id="time" placeholder="À quelle heure partez-vous ? (facultatif)">
+                        <input type="datetime-local" class="form-control" id="departureAt" placeholder="Quand partez-vous ?">
                     </div>
                     <div>
                         <h2 class="h2-new-travelbook">Date et heure de retour</h2>
-                        <input type="date" class="form-control" id="date" placeholder="Quand revenez-vous ?">
-                        <input type="time" class="form-control" id="time" placeholder="À quelle heure revenez-vous ? (facultatif)">
+                        <input type="datetime-local" class="form-control" id="comebackAt" placeholder="Quand revenez-vous ?">
                     </div>
                     <div>
                         <h2 class="h2-new-travelbook">Numéro de vol</h2>
-                        <input type="text" class="form-control" id="flight" placeholder="Quel est votre numéro de vol ? (facultatif)">
+                        <input type="text" class="form-control" id="flightNumber" placeholder="Quel est votre numéro de vol ? (facultatif)">
                     </div>
                     <div>
                         <h2 class="h2-new-travelbook">Logement</h2>
-                        <input type="text" class="form-control" id="housing" placeholder="Où logez-vous ? (facultatif)">
+                        <input type="text" class="form-control" id="accommodation" placeholder="Où logez-vous ? (facultatif)">
                     </div>
                 </form>
                 <div class="btn-group-new-travelbook">
-                    <button class="btn btn-create">Valider</button>
-                    <button class="btn btn-cancel" data-bs-toggle="collapse" data-bs-target="#collapseCreateTravelbook" aria-expanded="false" aria-controls="collapseCreateTravelbook">Annuler</button>
+                    <button type="submit" class="btn btn-create" id="btnCreateTravelbook">Valider</button>
+                    <button type="button" class="btn btn-cancel" data-bs-toggle="collapse" data-bs-target="#collapseCreateTravelbook" aria-expanded="false" aria-controls="collapseCreateTravelbook">Annuler</button>
                 </div>
             </div>
         </div>

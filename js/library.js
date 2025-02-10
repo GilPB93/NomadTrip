@@ -1,3 +1,8 @@
+// FETCH FUNCTION TO CREATE A NEW TRAVELBOOK
+
+
+
+
 
 //FUNCTION TO CLOSE DE COLLAPSE
 const collapseCreateTravelbook = document.getElementById('collapseCreateTravelbook');

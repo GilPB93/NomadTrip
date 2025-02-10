@@ -50,8 +50,7 @@ function signOut() {
 }
 
 //ROLE MANAGEMENT
-const RoleCookieName = "role"; //temporary
-
+const RoleCookieName = "role";
 function getRole(){
     return getCookie(RoleCookieName); 
 }
@@ -79,12 +78,12 @@ function hideAndShowElementsByRoles() {
                 }
                 break;
             case "admin":
-                if (!isUserConnected || role !== "admin") {
+                if (!isUserConnected || role !== "ROLE_ADMIN") {
                     element.classList.add("d-none");
                 }
                 break;
             case "user":
-                if (!isUserConnected || role !== "user") {
+                if (!isUserConnected || role !== "ROLE_USER") {
                     element.classList.add("d-none");
                 }
                 break;
@@ -92,6 +91,18 @@ function hideAndShowElementsByRoles() {
     });
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-    hideAndShowElementsByRoles();
+    document.addEventListener('DOMContentLoaded', () => {
+        hideAndShowElementsByRoles();
+
+        //SET TIMEOUT TO LOGOUT
+        const timeToLogout = 1000 * 60 * 5; // 5 minutes
+        let time = 0;
+        let timer = setInterval(() => {
+            time += 1000;
+            if (time >= timeToLogout) {
+                clearInterval(timer);
+                signOut();
+            }
+        }, 1000);
+
 });

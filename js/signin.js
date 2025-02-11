@@ -2,6 +2,7 @@ const inputEmail = document.getElementById('EmailInput');
 const inputPassword = document.getElementById('PasswordInput');
 const btnSignIn = document.getElementById('btnSignin');
 const formSignin = document.getElementById('signinForm');
+const apiURL = "http://127.0.0.1:8000/api/";
 
 btnSignIn.addEventListener("click", checkCredentials);
 
@@ -24,7 +25,7 @@ function checkCredentials(event) {
         redirect: 'follow'
     };
 
-    fetch("http://127.0.0.1:8000/api/login", requestOptions)
+    fetch(apiURL + "login", requestOptions)
         .then(response => {
             if (response.ok) {
                 return response.json();
@@ -35,10 +36,19 @@ function checkCredentials(event) {
             }
         })
         .then(result => {
+            console.log("Login response:", result); // Vérifier ce que renvoie l'API
+            if (!result.id) {
+                throw new Error("User ID not found in API response");
+            }
+
             const token = result.token;
             const role = result.roles;
+            const userId = result.id;
+
             setToken(token);
             setCookie(RoleCookieName, role, 7);
+            setCookie(UserIdCookieName, userId, 7);
+
             window.location.replace("/library");
         })
         .catch(error => console.log('error', error));
@@ -46,6 +56,10 @@ function checkCredentials(event) {
 
 function getUserRole(){
     return getCookie(RoleCookieName);
+}
+
+function getUserId(){
+    return getCookie(UserIdCookieName);
 }
 
 function isUserConnected(){

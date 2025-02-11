@@ -40,12 +40,14 @@ function userConnected(){
 
 //SIGNOUT MANAGEMENT
 const btnSignout = document.getElementById('btnSignout');
+const UserIdCookieName = 'user.Id';
 
 btnSignout.addEventListener("click", signOut);
 
 function signOut() {
     eraseCookie(tokenCookieName);
     eraseCookie(RoleCookieName);
+    eraseCookie(UserIdCookieName);
     window.location.replace("/");
 }
 

@@ -6,6 +6,7 @@ const inputPassword = document.getElementById('PasswordInput');
 const inputPasswordValidate = document.getElementById('ValidatePasswordInput');
 const btnValidate = document.getElementById('btnValidateSignup');
 const formSignup = document.getElementById('signupForm');
+const apiURL = "http://127.0.0.1:8000/api/";
 
 const inputs = [inputLastName, inputFirstName, inputPseudo, inputEmail, inputPassword, inputPasswordValidate];
 
@@ -98,7 +99,7 @@ function signupForm(event) {
         body: raw
     };
 
-    fetch("http://127.0.0.1:8000/api/register", requestOptions)
+    fetch(apiURL + "register", requestOptions)
         .then(response => response.json().then(data => ({ status: response.status, body: data })))
         .then(result => {
             if (result.status === 201) {

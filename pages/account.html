@@ -4,16 +4,16 @@
     <div class="current-info">
         <h2 class="text-center text-decoration-underline">Mes informations actuelles</h2>
         <div>
-            <h3 class="text-center">Nom : <span class="badge-account">Doe</span></h3>
+            <h3 class="text-center">Nom : <span class="badge-account" id="lastNameInfo"></span></h3>
         </div>
         <div>
-            <h3 class="text-center">Prénom : <span class="badge-account">John</span></h3>
+            <h3 class="text-center">Prénom : <span class="badge-account" id="firstNameInfo"></span></h3>
         </div>
         <div>
-            <h3 class="text-center">Pseudo : <span class="badge-account">DoeJohn33</span></h3>
+            <h3 class="text-center">Pseudo : <span class="badge-account" id="pseudoInfo"></span></h3>
         </div>
         <div>
-            <h3 class="text-center">Email : <span class="badge-account">johndoe@exemple.com</span></h3>
+            <h3 class="text-center">Email : <span class="badge-account" id="emailInfo"></span></h3>
         </div>
     </div>
     <form>
@@ -23,7 +23,7 @@
                 <input type="text" class="form-control" id="NewPseudoInput" placeholder="Saissisez un nouveau pseudo" name="NewPseudo">
             </div>
             <div class="text-center new-pseudo">
-                <button type="submit" class="btn btn-black">Modifier Pseudo</button>
+                <button type="submit" class="btn btn-black" id="btnModifyPseudo">Modifier Pseudo</button>
             </div>
             <hr class="separator">
         </div>
@@ -33,7 +33,7 @@
                 <input type="email" class="form-control" id="NewEmailInput" placeholder="Saissisez votre nouvel email" name="NewEmail"> 
             </div>
             <div class="text-center new-email">
-                <button type="submit" class="btn btn-black">Modifier Email</button>
+                <button type="submit" class="btn btn-black" id="btnModifyEmail">Modifier Email</button>
             </div>
             <hr class="separator">
         </div>
@@ -48,12 +48,12 @@
                 <input type="password" class="form-control" id="ValidateNewPasswordInput" placeholder="Confirmez votre nouveau mot de passe" name="NewPasswordConfirm">
             </div>
             <div class="text-center new-password">
-                <button type="submit" class="btn btn-black">Modifier Password</button>
+                <button type="submit" class="btn btn-black" id="btnModifyPassword">Modifier Password</button>
             </div>
             <hr class="separator">
         </div>
         <div class="text-center delete-account">
-            <button type="submit" class="btn btn-warning">Supprimer mon compte</button>
+            <button type="submit" class="btn btn-warning" id="btnDeleteAccount">Supprimer mon compte</button>
         </div>
     </form>
 </section>

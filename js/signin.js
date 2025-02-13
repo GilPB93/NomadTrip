@@ -2,7 +2,6 @@ const inputEmail = document.getElementById('EmailInput');
 const inputPassword = document.getElementById('PasswordInput');
 const btnSignIn = document.getElementById('btnSignin');
 const formSignin = document.getElementById('signinForm');
-const apiURL = "http://127.0.0.1:8000/api/";
 
 btnSignIn.addEventListener("click", checkCredentials);
 
@@ -41,7 +40,7 @@ function checkCredentials(event) {
                 throw new Error("User ID not found in API response");
             }
 
-            const token = result.token;
+            const token = result.apiToken;
             const role = result.roles;
             const userId = result.id;
 
@@ -60,6 +59,10 @@ function getUserRole(){
 
 function getUserId(){
     return getCookie(UserIdCookieName);
+}
+
+function setToken(token){
+    setCookie(tokenCookieName, token, 7);
 }
 
 function isUserConnected(){

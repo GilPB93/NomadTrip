@@ -1,5 +1,11 @@
-//SET COOKIE MANAGEMENT
+//CONSTANTS
+const apiURL = "http://127.0.0.1:8000/api/";
 const tokenCookieName = "accesstoken"; 
+const btnSignout = document.getElementById('btnSignout');
+const UserIdCookieName = 'user.Id';
+const RoleCookieName = "role";
+
+// TOKEN MANAGEMENT
 function setToken(token){ 
     setCookie(tokenCookieName, token, 7); 
 }
@@ -8,6 +14,7 @@ function getToken(){
     return getCookie(tokenCookieName); 
 }
 
+// COOKIE MANAGEMENT
 function setCookie(name,value,days) { 
     let expires = "";
     if (days) {
@@ -39,9 +46,6 @@ function userConnected(){
 }
 
 //SIGNOUT MANAGEMENT
-const btnSignout = document.getElementById('btnSignout');
-const UserIdCookieName = 'user.Id';
-
 btnSignout.addEventListener("click", signOut);
 
 function signOut() {
@@ -52,11 +56,9 @@ function signOut() {
 }
 
 //ROLE MANAGEMENT
-const RoleCookieName = "role";
 function getRole(){
     return getCookie(RoleCookieName); 
 }
-
 
 //HIDE AND SHOW ELEMENTS BASED ON ROLE
 function hideAndShowElementsByRoles() {
@@ -108,3 +110,4 @@ function hideAndShowElementsByRoles() {
         }, 1000);
 
 });
+

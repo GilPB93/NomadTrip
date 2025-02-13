@@ -6,7 +6,6 @@ const inputPassword = document.getElementById('PasswordInput');
 const inputPasswordValidate = document.getElementById('ValidatePasswordInput');
 const btnValidate = document.getElementById('btnValidateSignup');
 const formSignup = document.getElementById('signupForm');
-const apiURL = "http://127.0.0.1:8000/api/";
 
 const inputs = [inputLastName, inputFirstName, inputPseudo, inputEmail, inputPassword, inputPasswordValidate];
 

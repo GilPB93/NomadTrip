@@ -112,6 +112,7 @@ class SecurityController extends AbstractController
                 content: new OA\JsonContent(
                     properties: [
                         new OA\Property(property: 'user', type: 'string', example: 'User name'),
+                        new OA\Property(property: 'id', type: 'integer', example: 1),
                         new OA\Property(property: 'apiToken', type: 'string', example: '31a023e212f116124a36af14ea0c1c3806eb9378'),
                         new OA\Property(property: 'roles', type: 'array', items: new OA\Items(type: 'string', example: 'ROLE_USER')
                         )
@@ -133,8 +134,45 @@ class SecurityController extends AbstractController
 
         return new JsonResponse([
             'user' => $user->getUserIdentifier(),
+            'id' => $user->getId(),
             'apiToken' => $user->getApiToken(),
             'roles' => $user->getRoles()
         ]);
+    }
+
+    // MY USER INFORMATION
+    #[Route('/accountInfo', name: 'accountInfo', methods: ['GET'])]
+    #[OA\Get(
+        path: '/api/accountInfo',
+        summary: 'Get user information',
+        tags: ['User'],
+        responses: [
+            new OA\Response(
+                response: '200',
+                description: 'User information',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'id', type: 'integer', example: 1),
+                        new OA\Property(property: 'email', type: 'string', example: 'example@email.com'),
+                        new OA\Property(property: 'firstName', type: 'string', example: 'User first name'),
+                        new OA\Property(property: 'lastName', type: 'string', example: 'User last name'),
+                        new OA\Property(property: 'pseudo', type: 'string', example: 'User pseudo'),
+                    ],
+                    type: 'object'
+                )
+            ),
+            new OA\Response(
+                response: '404',
+                description: 'User not found',
+            )
+        ]
+    )]
+    public function accountInfo(): JsonResponse
+    {
+        $user = $this->getUser();
+
+        $responseData = $this->serializer->serialize($user, 'json');
+
+        return new JsonResponse($responseData, Response::HTTP_OK, [], true);
     }
 }

@@ -35,27 +35,29 @@
                 <input type="email" class="form-control" id="NewEmailInput" placeholder="Saissisez votre nouvel email" name="NewEmail"> 
             </div>
             <div class="text-center new-email">
-                <button type="button" class="btn btn-black" id="btnModifyEmail">Modifier Email</button>
+                <button type="button" class="btn btn-black" id="btnModifyEmail" data-bs-toggle="modal" data-bs-target="#confirmEmailModal">Modifier Email</button>
             </div>
             <hr class="separator">
         </div>
         <div class="change-password mb-3">
             <div class="password-input">
-                <label for="NewPasswordInput" class="form-label">Nouveau Password</label>
-                <input type="password" class="form-control" id="NewPasswordInput" placeholder="Saissisez votre nouveau mot de passe" name="NewPassword">
-                <p>Votre mot de passe doit contenir au moins 8 caractères, incluant une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.</p>
+              <label for="NewPasswordInput" class="form-label">Nouveau Password</label>
+              <input type="password" class="form-control" id="NewPasswordInput" placeholder="Saissisez votre nouveau mot de passe" name="NewPassword">
+              <p>Votre mot de passe doit contenir au moins 8 caractères, incluant une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.</p>
             </div>
             <div class="mb-3">
-                <label for="ValidateNewPasswordInput" class="form-label">Confirmation Password</label>
-                <input type="password" class="form-control" id="ValidateNewPasswordInput" placeholder="Confirmez votre nouveau mot de passe" name="NewPasswordConfirm">
+              <label for="ValidateNewPasswordInput" class="form-label">Confirmation Password</label>
+              <input type="password" class="form-control" id="ValidateNewPasswordInput" placeholder="Confirmez votre nouveau mot de passe" name="NewPasswordConfirm">
             </div>
             <div class="text-center new-password">
-                <button type="button" class="btn btn-black" id="btnModifyPassword">Modifier Password</button>
+              <button type="button" class="btn btn-black" id="btnModifyPassword" data-bs-toggle="modal" data-bs-target="#confirmPasswordModal">
+                Modifier Password
+              </button>
             </div>
             <hr class="separator">
         </div>
         <div class="text-center delete-account">
-            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="deleteAccountModal">Supprimer mon compte</button>
+            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">Supprimer mon compte</button>
         </div>
     </form>
 </section>
@@ -68,25 +70,77 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="confirmPseudoModalLabel">Confirmation</h5>
+                <h1 class="modal-title" id="confirmPseudoModalLabel">Confirmation</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                Êtes-vous sûr de vouloir modifier votre pseudo en <strong id="newPseudoText"></strong> ?
+                Êtes-vous sûr de vouloir modifier votre pseudo en <strong id="newPseudoText"></strong> ? <br>
+                <small>Cette action est irréversible.</small>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
-                <button type="button" class="btn btn-primary" id="confirmPseudoChange">Confirmer</button>
+                <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-danger" id="confirmPseudoChange">Confirmer</button>
             </div>
         </div>
     </div>
 </div>
-            
-
 
 <!-- Modal edit email -->
+<div class="modal fade" id="confirmEmailModal" tabindex="-1" aria-labelledby="confirmEmailModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title" id="confirmEmailModalLabel">Confirmer la modification</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Êtes-vous sûr de vouloir modifier votre email vers <strong id="newEmailDisplay"></strong> ?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Annuler</button>
+          <button type="button" class="btn btn-danger" id="confirmModifyEmail">Confirmer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
 
 <!-- Modal edit password -->
+<div class="modal fade" id="confirmPasswordModal" tabindex="-1" aria-labelledby="confirmPasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title" id="confirmPasswordModalLabel">Confirmation de Modification</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Votre mot de passe a été modifié avec succès !</p>
+          <p>Assurez-vous de vous souvenir de votre nouveau mot de passe pour vous connecter à votre compte à l'avenir.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Annuler</button>
+          <button type="button" class="btn btn-danger" id="btnConfirmPasswordChange">Confirmer</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
 <!-- Modal delete account -->
+<div class="modal fade" id="deleteAccountModal" tabindex="-1" aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteAccountModalLabel">Confirmation de suppression</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteButton">Supprimer mon compte</button>
+            </div>
+        </div>
+    </div>
+</div>

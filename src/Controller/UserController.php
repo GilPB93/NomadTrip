@@ -165,12 +165,16 @@ class UserController extends AbstractController
         if (!$user) {
             return new JsonResponse(
                 ['message' => 'User not found'],
-                Response::HTTP_NOT_FOUND);
+                Response::HTTP_NOT_FOUND
+            );
         }
-
+    
+        $this->manager->remove($user);
+        $this->manager->flush();
+    
         return new JsonResponse(
-            $this->serializer->serialize($user, 'json'),
-            Response::HTTP_OK,
+            ['message' => 'User successfully deleted'],
+            Response::HTTP_OK
         );
     }
 

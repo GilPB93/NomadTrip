@@ -20,10 +20,12 @@
         <div class="change-pseudo mb-3">
             <div>
                 <label for="NewPseudoInput" class="form-label">Nouveau Pseudo</label>
-                <input type="text" class="form-control" id="NewPseudoInput" placeholder="Saissisez un nouveau pseudo" name="NewPseudo">
+                <input type="text" class="form-control" id="NewPseudoInput" placeholder="Saisissez un nouveau pseudo" name="NewPseudo">
             </div>
             <div class="text-center new-pseudo">
-                <button type="button" class="btn btn-black" id="btnModifyPseudo">Modifier Pseudo</button>
+                <button type="button" class="btn btn-black" id="btnModifyPseudo" data-bs-toggle="modal" data-bs-target="#confirmPseudoModal">
+                    Modifier Pseudo
+                </button>
             </div>
             <hr class="separator">
         </div>
@@ -59,14 +61,32 @@
 </section>
 
 
-<!-- Modal delete account -->
-
 
 
 <!-- Modal edit pseudo -->
+<div class="modal fade" id="confirmPseudoModal" tabindex="-1" aria-labelledby="confirmPseudoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmPseudoModalLabel">Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Êtes-vous sûr de vouloir modifier votre pseudo en <strong id="newPseudoText"></strong> ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-primary" id="confirmPseudoChange">Confirmer</button>
+            </div>
+        </div>
+    </div>
+</div>
+            
 
 
 <!-- Modal edit email -->
 
 
 <!-- Modal edit password -->
+
+<!-- Modal delete account -->

@@ -29,6 +29,8 @@ function getInfosUser() {
             document.getElementById("firstNameInfo").innerText = user.firstName || "N/A";
             document.getElementById("pseudoInfo").innerText = user.pseudo || "N/A";
             document.getElementById("emailInfo").innerText = user.email || "N/A";
+            document.getElementById("lastLoginInfo").innerText = user.lastLogin || "N/A";
+            document.getElementById("totalConnectionInfo").innerText = user.connectionTime || "N/A";
         })
         .catch(error => console.error("Erreur lors de la récupération des infos :", error));
 }
@@ -253,3 +255,4 @@ function deleteAccount() {
             alert("Erreur lors de la suppression du compte.");
         });
 }
+

@@ -48,43 +48,14 @@
         </div>
     </div>
     <div class="travelbooks"> <!--Travelbook's library-->
-        <div class="row">
+        <div class="row" id="allTravelCards">
             <div class="travel-card col-12 col-lg-4 text-white">
                     <img src="/img/florence.jpg" class="travel-img" alt="Florence">
                     <p class="title-image">Florence</p> 
                     <button class="btn btn-show" type="button" data-bs-toggle="modal" data-bs-target="#ShowTravelbookModal">Voir</button> 
                     <button class="btn btn-modif" type="button" data-bs-toggle="modal" data-bs-target="#EditionTravelbookModal">Modifier</button>     
             </div>
-            <div class="travel-card col-12 col-lg-4 text-white">
-                    <img src="/img/madrid.jpg" class="travel-img" alt="Madrid">
-                    <p class="title-image">Madrid</p>
-                    <button class="btn btn-show" type="button" data-bs-toggle="modal" data-bs-target="#ShowTravelbookModal">Voir</button> 
-                    <button class="btn btn-modif" type="button" data-bs-toggle="modal" data-bs-target="#EditionTravelbookModal">Modifier</button>
-            </div>
-            <div class="travel-card col-12 col-lg-4 text-white">
-                    <img src="/img/paris.jpg" class="travel-img" alt="Paris">
-                    <p class="title-image">Paris</p>
-                    <button class="btn btn-show" type="button" data-bs-toggle="modal" data-bs-target="#ShowTravelbookModal">Voir</button> 
-                    <button class="btn btn-modif" type="button" data-bs-toggle="modal" data-bs-target="#EditionTravelbookModal">Modifier</button>
-            </div>
-                <div class="travel-card col-12 col-lg-4 text-white">
-                    <img src="/img/venise.jpg" class="travel-img" alt="Venise">
-                    <p class="title-image">Venise</p>
-                    <button class="btn btn-show" type="button" data-bs-toggle="modal" data-bs-target="#ShowTravelbookModal">Voir</button> 
-                    <button class="btn btn-modif" type="button" data-bs-toggle="modal" data-bs-target="#EditionTravelbookModal">Modifier</button>  
-            </div>
-            <div class="travel-card col-12 col-lg-4 text-white">
-                    <img src="/img/londres.jpg" class="travel-img" alt="Londres" >
-                    <p class="title-image">Londres</p>
-                    <button class="btn btn-show" type="button" data-bs-toggle="modal" data-bs-target="#ShowTravelbookModal">Voir</button> 
-                    <button class="btn btn-modif" type="button" data-bs-toggle="modal" data-bs-target="#EditionTravelbookModal">Modifier</button>  
-            </div>
-            <div class="travel-card col-12 col-lg-4 text-white">
-                    <img src="/img/lisbonne.jpg" class="travel-img" alt="Lisbonne" >
-                    <p class="title-image">Lisbonne</p>
-                    <button class="btn btn-show" type="button" data-bs-toggle="modal" data-bs-target="#ShowTravelbookModal">Voir</button> 
-                    <button class="btn btn-modif" type="button" data-bs-toggle="modal" data-bs-target="#EditionTravelbookModal">Modifier</button>  
-            </div>
+            <!-- New travelbooks will added here -->
         </div>
     </div>
 </section>
@@ -138,7 +109,7 @@
                                 <h3>Ajouter des lieux à visiter</h3>
                                 <input class="popover-places place-name" type="text" id="place-name" placeholder="Saisissez le nom du lieu">
                                 <input class="popover-places" type="text" id="place-details" placeholder="Saisissez ici l'adresse du lieu à visiter">
-                                <input class="popover-places" type="date" id="place-date" placeholder="Quand souhaitez-vous visiter ce lieu ?">
+                                <input class="popover-places" type="datetime-local" id="place-date" placeholder="Quand souhaitez-vous visiter ce lieu ?">
                                 <div class="btn-popover">    
                                     <button class="text-center" type="submit" id="add-place">Ajouter</button>
                                 </div>
@@ -157,7 +128,7 @@
                                 <h3 class="text-center">Ajouter les restaurants et les bars à faire</h3>
                                 <input class="popover-fb" type="text" id="fb-name" placeholder="Saisissez le nom du restaurant/bar">
                                 <input class="popover-fb" type="text" id="fb-details" placeholder="Saisissez ici l'adresse du restaurant/bar à faire">
-                                <input class="popover-fb" type="date" id="fb-date" placeholder="Quand souhaitez-vous tester ce restaurant/bar ?">
+                                <input class="popover-fb" type="datetime-local" id="fb-date" placeholder="Quand souhaitez-vous tester ce restaurant/bar ?">
                                 <div class="btn-popover">
                                     <button class="text-center" type="submit" id="add-fb">Ajouter</button>
                                 </div>

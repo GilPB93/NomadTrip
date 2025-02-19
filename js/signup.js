@@ -8,13 +8,36 @@ const btnValidate = document.getElementById('btnValidateSignup');
 const formSignup = document.getElementById('signupForm');
 
 const inputs = [inputLastName, inputFirstName, inputPseudo, inputEmail, inputPassword, inputPasswordValidate];
-
 inputs.forEach(input => {
-    input.classList.add('is-invalid');
-    input.addEventListener("keyup", validateForm);
+    input.addEventListener("input", () => validateInput(input, true));
+    input.addEventListener("blur", () => validateInput(input, false));
 });
 
-btnValidate.addEventListener("click", signupForm);
+function validateInput(input, isTyping) {
+    let isValid = false;
+
+    if (input === inputEmail) {
+        isValid = validateEmail(input);
+    } else if (input === inputPassword) {
+        isValid = validatePassword(input);
+    } else if (input === inputPasswordValidate) {
+        isValid = validatePasswordValidate(inputPassword, inputPasswordValidate);
+    } else {
+        isValid = validateRequired(input);
+    }
+
+    if (isValid) {
+        input.classList.add('is-valid');
+        input.classList.remove('is-invalid');
+    } else {
+        input.classList.remove('is-valid');
+        if (isTyping) {
+            input.classList.add('is-invalid');
+        }
+    }
+
+    validateForm();
+}
 
 function validateForm() {
     const lastnameOk = validateRequired(inputLastName);
@@ -28,54 +51,24 @@ function validateForm() {
 }
 
 function validateRequired(input) {
-    if (input.value.trim() !== '') {
-        input.classList.add('is-valid');
-        input.classList.remove('is-invalid');
-        return true;
-    } else {
-        input.classList.remove('is-valid');
-        input.classList.add('is-invalid');
-        return false;
-    }
+    return input.value.trim() !== '';
 }
 
 function validateEmail(input) {
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-    if (emailRegex.test(input.value.trim())) {
-        input.classList.add('is-valid');
-        input.classList.remove('is-invalid');
-        return true;
-    } else {
-        input.classList.remove('is-valid');
-        input.classList.add('is-invalid');
-        return false;
-    }
+    return emailRegex.test(input.value.trim());
 }
 
 function validatePassword(input) {
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_])[a-zA-Z\d\W_]{8,}$/;
-    if (passwordRegex.test(input.value.trim())) {
-        input.classList.add('is-valid');
-        input.classList.remove('is-invalid');
-        return true;
-    } else {
-        input.classList.remove('is-valid');
-        input.classList.add('is-invalid');
-        return false;
-    }
+    return passwordRegex.test(input.value.trim());
 }
 
 function validatePasswordValidate(inputPassword, inputValidatePassword) {
-    if (inputPassword.value === inputValidatePassword.value && inputPassword.value !== '') {
-        inputValidatePassword.classList.add('is-valid');
-        inputValidatePassword.classList.remove('is-invalid');
-        return true;
-    } else {
-        inputValidatePassword.classList.remove('is-valid');
-        inputValidatePassword.classList.add('is-invalid');
-        return false;
-    }
+    return inputPassword.value === inputValidatePassword.value && inputPassword.value !== '';
 }
+
+btnValidate.addEventListener("click", signupForm);
 
 function signupForm(event) {
     event.preventDefault();
@@ -116,4 +109,3 @@ function signupForm(event) {
         })
         .catch(error => console.error('Erreur:', error));
 }
-

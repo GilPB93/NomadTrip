@@ -46,14 +46,30 @@ function userConnected(){
 }
 
 //SIGNOUT MANAGEMENT
-btnSignout.addEventListener("click", signOut);
+const timeToLogout = 5 * 60 * 1000; 
 
+let logoutTimer;
+
+function resetLogoutTimer() {
+    clearTimeout(logoutTimer);
+    logoutTimer = setTimeout(signOut, timeToLogout);
+}
+window.addEventListener("mousemove", resetLogoutTimer);
+window.addEventListener("keydown", resetLogoutTimer);
+window.addEventListener("click", resetLogoutTimer);
+
+resetLogoutTimer();
+
+btnSignout.addEventListener('click', signOut);
 function signOut() {
     eraseCookie(tokenCookieName);
     eraseCookie(RoleCookieName);
     eraseCookie(UserIdCookieName);
     window.location.replace("/");
 }
+
+
+
 
 //ROLE MANAGEMENT
 function getRole(){
@@ -111,3 +127,5 @@ function hideAndShowElementsByRoles() {
 
 });
 
+
+// TRACK USER ACTIVITY

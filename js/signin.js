@@ -5,7 +5,6 @@ const formSignin = document.getElementById('signinForm');
 
 btnSignIn.addEventListener("click", checkCredentials);
 
-
 function checkCredentials(event) {
     event.preventDefault();
 

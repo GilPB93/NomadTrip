@@ -6,9 +6,12 @@ use App\Repository\TravelbookRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: TravelbookRepository::class)]
+#[Vich\Uploadable]
 class Travelbook
 {
     #[ORM\Id]
@@ -20,6 +23,13 @@ class Travelbook
     #[ORM\Column(length: 255)]
     #[Groups(['travelbook:read', 'travelbook:write'])]
     private ?string $title = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['travelbook:read', 'travelbook:write'])]
+    private ?string $imgCouverture = null;
+
+    #[Vich\UploadableField(mapping: "travelbook_images", fileNameProperty: "imgCouverture")]
+    private ?File $imgCouvertureFile = null;
 
     #[ORM\Column]
     #[Groups(['travelbook:read', 'travelbook:write'])]
@@ -78,9 +88,6 @@ class Travelbook
     #[Groups(['travelbook:read', 'travelbook:write'])]
     private Collection $photos;
 
-    #[ORM\Column(length: 255)]
-    private ?string $imgCouverture = null;
-
     public function __construct()
     {
         $this->places = new ArrayCollection();
@@ -104,6 +111,31 @@ class Travelbook
         $this->title = $title;
 
         return $this;
+    }
+
+    public function setImgCouvertureFile(?File $file = null): void
+    {
+        $this->imgCouvertureFile = $file;
+
+        if ($file) {
+            // Met à jour la date de modification pour déclencher l'upload
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+    }
+
+    public function getImgCouvertureFile(): ?File
+    {
+        return $this->imgCouvertureFile;
+    }
+
+    public function getImgCouverture(): ?string
+    {
+        return $this->imgCouverture;
+    }
+
+    public function setImgCouverture(?string $imgCouverture): void
+    {
+        $this->imgCouverture = $imgCouverture;
     }
 
     public function getDepartureAt(): ?\DateTimeImmutable
@@ -310,15 +342,4 @@ class Travelbook
         return $this;
     }
 
-    public function getImgCouverture(): ?string
-    {
-        return $this->imgCouverture;
-    }
-
-    public function setImgCouverture(string $imgCouverture): static
-    {
-        $this->imgCouverture = $imgCouverture;
-
-        return $this;
-    }
 }

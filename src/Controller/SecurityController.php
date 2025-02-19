@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
 #[Route('/api', name: 'app_api_')]
@@ -171,7 +172,15 @@ class SecurityController extends AbstractController
     {
         $user = $this->getUser();
 
-        $responseData = $this->serializer->serialize($user, 'json');
+        if (!$user) {
+            return new JsonResponse(['message' => 'User not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $responseData = $this->serializer->serialize(
+            $user,
+            'json',
+            [AbstractNormalizer::GROUPS => ['user:read']]
+        );
 
         return new JsonResponse($responseData, Response::HTTP_OK, [], true);
     }

@@ -1,0 +1,8 @@
+vich_uploader:
+    db_driver: orm
+
+    mappings:
+        travelbook_images:
+            uri_prefix: /uploads/travelbooks
+            upload_destination: '%kernel.project_dir%/public/uploads/travelbooks'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer

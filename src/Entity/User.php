@@ -10,6 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Random\RandomException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
@@ -18,9 +19,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['user:read'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 180)]
+    #[Groups(['user:read'])]
     private ?string $email = null;
 
     /**
@@ -36,15 +39,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column(length: 128)]
+    #[Groups(['user:read'])]
     private ?string $firstName = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['user:read'])]
     private ?string $lastName = null;
 
     #[ORM\Column(length: 128)]
+    #[Groups(['user:read'])]
     private ?string $pseudo = null;
 
     #[ORM\Column(type: 'account_status', length: 20)]
+    #[Groups(['user:read'])]
     private ?AccountStatus $accountStatus = null;
 
     #[ORM\Column(length: 255)]
@@ -54,18 +61,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      * @var Collection<int, Travelbook>
      */
     #[ORM\OneToMany(targetEntity: Travelbook::class, mappedBy: 'user')]
+    #[Groups(['user:travelbooks'])]
     private Collection $travelbooks;
 
     #[ORM\Column]
+    #[Groups(['user:read'])]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column]
+    #[Groups(['user:read'])]
     private ?\DateTimeImmutable $updatedAt = null;
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $lastLogin = null;
 
     #[ORM\Column(type: 'integer', options: ['default' => 0])]
+    #[Groups(['user:read'])]
     private int $connectionTime = 0;
 
     /** @throws RandomException */
@@ -278,6 +289,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function updateLastLogin(): void
+    {
+        $this->lastLogin = new \DateTimeImmutable();
+    }
+
     public function getConnectionTime(): int
     {
         return $this->connectionTime;
@@ -287,6 +303,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->connectionTime += $seconds;
         return $this;
+    }
+    public function addConnectionDuration(int $seconds): void
+    {
+        $this->connectionTime += $seconds;
     }
 
 }

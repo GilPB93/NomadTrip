@@ -20,9 +20,15 @@ class UserController extends AbstractController
     public function __construct(
         private EntityManagerInterface $manager,
         private SerializerInterface $serializer,
-        private UserRepository $userRepository,
     ){
     }
+
+    private function getUserIdFromCookie(Request $request): ?int
+    {
+        $userId = $request->cookies->get('UserIdCookieName');
+        return is_numeric($userId) ? (int)$userId : null;
+    }
+
 
     // SHOW USER
     #[Route('/{id}', name: 'show', methods: ['GET'])]
@@ -60,13 +66,16 @@ class UserController extends AbstractController
             )
         ]
     )]
-    public function show(int $id): JsonResponse
+    public function show(Request $request): JsonResponse
     {
-        $user = $this->userRepository->findOneBy(['id' => $id]);
+        $userId = $this->getUserIdFromCookie($request);
+        if (!$userId) {
+            return new JsonResponse(['error' => 'User ID not found in cookie'], Response::HTTP_UNAUTHORIZED);
+        }
+
+        $user = $this->manager->getRepository(User::class)->find($userId);
         if (!$user) {
-            return new JsonResponse(
-                'User not found',
-                Response::HTTP_NOT_FOUND);
+            return new JsonResponse(['error' => 'User not found'], Response::HTTP_NOT_FOUND);
         }
 
         return new JsonResponse(
@@ -112,13 +121,16 @@ class UserController extends AbstractController
             )
         ]
     )]
-    public function edit(int $id, Request $request): JsonResponse
+    public function edit(Request $request): JsonResponse
     {
-        $user = $this->userRepository->findOneBy(['id' => $id]);
+        $userId = $this->getUserIdFromCookie($request);
+        if (!$userId) {
+            return new JsonResponse(['error' => 'User ID not found in cookie'], Response::HTTP_UNAUTHORIZED);
+        }
+
+        $user = $this->manager->getRepository(User::class)->find($userId);
         if (!$user) {
-            return new JsonResponse(
-                'User not found',
-                Response::HTTP_NOT_FOUND);
+            return new JsonResponse(['error' => 'User not found'], Response::HTTP_NOT_FOUND);
         }
 
         $user->setUpdatedAt(new \DateTimeImmutable());
@@ -158,15 +170,16 @@ class UserController extends AbstractController
             )
         ]
     )]
-    public function delete(int $id): JsonResponse
+    public function delete(Request $request): JsonResponse
     {
-        $user = $this->userRepository->findOneBy(['id' => $id]);
+        $userId = $this->getUserIdFromCookie($request);
+        if (!$userId) {
+            return new JsonResponse(['error' => 'User ID not found in cookie'], Response::HTTP_UNAUTHORIZED);
+        }
 
+        $user = $this->manager->getRepository(User::class)->find($userId);
         if (!$user) {
-            return new JsonResponse(
-                ['message' => 'User not found'],
-                Response::HTTP_NOT_FOUND
-            );
+            return new JsonResponse(['error' => 'User not found'], Response::HTTP_NOT_FOUND);
         }
     
         $this->manager->remove($user);
@@ -178,58 +191,31 @@ class UserController extends AbstractController
         );
     }
 
-    // TRACK LOGIN
-    #[Route('/{id}/track-login', name: 'user_track_login', methods: ['POST'])]
-    #[OA\Post(
-        path: '/api/user/{id}/track-login',
-        summary: 'Track user login',
-        tags: ['User'],
-        parameters: [
-            new OA\Parameter(
-                name: 'id',
-                description: 'The user id',
-                in: 'path',
-                required: true,
-                schema: new OA\Schema(type: 'integer')
-            )
-        ],
-        responses: [
-            new OA\Response(
-                response: '200',
-                description: 'User login tracked',
-                content: new OA\JsonContent(
-                    properties: [
-                        new OA\Property(property: 'id', type: 'integer', example: 1),
-                        new OA\Property(property: 'email', type: 'string', example: 'example@email.com'),
-                        new OA\Property(property: 'firstName', type: 'string', example: 'User first name'),
-                        new OA\Property(property: 'lastName', type: 'string', example: 'User last name'),
-                        new OA\Property(property: 'pseudo', type: 'string', example: 'User pseudo'),
-                    ],
-                    type: 'object'
-                )
-            ),
-            new OA\Response(
-                response: '404',
-                description: 'User not found',
-            )
-        ]
-    )]
-    public function trackLogin(User $user): JsonResponse
+    // UPDATE CONNECTION TIME
+    #[Route('/update-connection-time', name: 'update_connection_time', methods: ['PUT'])]
+    public function updateConnectionTime(Request $request): JsonResponse
     {
-        $now = new \DateTimeImmutable();
-
-        if ($user->getLastLogin()) {
-            $diffInSeconds = $now->getTimestamp() - $user->getLastLogin()->getTimestamp();
-            $user->addConnectionTime($diffInSeconds);
+        $userId = $this->getUserIdFromCookie($request);
+        if (!$userId) {
+            return new JsonResponse(['error' => 'User ID not found in cookie'], Response::HTTP_UNAUTHORIZED);
         }
 
-        $user->setLastLogin($now);
+        $user = $this->manager->getRepository(User::class)->find($userId);
+        if (!$user) {
+            return new JsonResponse(['error' => 'User not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        // Récupérer les données envoyées
+        $data = json_decode($request->getContent(), true);
+        if (!isset($data['connectionTime'])) {
+            return new JsonResponse(['error' => 'Missing connectionTime'], Response::HTTP_BAD_REQUEST);
+        }
+
+        // Mettre à jour le temps de connexion
+        $user->setConnectionTime($user->getConnectionTime() + $data['connectionTime']);
         $this->manager->flush();
 
-        return new JsonResponse(
-            $this->serializer->serialize($user, 'json'),
-            Response::HTTP_OK,
-            );
+        return new JsonResponse($this->serializer->serialize($user, 'json'), Response::HTTP_OK, [], true);
     }
 
 }

@@ -47,7 +47,6 @@ function userConnected(){
 
 //SIGNOUT MANAGEMENT
 const timeToLogout = 5 * 60 * 1000; 
-
 let logoutTimer;
 
 function resetLogoutTimer() {
@@ -67,8 +66,6 @@ function signOut() {
     eraseCookie(UserIdCookieName);
     window.location.replace("/");
 }
-
-
 
 
 //ROLE MANAGEMENT

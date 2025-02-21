@@ -23,6 +23,7 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
 
     public function supports(Request $request): ?bool
     {
+
         return $request->headers->has('X-AUTH-TOKEN');
     }
 
@@ -53,4 +54,6 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
             Response::HTTP_UNAUTHORIZED
         );
     }
+
+
 }

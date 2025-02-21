@@ -9,46 +9,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Mailer\MailerInterface;
-use Symfony\Component\Mime\Email;
 use OpenApi\Attributes as OA;
 
 #[Route('/api/contact', name: 'app_api_contact_')]
 class ContactMessageController extends AbstractController
 {
-    #[Route('/send',name: 'sendContactMessage', methods: ['POST'])]
-    #[OA\Post(
-        path: "/api/contact/send",
-        summary: "Send an email with all the message's data",
-        requestBody: new OA\RequestBody(
-            required: true,
-            content: new OA\JsonContent(
-                properties: [
-                    new OA\Property(property: "name", type: "string", example: "Name example"),
-                    new OA\Property(property: "email", type: "string", example: "example@email.com"),
-                    new OA\Property(property: "subject", type: "string", example: "Subject example"),
-                    new OA\Property(property: "message", type: "string", example: "Message example")
-                ]
-            )
-        ),
-        tags: ["Contact Message"],
-        responses: [new OA\Response(response: 200, description: "Email envoyé")]
-    )]
-    public function send(Request $request, MailerInterface $mailer): JsonResponse
-    {
-        $data = json_decode($request->getContent(), true);
-
-        $email = (new Email())
-            ->from($data['email'])
-            ->to('admin@nomadtrip.com')
-            ->subject($data['subject'])
-            ->text($data['message']);
-
-        $mailer->send($email);
-
-        return new JsonResponse(['message' => 'Email envoyé'], 200);
-    }
-
     #[Route('/save',name: 'saveContactMessage', methods: ['POST'])]
     #[OA\Post(
         path: "/api/contact/save",

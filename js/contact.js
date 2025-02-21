@@ -1,62 +1,38 @@
-document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("sendandsavemessage").addEventListener("click", async function (event) {
-        event.preventDefault(); // Empêche le rechargement de la page
+const contactForm = document.getElementById('contactForm');
+const btnContact = document.getElementById('sendandsavemessage');
 
-        // Récupération des valeurs des champs
-        const name = document.getElementById("contactName").value.trim();
-        const email = document.getElementById("contactEmail").value.trim();
-        const subject = document.getElementById("contactTitle").value.trim();
-        const message = document.getElementById("contactMessage").value.trim();
+btnContact.addEventListener('click', saveContactMessage);
 
-        // Vérification de base
-        if (!name || !email || !subject || !message) {
-            alert("Veuillez remplir tous les champs.");
-            return;
-        }
+function saveContactMessage (event){
+    event.preventDefault();
 
-        // Objet contenant les données
-        const formData = { name, email, subject, message };
+    let dataForm = new FormData(contactForm);
 
-        try {
-            // Envoi du message par email
-            let emailResponse = await fetch("/api/contact/send", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(formData)
-            });
+    let myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
 
-            let emailData = await emailResponse.json();
-            if (emailResponse.ok) {
-                console.log("Email envoyé:", emailData.message);
-            } else {
-                throw new Error(emailData.message || "Erreur lors de l'envoi de l'email");
-            }
-
-            // Sauvegarde du message dans la base de données
-            let saveResponse = await fetch("/api/contact/save", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(formData)
-            });
-
-            let saveData = await saveResponse.json();
-            if (saveResponse.ok) {
-                console.log("Message enregistré:", saveData.message);
-                alert("Votre message a bien été envoyé et enregistré !");
-                
-                // Réinitialiser le formulaire après succès
-                document.querySelector("form").reset();
-            } else {
-                throw new Error(saveData.message || "Erreur lors de l'enregistrement du message");
-            }
-
-        } catch (error) {
-            console.error("Erreur:", error);
-            alert("Une erreur est survenue. Veuillez réessayer.");
-        }
+    let raw = JSON.stringify({
+        "name": dataForm.get('name'),
+        "email": dataForm.get('email'),
+        "subject": dataForm.get('subject'),
+        "message": dataForm.get('message')
     });
-});
+
+    let requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+    };
+
+    fetch(apiURL + "contact/save", requestOptions)
+    .then(response => {
+        if(response.ok){
+            alert("Message envoyé avec succès.");
+            contactForm.reset();
+        } else {
+            alert("Une erreur est survenue lors de l'envoi du message.");
+        }
+    })
+    .catch(error => console.error('Erreur:', error));
+}

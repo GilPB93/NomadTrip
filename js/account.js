@@ -1,8 +1,7 @@
-document.addEventListener("DOMContentLoaded", getInfosUser);
-
 getInfosUser();
 
 // FETCH INFORMATION ACCOUNT
+document.addEventListener("DOMContentLoaded", getInfosUser);
 function getInfosUser() {
     let myHeaders = new Headers();
     myHeaders.append("X-AUTH-TOKEN", getToken());

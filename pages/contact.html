@@ -1,25 +1,25 @@
 <section class="container contact-form">
     <h1 class="text-center">Contact</h1>
     <p class="text-center">Connectez-vous à votre compte pour retrouver vos carnets de voyage, revivre vos souvenirs, et continuer à explorer le monde.</p>
-    <form>
+    <form id="contactForm">
         <div class="contact-name">
-            <label for="contactName" class="form-label">Votre nom</label>
-            <input type="text" class="form-control" id="contactName" placeholder="Saisissez votre nom ici">
+            <label for="contactNameInput" class="form-label">Votre nom</label>
+            <input type="text" class="form-control" id="contactNameInput" placeholder="Saisissez votre nom ici" name="name">
         </div>
         <div class="contact-email">
-            <label for="contactEmail" class="form-label">Email</label>
-            <input type="email" class="form-control" id="contactEmail" placeholder="Saisissez votre email ici">
+            <label for="contactEmailInput" class="form-label">Email</label>
+            <input type="email" class="form-control" id="contactEmailInput" placeholder="Saisissez votre email ici" name="email">
         </div>
         <div class="contact-title">
-            <label for="contactTitle" class="form-label">Sujet de votre message</label>
-            <input type="text" class="form-control" id="contactTitle" placeholder="Donnez un titre à votre message">
+            <label for="contactSubjectInput" class="form-label">Sujet de votre message</label>
+            <input type="text" class="form-control" id="contactSubjectInput" placeholder="Donnez un titre à votre message" name="subject">
         </div>
         <div class="contact-message">
-            <label for="contactMessage" class="form-label">Votre message</label>
-            <textarea class="form-control" id="contactMessage" rows="7" placeholder="Ecrivez votre message ici"></textarea>
+            <label for="contactMessageInput" class="form-label">Votre message</label>
+            <textarea class="form-control" id="contactMessageInput" rows="7" placeholder="Ecrivez votre message ici" name="message"></textarea>
         </div>
         <div class="contact-submit">
             <button type="submit" class="btn btn-black" id="sendandsavemessage">Envoyer votre message</button>
-        </div>
+        </div> 
     </form>
 </section>

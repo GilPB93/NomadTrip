@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
@@ -28,7 +29,8 @@ class Travelbook
     #[Groups(['travelbook:read', 'travelbook:write'])]
     private ?string $imgCouverture = null;
 
-    #[Vich\UploadableField(mapping: "travelbook_images", fileNameProperty: "imgCouverture")]
+    #[Vich\UploadableField(mapping: "travelbook_covers", fileNameProperty: "imgCouverture")]
+    #[Assert\Image()]
     private ?File $imgCouvertureFile = null;
 
     #[ORM\Column]
@@ -113,14 +115,15 @@ class Travelbook
         return $this;
     }
 
-    public function setImgCouvertureFile(?File $file = null): void
+    public function setImgCouvertureFile(?File $file = null): self
     {
         $this->imgCouvertureFile = $file;
 
         if ($file) {
-            // Met à jour la date de modification pour déclencher l'upload
             $this->updatedAt = new \DateTimeImmutable();
         }
+
+        return $this;
     }
 
     public function getImgCouvertureFile(): ?File

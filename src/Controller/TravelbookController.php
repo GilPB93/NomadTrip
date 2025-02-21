@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Filesystem\Filesystem;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -34,7 +33,7 @@ class TravelbookController extends AbstractController
     // CREATE A NEW TRAVELBOOK
 
 
-    #[Route(name: 'new', methods: ['POST', 'OPTIONS'])]
+    #[Route(name: 'new', methods: ['POST'])]
     #[OA\Post(
         path: "/api/travelbook",
         summary: "Create a new travelbook",
@@ -81,60 +80,37 @@ class TravelbookController extends AbstractController
     )]
     public function new(Request $request, #[CurrentUser] $user): JsonResponse
     {
-        if ($request->getMethod() === "OPTIONS") {
-            return new JsonResponse(null, Response::HTTP_OK, [
-                'Access-Control-Allow-Origin' => 'http://localhost:3000',
-                'Access-Control-Allow-Methods' => 'GET, POST, OPTIONS, PUT, DELETE',
-                'Access-Control-Allow-Headers' => 'Content-Type, Authorization, X-AUTH-TOKEN',
-            ]);
+        $data = $request->request->all();
+
+        if (empty($data['title']) || empty($data['departureAt']) || empty($data['comebackAt'])) {
+            return new JsonResponse(['error' => 'Missing required fields'], Response::HTTP_BAD_REQUEST);
         }
 
-        try {
-            // 🔹 Vérification des données reçues
-            dump("Données reçues :", $request->request->all());
-            dump("Fichiers reçus :", $request->files->all());
+        $travelbook = new Travelbook();
+        $travelbook->setTitle($data['title'] ?? null);
+        $travelbook->setDepartureAt(new \DateTimeImmutable($data['departureAt'] ?? 'now'));
+        $travelbook->setComebackAt(new \DateTimeImmutable($data['comebackAt'] ?? 'now'));
+        $travelbook->setFlightNumber($data['flightNumber'] ?? null);
+        $travelbook->setAccommodation($data['accommodation'] ?? null);
+        $travelbook->setUser($user);
+        $travelbook->setCreatedAt(new \DateTimeImmutable());
+        $travelbook->setUpdatedAt(new \DateTimeImmutable());
 
-            // 🔹 Création d'un Travelbook
-            $travelbook = new Travelbook();
-            $travelbook->setTitle($request->request->get('title', ''));
-            $travelbook->setDepartureAt(new \DateTimeImmutable($request->request->get('departureAt', '')));
-            $travelbook->setComebackAt(new \DateTimeImmutable($request->request->get('comebackAt', '')));
-            $travelbook->setFlightNumber($request->request->get('flightNumber', null));
-            $travelbook->setAccommodation($request->request->get('accommodation', null));
-            $travelbook->setCreatedAt(new \DateTimeImmutable());
-            $travelbook->setUpdatedAt(new \DateTimeImmutable());
-            $travelbook->setUser($user);
-
-            // 🔹 Récupération du fichier image
-            $file = $request->files->get('imgCouverture');
-            if ($file instanceof UploadedFile) {
-                $travelbook->setImgCouvertureFile($file);
-            } else {
-                return new JsonResponse(
-                    ["error" => "Aucun fichier reçu"],
-                    Response::HTTP_BAD_REQUEST,
-                    ['Access-Control-Allow-Origin' => 'http://localhost:3000']
-                );
-            }
-
-            // 🔹 Sauvegarde en base de données
-            $this->manager->persist($travelbook);
-            $this->manager->flush();
-
-            return new JsonResponse(
-                $this->serializer->serialize($travelbook, 'json', ['groups' => 'travelbook:read']),
-                Response::HTTP_CREATED,
-                ['Access-Control-Allow-Origin' => 'http://localhost:3000'],
-                true
-            );
-        } catch (\Exception $e) {
-            return new JsonResponse(
-                ["error" => "Erreur serveur : " . $e->getMessage()],
-                Response::HTTP_INTERNAL_SERVER_ERROR,
-                ['Access-Control-Allow-Origin' => 'http://localhost:3000']
-            );
+        // Gestion du fichier image
+        $imageFile = $request->files->get('imgCouvertureFile');
+        if ($imageFile) {
+            $travelbook->setImgCouvertureFile($imageFile);
         }
 
+        $this->manager->persist($travelbook);
+        $this->manager->flush();
+
+        return new JsonResponse(
+            $this->serializer->serialize($travelbook, 'json', ['groups' => 'travelbook:read']),
+            Response::HTTP_CREATED,
+            [],
+            true
+        );
     }
 
 
@@ -268,10 +244,6 @@ class TravelbookController extends AbstractController
 
         $this->serializer->deserialize($request->getContent(), Travelbook::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $travelbook]);
         $travelbook->setUpdatedAt(new \DateTimeImmutable());
-        $file = $request->files->get('imgCouverture');
-        if ($file) {
-            $travelbook->setImgCouvertureFile($file);
-        }
 
         $this->manager->flush();
 

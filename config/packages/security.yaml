@@ -22,6 +22,7 @@ security:
                 check_path: app_api_login
                 username_path: email
                 password_path: password
+            security: true
 
 
 

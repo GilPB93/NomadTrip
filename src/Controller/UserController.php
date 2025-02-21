@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -191,31 +192,48 @@ class UserController extends AbstractController
         );
     }
 
-    // UPDATE CONNECTION TIME
-    #[Route('/update-connection-time', name: 'update_connection_time', methods: ['PUT'])]
-    public function updateConnectionTime(Request $request): JsonResponse
+    // CHECK PSUEDO
+    #[Route('/check-pseudo', name: 'check_pseudo', methods: ['GET'])]
+    public function checkPseudo(Request $request, UserRepository $userRepository): JsonResponse
     {
-        $userId = $this->getUserIdFromCookie($request);
-        if (!$userId) {
-            return new JsonResponse(['error' => 'User ID not found in cookie'], Response::HTTP_UNAUTHORIZED);
-        }
+        $pseudo = $request->query->get('pseudo');
+        $userExists = $userRepository->findOneBy(['pseudo' => $pseudo]) !== null;
 
-        $user = $this->manager->getRepository(User::class)->find($userId);
-        if (!$user) {
-            return new JsonResponse(['error' => 'User not found'], Response::HTTP_NOT_FOUND);
-        }
-
-        // Récupérer les données envoyées
-        $data = json_decode($request->getContent(), true);
-        if (!isset($data['connectionTime'])) {
-            return new JsonResponse(['error' => 'Missing connectionTime'], Response::HTTP_BAD_REQUEST);
-        }
-
-        // Mettre à jour le temps de connexion
-        $user->setConnectionTime($user->getConnectionTime() + $data['connectionTime']);
-        $this->manager->flush();
-
-        return new JsonResponse($this->serializer->serialize($user, 'json'), Response::HTTP_OK, [], true);
+        return $this->json(['exists' => $userExists]);
     }
+
+    // UPDATE CONNECTION TIME
+
+
+    // GET TOTAL OF USERS
+    #[Route('/total', name: 'api_user_total', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
+    #[OA\Get(
+        path: '/api/user/total',
+        summary: 'Get total of users',
+        tags: ['User'],
+        responses: [
+            new OA\Response(
+                response: '200',
+                description: 'Total of users',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'total', type: 'integer', example: 1),
+                    ],
+                    type: 'object'
+                )
+            )
+        ]
+    )]
+    public function total(): JsonResponse
+    {
+        $total = $this->manager->getRepository(User::class)->count([]);
+        return new JsonResponse(
+            ['total' => $total],
+            Response::HTTP_OK
+        );
+    }
+
+
 
 }

@@ -2,7 +2,10 @@ vich_uploader:
     db_driver: orm
 
     mappings:
-        travelbook_images:
-            uri_prefix: /uploads/travelbooks
-            upload_destination: '%kernel.project_dir%/public/uploads/travelbooks'
+        travelbook_covers:
+            uri_prefix: /uploads/images/travelbooks
+            upload_destination: '%kernel.project_dir%/public/uploads/images/travelbooks'
             namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            inject_on_load: false
+            delete_on_remove: true
+            delete_on_update: true

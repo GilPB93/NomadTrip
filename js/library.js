@@ -359,21 +359,18 @@ function validateRequired(input) {
             
 btnCreateTravelbook.addEventListener('click', createTravelbookForm);
 
-btnCreateTravelbook.addEventListener('click', createTravelbookForm);
-
 function createTravelbookForm(event) {
     event.preventDefault();
 
     let formData = new FormData();
-
     formData.append("title", inputTitle.value);
     formData.append("departureAt", inputDepartureAt.value);
     formData.append("comebackAt", inputArrivalAt.value);
     formData.append("flightNumber", inputFlightNumber.value);
     formData.append("accommodation", inputAccommodation.value);
 
-    if (inputImgCover.files[0]) {
-        formData.append("imgCouverture", inputImgCover.files[0]);
+    if (inputImgCover.files.length > 0) {
+        formData.append("imgCouvertureFile", inputImgCover.files[0]);
     }
 
     fetch(apiURL + 'travelbook', {
@@ -386,13 +383,12 @@ function createTravelbookForm(event) {
         body: formData
     })
     .then(response => {
-        return response.text().then(text => {
-            try {
-                return JSON.parse(text); // ✅ Si c'est JSON, on le parse normalement
-            } catch {
-                throw new Error("❌ Erreur non JSON : " + text); // ❌ Affiche l'erreur HTML complète
-            }
-        });
+        if (!response.ok) {
+            return response.text().then(text => {
+                throw new Error("❌ Erreur HTTP : " + response.status + " " + text);
+            });
+        }
+        return response.json();
     })
     .then(result => {
         console.log("✅ Travelbook créé :", result);
@@ -400,8 +396,7 @@ function createTravelbookForm(event) {
     })
     .catch(error => {
         console.error("❌ Erreur lors de la création du travelbook :", error);
-    });
-    
+    });   
     
 }
 

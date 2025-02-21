@@ -47,7 +47,11 @@ function checkCredentials(event) {
             setCookie(RoleCookieName, role, 7);
             setCookie(UserIdCookieName, userId, 7);
 
-            window.location.replace("/library");
+            if (role.includes("ROLE_ADMIN")) {
+                window.location.replace("/admin");
+            } else {
+                window.location.replace("/library");
+            }
         })
         .catch(error => console.log('error', error));
 }

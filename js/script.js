@@ -95,7 +95,7 @@ function hideAndShowElementsByRoles() {
                 }
                 break;
             case "admin":
-                if (!isUserConnected || role !== "ROLE_ADMIN") {
+                if (!isUserConnected || !role.includes("ROLE_ADMIN")) {
                     element.classList.add("d-none");
                 }
                 break;

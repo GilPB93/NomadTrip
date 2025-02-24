@@ -185,7 +185,7 @@ class TravelbookController extends AbstractController
             return new JsonResponse(['message' => 'Travelbook not found'], Response::HTTP_NOT_FOUND);
         }
 
-        $travelbookData = $this->serializer->normalize($travelbook, 'json', ['groups' => ['travelbook:read']]);
+        $travelbookData = $this->serializer->serialize($travelbook, 'json', ['groups' => ['travelbook:read']]);
 
         if ($travelbook->getImgCouverture()) {
             $travelbookData['imgCouverture'] = $this->urlGenerator->generate(
@@ -331,6 +331,10 @@ class TravelbookController extends AbstractController
         );
     }
 
+
+    // GET TOTAL OF TRAVELBOOKS
+
+    // GET LIST OF TRAVELBOOKS
 
 
 }

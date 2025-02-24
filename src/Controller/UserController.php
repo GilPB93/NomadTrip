@@ -21,7 +21,6 @@ class UserController extends AbstractController
     public function __construct(
         private EntityManagerInterface $manager,
         private SerializerInterface $serializer,
-        private UserRepository $userRepository,
     ){
     }
 
@@ -197,39 +196,12 @@ class UserController extends AbstractController
 
 
     // GET TOTAL OF USERS
-    #[Route('/userscount', name: 'users_count', methods: ['GET'])]
-    #[IsGranted('ROLE_ADMIN')]
-    #[OA\Get(
-        path: '/api/user/userscount',
-        summary: 'Get the total number of users',
-        tags: ['User'],
-        responses: [
-            new OA\Response(
-                response: '200',
-                description: 'The total number of users',
-                content: new OA\JsonContent(
-                    properties: [
-                        new OA\Property(property: 'totalUsers', type: 'integer', example: 10),
-                    ],
-                    type: 'object'
-                )
-            ),
-            new OA\Response(
-                response: '401',
-                description: 'Unauthorized access',
-            )
-        ]
-    )]
-    public function getUsersCount(): JsonResponse
-    {
-        $totalUsers = $this->userRepository->count([]);
 
-        return new JsonResponse(
-            ['totalUsers' => $totalUsers],
-            Response::HTTP_OK
-        );
-    }
+    // GET TOTAL OF USERS CONNECTED
 
+    // GET LIST OF USERS
 
+    // GET LAST 5 USERS SIGNED UP
+    
 
 }

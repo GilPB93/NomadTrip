@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Travelbook;
+use App\Repository\PlacesRepository;
 use App\Repository\TravelbookRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Attributes as OA;
@@ -30,9 +31,31 @@ class TravelbookController extends AbstractController
     ){
     }
 
+    // LIST ALL TRAVELBOOKS BY USER
+    #[Route('/user', name: 'user_travelbooks', methods: ['GET'])]
+    #[OA\Get(
+        path: "/api/travelbook/user",
+        summary: "Get all travelbooks by user",
+        tags: ["Travelbook"],
+    )]
+    public function getUserTravelbooks(#[CurrentUser] $user): JsonResponse
+    {
+        if (!$user) {
+            return new JsonResponse(['message' => 'User not authenticated'], Response::HTTP_UNAUTHORIZED);
+        }
+
+        $travelbooks = $this->travelbookRepository->findBy(['user' => $user]);
+
+        return new JsonResponse(
+            $this->serializer->serialize($travelbooks, 'json', ['groups' => 'travelbook:read']),
+            Response::HTTP_OK,
+            [],
+            true
+        );
+    }
+
+
     // CREATE A NEW TRAVELBOOK
-
-
     #[Route(name: 'new', methods: ['POST'])]
     #[OA\Post(
         path: "/api/travelbook",
@@ -169,7 +192,7 @@ class TravelbookController extends AbstractController
                     'app_api_travelbook_show',
                     ['id' => $travelbook->getId()],
                     UrlGeneratorInterface::ABSOLUTE_URL
-                ) . '/uploads/travelbookscover/' . $travelbook->getImgCouverture();
+                ) . '/uploads/images/travelbooks/' . $travelbook->getImgCouverture();
         }
 
         return new JsonResponse($travelbookData, Response::HTTP_OK);
@@ -307,4 +330,7 @@ class TravelbookController extends AbstractController
             Response::HTTP_NO_CONTENT
         );
     }
+
+
+
 }

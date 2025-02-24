@@ -21,6 +21,7 @@ class UserController extends AbstractController
     public function __construct(
         private EntityManagerInterface $manager,
         private SerializerInterface $serializer,
+        private UserRepository $userRepository,
     ){
     }
 
@@ -192,44 +193,39 @@ class UserController extends AbstractController
         );
     }
 
-    // CHECK PSUEDO
-    #[Route('/check-pseudo', name: 'check_pseudo', methods: ['GET'])]
-    public function checkPseudo(Request $request, UserRepository $userRepository): JsonResponse
-    {
-        $pseudo = $request->query->get('pseudo');
-        $userExists = $userRepository->findOneBy(['pseudo' => $pseudo]) !== null;
-
-        return $this->json(['exists' => $userExists]);
-    }
-
     // UPDATE CONNECTION TIME
 
 
     // GET TOTAL OF USERS
-    #[Route('/total', name: 'api_user_total', methods: ['GET'])]
+    #[Route('/userscount', name: 'users_count', methods: ['GET'])]
     #[IsGranted('ROLE_ADMIN')]
     #[OA\Get(
-        path: '/api/user/total',
-        summary: 'Get total of users',
+        path: '/api/user/userscount',
+        summary: 'Get the total number of users',
         tags: ['User'],
         responses: [
             new OA\Response(
                 response: '200',
-                description: 'Total of users',
+                description: 'The total number of users',
                 content: new OA\JsonContent(
                     properties: [
-                        new OA\Property(property: 'total', type: 'integer', example: 1),
+                        new OA\Property(property: 'totalUsers', type: 'integer', example: 10),
                     ],
                     type: 'object'
                 )
+            ),
+            new OA\Response(
+                response: '401',
+                description: 'Unauthorized access',
             )
         ]
     )]
-    public function total(): JsonResponse
+    public function getUsersCount(): JsonResponse
     {
-        $total = $this->manager->getRepository(User::class)->count([]);
+        $totalUsers = $this->userRepository->count([]);
+
         return new JsonResponse(
-            ['total' => $total],
+            ['totalUsers' => $totalUsers],
             Response::HTTP_OK
         );
     }

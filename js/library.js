@@ -15,64 +15,7 @@ EditionTravelbookModal.addEventListener('hidden.bs.modal', function () {
 });
 
 
-//LISTS ON EDIT TRAVELBOOK
-        //LIST OF PLACES TO VISIT
-const addButtonPlaces = document.getElementById('add-button-places');
-const popoverPlaces = document.getElementById('popover-places');
-const addPlaceButton = document.getElementById('add-place');
-const todoPlaces = document.getElementById('todo-places');
-const placeNameInput = document.getElementById('place-name');
-const placeDetailsInput = document.getElementById('place-details');
-const placeDateInput = document.getElementById('place-date');
 
-addButtonPlaces.addEventListener('click', () => {
-        popoverPlaces.style.display = 'block';
-    });
-    
-    addPlaceButton.addEventListener('click', (event) => {
-        event.preventDefault();
-        const placeName = placeNameInput.value.trim();
-        const placeDetails = placeDetailsInput.value.trim();
-        const placeDate = placeDateInput.value.trim();
-    
-        if (placeName) {
-            const listItem = document.createElement('li');
-    
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.className = 'checkmark';
-    
-            const placeText = document.createElement('span');
-            placeText.textContent = `${placeName}, ${placeDetails}, ${placeDate}`;
-    
-            const deleteButton = document.createElement('button');
-            deleteButton.textContent = 'X';
-            deleteButton.classList.add('delete-button');
-    
-            deleteButton.addEventListener('click', (deleteEvent) => {
-                deleteEvent.preventDefault();
-                todoPlaces.removeChild(listItem);
-            });
-    
-            listItem.appendChild(checkbox);
-            listItem.appendChild(placeText);
-            listItem.appendChild(deleteButton);
-            todoPlaces.appendChild(listItem);
-    
-            placeNameInput.value = '';
-            placeDetailsInput.value = '';
-            placeDateInput.value = '';
-            popoverPlaces.style.display = 'none';
-        } else {
-            alert('Saisissez les informations du lieu à visiter');
-        }
-});
-    
-window.addEventListener('click', (event) => {
-        if (event.target !== popoverPlaces && !popoverPlaces.contains(event.target) && event.target !== addButtonPlaces) {
-                popoverPlaces.style.display = 'none';
-        }
-});
 
         //LIST OF F&B TO DO
 const addButtonFB = document.getElementById('add-button-fb');
@@ -298,8 +241,6 @@ window.addEventListener('click', (event) => {
 });
      
 
-// SHOW TRAVELCARDS
-
 
 // CREATE TRAVELBOOK
 const inputTitle = document.getElementById('title');
@@ -392,7 +333,16 @@ function createTravelbookForm(event) {
     })
     .then(result => {
         console.log("✅ Travelbook créé :", result);
+        
+        let collapseElement = document.getElementById("collapseCreateTravelbook");
+        let collapse = new bootstrap.Collapse(collapseElement, { toggle: false });
+        collapse.hide();
+
         formNewTravelbook.reset();
+        
+        setTimeout(() => {
+            location.reload();
+        }, 500);
     })
     .catch(error => {
         console.error("❌ Erreur lors de la création du travelbook :", error);
@@ -400,3 +350,135 @@ function createTravelbookForm(event) {
     
 }
 
+
+// SHOW TRAVELBOOKS BY USER
+fetchUserTravelbooks();
+
+document.addEventListener("DOMContentLoaded", () => {
+    fetchUserTravelbooks();
+});
+
+function fetchUserTravelbooks() {
+    fetch(apiURL + "travelbook/user", {
+        method: "GET",
+        headers: {
+            "X-AUTH-TOKEN": getToken(), // Ajoute le token si ton API est protégée
+            "Accept": "application/json"
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("Erreur lors de la récupération des travelbooks");
+        }
+        return response.json();
+    })
+    .then(travelbooks => {
+        console.log("📚 Travelbooks récupérés :", travelbooks);
+        displayTravelbooks(travelbooks);
+    })
+    .catch(error => console.error("❌ Erreur :", error));
+}
+
+function displayTravelbooks(travelbooks) {
+    const travelCardsContainer = document.getElementById("allTravelCards");
+    travelCardsContainer.innerHTML = ""; // Nettoie les anciennes cartes
+
+    travelbooks.forEach(travelbook => {
+        const travelCard = document.createElement("div");
+        travelCard.classList.add("travel-card", "col-12", "col-lg-4", "text-white");
+
+        // Détermine l'image du travelbook
+        const imageUrl = travelbook.imgCouverture
+            ? `http://127.0.0.1:8000/uploads/images/travelbooks/${travelbook.imgCouverture}`
+            : "/img/default.jpg"; // Image par défaut si pas d'image
+
+        travelCard.innerHTML = `
+            <img src="${imageUrl}" class="travel-img" alt="${travelbook.title}">
+            <p class="title-image">${travelbook.title}</p> 
+            <button class="btn btn-show" type="button" data-travelbook-id="${travelbook.id}" data-bs-toggle="modal" data-bs-target="#ShowTravelbookModal">Voir</button> 
+            <button class="btn btn-modif" type="button" data-travelbook-id="${travelbook.id}" data-bs-toggle="modal" data-bs-target="#EditionTravelbookModal" id="btnModifTravelbook">Modifier</button>     
+        `;
+
+        travelCardsContainer.appendChild(travelCard);
+    });
+
+    // Ajoute un EventListener à tous les boutons "Voir"
+    document.querySelectorAll(".btn-show").forEach(button => {
+        button.addEventListener("click", (event) => {
+            const travelbookId = event.target.getAttribute("data-travelbook-id");
+            loadTravelbookDetails(travelbookId);
+        });
+    });
+}
+
+function loadTravelbookDetails(travelbookId) {
+    fetch(apiURL + `travelbook/${travelbookId}`, {
+        method: "GET",
+        headers: {
+            "X-AUTH-TOKEN": getToken(), 
+            "Accept": "application/json"
+        }
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("❌ Erreur lors du chargement du Travelbook");
+        }
+        return response.json();
+    })
+    .then(travelbook => {
+        console.log("📖 Travelbook chargé :", travelbook);
+        updateModalWithTravelbook(travelbook);
+    })
+    .catch(error => console.error("❌ Erreur :", error));
+}
+
+// SHOW MODAL TRAVELBOOK
+function updateModalWithTravelbook(travelbook) {
+    document.getElementById("ShowTravelbookModalLabel").innerText = travelbook.title;
+    
+    // Affiche l'image de couverture
+    const imgCoverElement = document.querySelector("#imgCouverture img");
+    imgCoverElement.src = travelbook.imgCouverture 
+        ? `http://127.0.0.1:8000/uploads/images/travelbooks/${travelbook.imgCouverture}`
+        : "/img/default.jpg";
+    
+    imgCoverElement.alt = travelbook.title;
+
+    // Affiche les autres détails du voyage
+    document.getElementById("departureAt").innerHTML = `<h3>Date et heure de départ :</h3> ${travelbook.departureAt}`;
+    document.getElementById("comebackAt").innerHTML = `<h3>Date et heure de retour :</h3> ${travelbook.comebackAt}`;
+    
+    // Calcul du nombre de jours
+    const departure = new Date(travelbook.departureAt);
+    const comeback = new Date(travelbook.comebackAt);
+    const nbDays = Math.ceil((comeback - departure) / (1000 * 60 * 60 * 24));
+
+    document.getElementById("nbDays").innerHTML = `<h3>Nombre de jours :</h3> ${nbDays} jours`;
+    document.getElementById("flightNumber").innerHTML = `<h3>Numéro de vol :</h3> ${travelbook.flightNumber || "Non renseigné"}`;
+    document.getElementById("accommodation").innerHTML = `<h3>Logement :</h3> ${travelbook.accommodation || "Non renseigné"}`;
+
+    // Chargement des activités et des photos
+    document.getElementById("allPlacesToVisit").innerHTML = travelbook.places.length > 0 
+        ? travelbook.places.map(place => `<h3>${place.name}</h3>`).join("") 
+        : "<h3>Aucune activité enregistrée</h3>";
+
+    document.getElementById("allFBToDo").innerHTML = travelbook.fBs.length > 0
+        ? travelbook.fBs.map(fb => `<h3>${fb.name}</h3>`).join("")
+        : "<h3>Aucun restaurant ou bar enregistré</h3>";
+
+    const photoContainer = document.getElementById("allphotosTravelbook");
+    photoContainer.innerHTML = "";
+    if (travelbook.photos.length > 0) {
+        travelbook.photos.forEach(photo => {
+            const img = document.createElement("img");
+            img.src = `http://127.0.0.1:8000/uploads/images/travelbooks/${photo.filename}`;
+            img.classList.add("travel-photo");
+            photoContainer.appendChild(img);
+        });
+    } else {
+        photoContainer.innerHTML = "<h3>Aucune photo enregistrée</h3>";
+    }
+}
+
+
+// EDIT TRAVELBOOK BY USER

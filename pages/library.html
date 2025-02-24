@@ -49,12 +49,6 @@
     </div>
     <div class="travelbooks"> <!--Travelbook's library-->
         <div class="row" id="allTravelCards">
-            <div class="travel-card col-12 col-lg-4 text-white">
-                    <img src="/img/florence.jpg" class="travel-img" alt="Florence">
-                    <p class="title-image">Florence</p> 
-                    <button class="btn btn-show" type="button" data-bs-toggle="modal" data-bs-target="#ShowTravelbookModal">Voir</button> 
-                    <button class="btn btn-modif" type="button" data-bs-toggle="modal" data-bs-target="#EditionTravelbookModal">Modifier</button>     
-            </div>
             <!-- New travelbooks will added here -->
         </div>
     </div>
@@ -72,27 +66,27 @@
                 <form id="editTravelbookForm">
                     <div>
                         <h2>Destination</h2>
-                        <input type="text" class="form-control" id="title" placeholder="ex.: Paris - France">
+                        <input type="text" class="form-control" id="edit-title" placeholder="ex.: Paris - France">
                     </div>
                     <div>
                         <h2>Couverture</h2>
-                        <input type="file" class="form-control" id="cover" placeholder="Choisissez une image">
+                        <input type="file" class="form-control" id="edit-imgCouverture" placeholder="Choisissez une image">
                     </div>
                     <div>
                         <h2 class="h2-new-travelbook">Date et heure de départ</h2>
-                        <input type="datetime-local" class="form-control" id="date" placeholder="Quand partez-vous ?">
+                        <input type="datetime-local" class="form-control" id="edit-departureAt" placeholder="Quand partez-vous ?">
                     </div>
                     <div>
                         <h2 class="h2-new-travelbook">Date et heure de retour</h2>
-                        <input type="datetime-local" class="form-control" id="date" placeholder="Quand revenez-vous ?">
+                        <input type="datetime-local" class="form-control" id="edit-comebackAt" placeholder="Quand revenez-vous ?">
                     </div>
                     <div>
                         <h2 class="h2-new-travelbook">Numéro de vol</h2>
-                        <input type="text" class="form-control" id="flight" placeholder="Quel est votre numéro de vol ? (facultatif)">
+                        <input type="text" class="form-control" id="edit-flightNumber" placeholder="Quel est votre numéro de vol ? (facultatif)">
                     </div>
                     <div>
                         <h2 class="h2-new-travelbook">Logement</h2>
-                        <input type="text" class="form-control" id="housing" placeholder="Où logez-vous ? (facultatif)">
+                        <input type="text" class="form-control" id="edit-accommodation" placeholder="Où logez-vous ? (facultatif)">
                         <hr class="separator">
                     </div>
                     <div class="edit-travelbook-lists"> 
@@ -188,61 +182,46 @@
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content show-content">
             <div class="modal-header show-header text-center">
-                <h1 class="modal-title text-center" id="ShowTravelbookModalLabel">Florence</h1>
+                <h1 class="modal-title text-center" id="ShowTravelbookModalLabel" id="title">Florence</h1>
             </div>
             <div class="modal-body show-body">
                 <div class="photos-souvenir">
-                    <div>
+                    <div id="imgCouverture">
                         <img src="/img/florence.jpg" class="travel-photo" alt="Florence">
                     </div>
                     <hr class="separator">
                     <div>
                         <h2 class="text-decoration-underline text-center">Détails du voyage</h2>
-                        <div>
+                        <div id="departureAt">
                             <h3>Date et heure de départ :</h3>
                         </div>
-                        <div>
+                        <div id="comebackAt">
                             <h3>Date et heure de retour :</h3>
                         </div>
-                        <div>
+                        <div id="nbDays">
                             <h3>Nombre de jours :</h3>
                         </div>
-                        <div>
+                        <div id="flightNumber">
                             <h3>Numéro de vol :</h3>
                         </div>
-                        <div>
+                        <div id="accommodation">
                             <h3>Logement</h3>
                         </div>
                         <hr class="separator">
                         <h2 class="text-decoration-underline text-center">Activités</h2>
-                        <div>
+                        <div id="allPlacesToVisit">
                             <h3>Visite de la ville</h3>
                         </div>
-                        <div>
+                        <div id="allFBToDo">
                             <h3>Restaurants & Bars</h3>
                         </div>
                     </div>
-                    <section class="photos-travelbook">
+                    <section class="photos-travelbook" id="allPhotos">
                         <div>
                             <h2 class="text-decoration-underline text-center">Les photos souvenirs</h2>
                         </div>
-                        <div>
+                        <div id="allphotosTravelbook">
                             <img src="/img/flipbook/flo1.jpg" class="travel-photo" alt="Madrid">
-                        </div>
-                        <div>
-                            <img src="/img/flipbook/flo2.jpg" class="travel-photo" alt="Paris">
-                        </div>
-                        <div>
-                            <img src="/img/flipbook/flo3.jpg" class="travel-photo" alt="Venise">  
-                        </div>
-                        <div>
-                            <img src="/img/flipbook/flo4.jpg" class="travel-photo" alt="Londres">
-                        </div>
-                        <div>
-                            <img src="/img/flipbook/flo5.jpg" class="travel-photo" alt="Lisbonne">
-                        </div>
-                        <div>
-                            <img src="/img/flipbook/flo6.jpg" class="travel-photo" alt="Lisbonne">
                         </div>
                     </section>
                     <div class="text-center align-content-center">

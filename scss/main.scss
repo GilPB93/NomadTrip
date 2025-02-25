@@ -749,6 +749,23 @@ p {
     width: 70px;
     height: 25px;
 }
+.lastUsersBox {
+    width: 500px;
+    height: 175px;
+    background-color: $color5;
+    border-radius: 10px;
+    padding: 5px;
+    margin: 5px;
+}
+.badgeLastSignup {
+    font-family: $family-text;
+    font-size: 1rem;
+    font-weight: bolder;
+    padding: 5px;
+    margin: 5px;
+    color: black;
+
+}
 .select-user select, .select-travelbook select {
     font-family: $family-text;
     font-size: 1rem;

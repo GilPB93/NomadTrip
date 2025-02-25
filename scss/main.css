@@ -488,7 +488,6 @@ button,
 [type=reset],
 [type=submit] {
   -webkit-appearance: button;
-  appearance: button;
 }
 button:not(:disabled),
 [type=button]:not(:disabled),
@@ -546,10 +545,17 @@ legend + * {
 
 [type=search] {
   -webkit-appearance: textfield;
-  appearance: textfield;
   outline-offset: -2px;
 }
 
+/* rtl:raw:
+[type="tel"],
+[type="url"],
+[type="email"],
+[type="number"] {
+  direction: ltr;
+}
+*/
 ::-webkit-search-decoration {
   -webkit-appearance: none;
 }
@@ -12448,7 +12454,7 @@ p {
   padding: 5px;
 }
 
-.btn-create, .btn-cancel {
+.btn-create, .btn-cancel, .btn-delete {
   font-family: "Bebas Neue", sans-serif;
   font-size: 1.5rem;
   font-weight: 700;
@@ -12463,6 +12469,12 @@ p {
 .btn-create:hover, .btn-cancel:hover {
   background-color: #E9C46A;
   color: black;
+  border: none;
+}
+
+.btn-delete:hover {
+  background-color: red;
+  color: white;
   border: none;
 }
 

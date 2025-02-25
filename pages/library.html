@@ -55,6 +55,62 @@
 </section>
 
 
+<!-- Modal to show the travelbook -->
+<div class="modal fade" id="ShowTravelbookModal" tabindex="-1" aria-labelledby="ShowTravelbookModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content show-content">
+            <div class="modal-header show-header text-center">
+                <h1 class="modal-title text-center" id="ShowTravelbookModalLabel" id="titleModalShow">Florence</h1>
+            </div>
+            <div class="modal-body show-body">
+                <div class="photos-souvenir">
+                    <div id="imgCouvertureModalShow">
+                        <img src="/img/florence.jpg" class="travel-photo" alt="Florence">
+                    </div>
+                    <hr class="separator">
+                    <div>
+                        <h2 class="text-decoration-underline text-center">Détails du voyage</h2>
+                        <div id="departureAtModalShow">
+                            <h3>Date et heure de départ :</h3>
+                        </div>
+                        <div id="comebackAtModalShow">
+                            <h3>Date et heure de retour :</h3>
+                        </div>
+                        <div id="nbDaysModalShow">
+                            <h3>Nombre de jours :</h3>
+                        </div>
+                        <div id="flightNumberModalShow">
+                            <h3>Numéro de vol :</h3>
+                        </div>
+                        <div id="accommodationModalShow">
+                            <h3>Logement</h3>
+                        </div>
+                        <hr class="separator">
+                        <h2 class="text-decoration-underline text-center">Activités</h2>
+                        <div id="allPlacesToVisitModalShow">
+                            <h3>Visite de la ville</h3>
+                        </div>
+                        <div id="allFBToDoModalShow">
+                            <h3>Restaurants & Bars</h3>
+                        </div>
+                    </div>
+                    <section class="photos-travelbook" id="allPhotos">
+                        <div>
+                            <h2 class="text-decoration-underline text-center">Les photos souvenirs</h2>
+                        </div>
+                        <div id="allphotosTravelbookModalShow">
+                            <img src="/img/flipbook/flo1.jpg" class="travel-photo" alt="Madrid">
+                        </div>
+                    </section>
+                    <div class="text-center align-content-center">
+                        <button class="btn btn-cancel" data-bs-dismiss="modal">Fermer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- Modal to edit a travelbook -->
 <div class="modal fade" id="EditionTravelbookModal" tabindex="-1" aria-labelledby="EditionTravelbookModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
@@ -66,31 +122,31 @@
                 <form id="editTravelbookForm">
                     <div>
                         <h2>Destination</h2>
-                        <input type="text" class="form-control" id="edit-title" placeholder="ex.: Paris - France">
+                        <input type="text" class="form-control" id="edit-title" placeholder="ex.: Paris - France" name="title">
                     </div>
                     <div>
                         <h2>Couverture</h2>
-                        <input type="file" class="form-control" id="edit-imgCouverture" placeholder="Choisissez une image">
+                        <input type="file" class="form-control" id="edit-imgCouverture" placeholder="Choisissez une image" name="imgCouverture">
                     </div>
                     <div>
                         <h2 class="h2-new-travelbook">Date et heure de départ</h2>
-                        <input type="datetime-local" class="form-control" id="edit-departureAt" placeholder="Quand partez-vous ?">
+                        <input type="datetime-local" class="form-control" id="edit-departureAt" placeholder="Quand partez-vous ?" name="departureAt">
                     </div>
                     <div>
                         <h2 class="h2-new-travelbook">Date et heure de retour</h2>
-                        <input type="datetime-local" class="form-control" id="edit-comebackAt" placeholder="Quand revenez-vous ?">
+                        <input type="datetime-local" class="form-control" id="edit-comebackAt" placeholder="Quand revenez-vous ?" name="comebackAt">
                     </div>
                     <div>
                         <h2 class="h2-new-travelbook">Numéro de vol</h2>
-                        <input type="text" class="form-control" id="edit-flightNumber" placeholder="Quel est votre numéro de vol ? (facultatif)">
+                        <input type="text" class="form-control" id="edit-flightNumber" placeholder="Quel est votre numéro de vol ? (facultatif)" name="flightNumber">
                     </div>
                     <div>
                         <h2 class="h2-new-travelbook">Logement</h2>
-                        <input type="text" class="form-control" id="edit-accommodation" placeholder="Où logez-vous ? (facultatif)">
+                        <input type="text" class="form-control" id="edit-accommodation" placeholder="Où logez-vous ? (facultatif)" name="accommodation">
                         <hr class="separator">
                     </div>
                     <div class="edit-travelbook-lists"> 
-                        <div class="places-to-visit"> <!-- LIST OF PLACES TO VISIT -->
+                        <div class="places-to-visit" id="edit-listPlaces"> <!-- LIST OF PLACES TO VISIT -->
                             <div class="container">
                                 <h2>Liste des lieux à visiter</h2>
                                 <ul id="todo-places">
@@ -109,7 +165,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="fb-to-do"> <!-- LIST OF RESTAURANTS/BARS TO DO -->
+                        <div class="fb-to-do" id="edit-listFB"> <!-- LIST OF RESTAURANTS/BARS TO DO -->
                             <div class="container">
                                 <h2>Liste des restaurants et bars à faire</h2>
                                 <ul id="todo-fb">
@@ -128,7 +184,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="souvenirs-to-buy"> <!-- LIST OF SOUVENIRS TO BUY -->
+                        <div class="souvenirs-to-buy" id="edit-listSouvenirs"> <!-- LIST OF SOUVENIRS TO BUY -->
                             <div class="container">
                                 <h2>Liste des souvenirs à acheter</h2>
                                 <ul id="todo-souvenirs">
@@ -146,7 +202,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="photos-souvenir"> <!-- LIST OF PHOTOS -->
+                        <div class="photos-souvenir" id="edit-listPhotos"> <!-- LIST OF PHOTOS -->
                             <div class="container">
                                 <h2>Photos souvenirs</h2>
                                 <ul id="todo-photos">
@@ -171,64 +227,10 @@
                     <div class="btn-group-new-travelbook">
                         <button class="btn btn-create">Valider</button>
                         <button class="btn btn-cancel" data-bs-dismiss="modal">Annuler</button>
+                        <button type="button" class="btn btn-delete" id="btnDeleteTravelbook">Supprimer</button>
                     </div>
         </div>
     </div>
 </div>
 
 
-<!-- Modal to show the travelbook -->
-<div class="modal fade" id="ShowTravelbookModal" tabindex="-1" aria-labelledby="ShowTravelbookModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content show-content">
-            <div class="modal-header show-header text-center">
-                <h1 class="modal-title text-center" id="ShowTravelbookModalLabel" id="title">Florence</h1>
-            </div>
-            <div class="modal-body show-body">
-                <div class="photos-souvenir">
-                    <div id="imgCouverture">
-                        <img src="/img/florence.jpg" class="travel-photo" alt="Florence">
-                    </div>
-                    <hr class="separator">
-                    <div>
-                        <h2 class="text-decoration-underline text-center">Détails du voyage</h2>
-                        <div id="departureAt">
-                            <h3>Date et heure de départ :</h3>
-                        </div>
-                        <div id="comebackAt">
-                            <h3>Date et heure de retour :</h3>
-                        </div>
-                        <div id="nbDays">
-                            <h3>Nombre de jours :</h3>
-                        </div>
-                        <div id="flightNumber">
-                            <h3>Numéro de vol :</h3>
-                        </div>
-                        <div id="accommodation">
-                            <h3>Logement</h3>
-                        </div>
-                        <hr class="separator">
-                        <h2 class="text-decoration-underline text-center">Activités</h2>
-                        <div id="allPlacesToVisit">
-                            <h3>Visite de la ville</h3>
-                        </div>
-                        <div id="allFBToDo">
-                            <h3>Restaurants & Bars</h3>
-                        </div>
-                    </div>
-                    <section class="photos-travelbook" id="allPhotos">
-                        <div>
-                            <h2 class="text-decoration-underline text-center">Les photos souvenirs</h2>
-                        </div>
-                        <div id="allphotosTravelbook">
-                            <img src="/img/flipbook/flo1.jpg" class="travel-photo" alt="Madrid">
-                        </div>
-                    </section>
-                    <div class="text-center align-content-center">
-                        <button class="btn btn-cancel" data-bs-dismiss="modal">Fermer</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>

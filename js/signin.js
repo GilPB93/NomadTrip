@@ -19,8 +19,9 @@ function checkCredentials(event) {
     let requestOptions = {
         method: 'POST',
         headers: myHeaders,
+        mode: 'cors',
         body: raw,
-        redirect: 'follow'
+        redirect: 'follow',
     };
 
     fetch(apiURL + "login", requestOptions)

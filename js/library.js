@@ -409,8 +409,19 @@ function displayTravelbooks(travelbooks) {
             loadTravelbookDetails(travelbookId);
         });
     });
+
+    // Ajoute un EventListener à tous les boutons "Modifier"
+    document.querySelectorAll(".btn-modif").forEach(button => {
+        button.addEventListener("click", (event) => {
+            const travelbookId = event.target.getAttribute("data-travelbook-id");
+            editTravelbook(travelbookId);
+        });
+    });
 }
 
+
+
+// SHOW MODAL TRAVELBOOK
 function loadTravelbookDetails(travelbookId) {
     fetch(apiURL + `travelbook/${travelbookId}`, {
         method: "GET",
@@ -432,7 +443,6 @@ function loadTravelbookDetails(travelbookId) {
     .catch(error => console.error("❌ Erreur :", error));
 }
 
-// SHOW MODAL TRAVELBOOK
 function updateModalWithTravelbook(travelbook) {
     document.getElementById("ShowTravelbookModalLabel").innerText = travelbook.title;
     
@@ -482,3 +492,8 @@ function updateModalWithTravelbook(travelbook) {
 
 
 // EDIT TRAVELBOOK BY USER
+
+
+// DELETE TRAVELBOOK BY USER
+
+

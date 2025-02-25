@@ -4,6 +4,8 @@ const tokenCookieName = "accesstoken";
 const btnSignout = document.getElementById('btnSignout');
 const UserIdCookieName = 'user.Id';
 const RoleCookieName = "role";
+const loginTimeCookieName = "login_time";
+
 
 // TOKEN MANAGEMENT
 function setToken(token){ 
@@ -61,11 +63,18 @@ resetLogoutTimer();
 
 btnSignout.addEventListener('click', signOut);
 function signOut() {
-    eraseCookie(tokenCookieName);
-    eraseCookie(RoleCookieName);
-    eraseCookie(UserIdCookieName);
-    window.location.replace("/");
+    setLogoutTime();
+    setTimeout(() => {
+        eraseCookie(tokenCookieName);
+        eraseCookie(RoleCookieName);
+        eraseCookie(UserIdCookieName);
+        eraseCookie(loginTimeCookieName);
+        window.location.replace("/");
+    }, 500); 
 }
+
+window.addEventListener("beforeunload", setLogoutTime);
+
 
 
 //ROLE MANAGEMENT
@@ -73,7 +82,7 @@ function getRole(){
     return getCookie(RoleCookieName); 
 }
 
-//HIDE AND SHOW ELEMENTS BASED ON ROLE
+// HIDE AND SHOW ELEMENTS BASED ON ROLE
 function hideAndShowElementsByRoles() {
     const isUserConnected = userConnected();
     const role = getRole();
@@ -107,7 +116,6 @@ function hideAndShowElementsByRoles() {
         }
     });
 }
-
     document.addEventListener('DOMContentLoaded', () => {
         hideAndShowElementsByRoles();
 
@@ -120,9 +128,77 @@ function hideAndShowElementsByRoles() {
                 clearInterval(timer);
                 signOut();
             }
-        }, 1000);
+        }, 1000);    
 
 });
 
 
-// TRACK USER ACTIVITY
+// UPDATE TOTAL TIME OF CONNECTION
+let loginTime = null;
+
+document.addEventListener('DOMContentLoaded', () => {
+    setLoginTime();
+});
+
+function setLoginTime() {
+    let loginTime = new Date().toISOString();
+    setCookie(loginTimeCookieName, loginTime, 1);
+    
+    fetch(apiURL + 'activity-log/set-login-time', {
+        method: 'POST',
+        headers: {
+            'X-AUTH-TOKEN': getToken(),
+            'Content-Type': 'application/json',
+        }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.login_time) {
+            console.log("✅ Heure de connexion enregistrée :", data.login_time);
+            loginTime = new Date(data.login_time);
+        } else {
+            console.warn("⚠️ Problème lors de l'enregistrement de l'heure de connexion.");
+        }
+    })
+    .catch(error => console.error('⚠️ Erreur lors de l’enregistrement du login time:', error));
+}
+
+async function setLogoutTime() {
+    let loginTime = getCookie(loginTimeCookieName);
+    if (!loginTime) {
+        console.warn("⚠️ `login_time` est NULL, impossible d'enregistrer le logout.");
+        return;
+    }
+
+    try {
+        const response = await fetch(apiURL + 'activity-log/set-logout-time', {
+            method: "POST",
+            headers: {
+                'X-AUTH-TOKEN': getToken(),
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({ login_time: loginTime })
+        });
+
+        const data = await response.json();
+        console.log("✅ Déconnexion enregistrée :", data);
+
+        // ✅ Attendre 1 seconde avant de supprimer les cookies et rediriger
+        setTimeout(() => {
+            eraseCookie(loginTimeCookieName);
+            eraseCookie(tokenCookieName);
+            eraseCookie(RoleCookieName);
+            eraseCookie(UserIdCookieName);
+            window.location.replace("/");
+        }, 1000);
+
+    } catch (error) {
+        console.error("⚠️ Erreur enregistrement logout:", error);
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    if (!getCookie(loginTimeCookieName)) {
+        setLoginTime();
+    }
+});

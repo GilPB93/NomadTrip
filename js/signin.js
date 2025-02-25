@@ -35,7 +35,7 @@ function checkCredentials(event) {
             }
         })
         .then(result => {
-            console.log("Login response:", result); // Vérifier ce que renvoie l'API
+            console.log("Login response:", result);
             if (!result.id) {
                 throw new Error("User ID not found in API response");
             }
@@ -43,8 +43,10 @@ function checkCredentials(event) {
             const token = result.apiToken;
             const role = result.roles;
             const userId = result.id;
+            const loginTime = new Date().toISOString();
 
             setToken(token);
+            setCookie(loginTimeCookieName, loginTime, 1);
             setCookie(RoleCookieName, role, 7);
             setCookie(UserIdCookieName, userId, 7);
 

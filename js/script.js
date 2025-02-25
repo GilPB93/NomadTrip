@@ -140,10 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setLoginTime();
 });
 
-function setLoginTime() {
-    let loginTime = new Date().toISOString();
-    setCookie(loginTimeCookieName, loginTime, 1);
-    
+function setLoginTime() { 
     fetch(apiURL + 'activity-log/set-login-time', {
         method: 'POST',
         headers: {
@@ -202,3 +199,49 @@ document.addEventListener("DOMContentLoaded", () => {
         setLoginTime();
     }
 });
+
+updateTotalConnectionTime();
+function updateTotalConnectionTime() {
+    const userId = getUserId();
+
+    let myHeaders = new Headers();
+    myHeaders.append("X-AUTH-TOKEN", getToken());
+
+    let requestOptions = {
+        method: 'PUT',
+        headers: myHeaders,
+        redirect: 'follow',
+        mode: 'cors',
+        credentials: 'include',
+    };
+
+    fetch(apiURL + `user/${userId}/update-total-connection-time`, requestOptions)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Échec de la mise à jour du temps de connexion.');
+            }
+            return response.json();
+        })
+        .then(data => {
+            console.log("✅ Temps de connexion mis à jour:", data);
+            let formatedTime = formatTime(data.totalConnectionTime);
+            document.getElementById("totalConnectionInfo").innerText = formatedTime;
+        })
+        .catch(error => {
+            console.error("❌ Erreur lors du déclenchement du calcul :", error);
+        });
+}
+
+function formatTime(seconds) {
+    if (isNaN(seconds) || seconds === null || seconds < 0) return "N/A";
+
+    let hours = Math.floor(seconds / 3600);
+    let minutes = Math.floor((seconds % 3600) / 60);
+    let remainingSeconds = seconds % 60;
+
+    return `${hours}h ${minutes}m ${remainingSeconds}s`;
+}
+
+function getUserId() {
+    return getCookie(UserIdCookieName);
+}

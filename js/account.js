@@ -1,7 +1,11 @@
 getInfosUser();
 
 // FETCH INFORMATION ACCOUNT
-document.addEventListener("DOMContentLoaded", getInfosUser);
+document.addEventListener("DOMContentLoaded", () => {
+    getInfosUser();
+    updateTotalConnectionTime();
+});
+
 function getInfosUser() {
     let myHeaders = new Headers();
     myHeaders.append("X-AUTH-TOKEN", getToken());
@@ -28,11 +32,11 @@ function getInfosUser() {
             document.getElementById("firstNameInfo").innerText = user.firstName || "N/A";
             document.getElementById("pseudoInfo").innerText = user.pseudo || "N/A";
             document.getElementById("emailInfo").innerText = user.email || "N/A";
-            document.getElementById("lastLoginInfo").innerText = user.lastLogin || "N/A";
-            document.getElementById("totalConnectionInfo").innerText = user.connectionTime || "N/A";
+
         })
         .catch(error => console.error("Erreur lors de la récupération des infos :", error));
 }
+
 
 
 // UPDATE PSEUDO
@@ -91,10 +95,6 @@ function updatePseudo() {
 }
 
 document.getElementById('confirmPseudoChange').addEventListener('click', updatePseudo);
-
-function getUserId() {
-    return getCookie(UserIdCookieName);
-}
 
 
 // UPDATE EMAIL
@@ -255,3 +255,5 @@ function deleteAccount() {
         });
 }
 
+
+// GET THE TOTAL CONNECTION TIME

@@ -196,6 +196,37 @@ class UserController extends AbstractController
 
     // GET TOTAL CONNECTION TIME
     #[Route('/{id}/update-total-connection-time', name: 'update_total_connection_time', methods: ['PUT'])]
+    #[OA\Put(
+        path: '/api/user/{id}/update-total-connection-time',
+        summary: 'Update total connection time of user by id',
+        tags: ['User'],
+        parameters: [
+            new OA\Parameter(
+                name: 'id',
+                description: 'The user id',
+                in: 'path',
+                required: true,
+                schema: new OA\Schema(type: 'integer')
+            )
+        ],
+        responses: [
+            new OA\Response(
+                response: '200',
+                description: 'Total connection time updated',
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: 'message', type: 'string', example: 'Total connection time updated successfully'),
+                        new OA\Property(property: 'totalConnectionTime', type: 'integer', example: 3600),
+                    ],
+                    type: 'object'
+                )
+            ),
+            new OA\Response(
+                response: '404',
+                description: 'User not found',
+            )
+        ]
+    )]
     public function updateTotalConnectionTime(Request $request): JsonResponse
     {
         $user = $this->manager->getRepository(User::class)->findOneBy(['id' => $request->get('id')]);

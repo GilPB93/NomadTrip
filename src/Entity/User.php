@@ -74,18 +74,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Groups(['user:read'])]
     private ?\DateTimeImmutable $updatedAt = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $lastLogin = null;
+    /**
+     * @var Collection<int, ActivityLog>
+     */
+    #[ORM\OneToMany(targetEntity: ActivityLog::class, mappedBy: 'user')]
+    private Collection $activityLogs;
 
-    #[ORM\Column(type: 'integer', options: ['default' => 0])]
-    #[Groups(['user:read'])]
-    private int $connectionTime = 0;
 
     /** @throws RandomException */
     public function __construct()
     {
         $this->apiToken = bin2hex(random_bytes(32));
         $this->travelbooks = new ArrayCollection();
+        $this->activityLogs = new ArrayCollection();
     }
 
 
@@ -279,36 +280,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getLastLogin(): ?\DateTimeInterface
+    /**
+     * @return Collection<int, ActivityLog>
+     */
+    public function getActivityLogs(): Collection
     {
-        return $this->lastLogin;
+        return $this->activityLogs;
     }
 
-    public function setLastLogin(\DateTimeInterface $lastLogin): static
+    public function addActivityLog(ActivityLog $activityLog): static
     {
-        $this->lastLogin = $lastLogin;
+        if (!$this->activityLogs->contains($activityLog)) {
+            $this->activityLogs->add($activityLog);
+            $activityLog->setUser($this);
+        }
 
         return $this;
     }
 
-    public function updateLastLogin(): void
+    public function removeActivityLog(ActivityLog $activityLog): static
     {
-        $this->lastLogin = new \DateTimeImmutable();
-    }
+        if ($this->activityLogs->removeElement($activityLog)) {
+            // set the owning side to null (unless already changed)
+            if ($activityLog->getUser() === $this) {
+                $activityLog->setUser(null);
+            }
+        }
 
-    public function getConnectionTime(): int
-    {
-        return $this->connectionTime;
-    }
-
-    public function addConnectionTime(int $seconds): static
-    {
-        $this->connectionTime += $seconds;
         return $this;
     }
-    public function addConnectionDuration(int $seconds): void
-    {
-        $this->connectionTime += $seconds;
-    }
-
 }

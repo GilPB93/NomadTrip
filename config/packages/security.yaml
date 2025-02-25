@@ -44,7 +44,6 @@ security:
         - { path : ^/api/doc, roles : PUBLIC_ACCESS }
         - { path : ^/api/contact/save, roles: PUBLIC_ACCESS }
         - { path : ^/api, roles : ROLE_USER }
-        - { path : ^/api/user/totalusers, roles : ROLE_ADMIN }
 
 
 

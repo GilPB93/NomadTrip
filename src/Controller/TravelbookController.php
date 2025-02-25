@@ -3,12 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Travelbook;
-use App\Repository\PlacesRepository;
 use App\Repository\TravelbookRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -165,6 +163,15 @@ class TravelbookController extends AbstractController
                         new OA\Property(property: "comebackAt", type: "string", example: "2022-12-10"),
                         new OA\Property(property: "flightNumber", type: "string", example: "AF1234"),
                         new OA\Property(property: "accommodation", type: "string", example: "Hotel"),
+                        new OA\Property(property: "places", type: "array",
+                            items: new OA\Items(type: "object")
+                        ),
+                        new OA\Property(property: "fBs", type: "array",
+                            items: new OA\Items(type: "object")
+                        ),
+                        new OA\Property(property: "photos", type: "array",
+                            items: new OA\Items(type: "object")
+                        ),
                         new OA\Property(property: "createdAt", type: "string", example: "2022-12-01T00:00:00+00:00"),
                         new OA\Property(property: "updatedAt", type: "string", example: "2022-12-01T00:00:00+00:00"),
                         new OA\Property(property: "user", type: "integer", example: 1),
@@ -185,7 +192,7 @@ class TravelbookController extends AbstractController
             return new JsonResponse(['message' => 'Travelbook not found'], Response::HTTP_NOT_FOUND);
         }
 
-        $travelbookData = $this->serializer->serialize($travelbook, 'json', ['groups' => ['travelbook:read']]);
+        $travelbookData = $this->serializer->normalize($travelbook, 'json', ['groups' => ['travelbook:read']]);
 
         if ($travelbook->getImgCouverture()) {
             $travelbookData['imgCouverture'] = $this->urlGenerator->generate(
@@ -256,7 +263,7 @@ class TravelbookController extends AbstractController
     )]
     public function edit(int $id, Request $request): Response
     {
-        $travelbook = $this->travelbookRepository->findOneBy(['id' => $id]);
+        $travelbook = $this->travelbookRepository->find($id);
 
         if (!$travelbook) {
             return new JsonResponse(
@@ -314,21 +321,10 @@ class TravelbookController extends AbstractController
             );
         }
 
-        $filesystem = new Filesystem();
-        if ($travelbook->getImgCouverture()) {
-            $imagePath = $this->getParameter('kernel.project_dir') . '/public/uploads/travelbookscover/' . $travelbook->getImgCouverture();
-            if ($filesystem->exists($imagePath)) {
-                $filesystem->remove($imagePath);
-            }
-        }
-
         $this->manager->remove($travelbook);
         $this->manager->flush();
 
-        return new JsonResponse(
-            ['message' => 'Travelbook deleted'],
-            Response::HTTP_NO_CONTENT
-        );
+        return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
 

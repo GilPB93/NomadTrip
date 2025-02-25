@@ -192,7 +192,6 @@ class UserController extends AbstractController
         );
     }
 
-    // UPDATE CONNECTION TIME
 
 
     // GET TOTAL OF USERS

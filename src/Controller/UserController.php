@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Repository\UserRepository;
+use App\Repository\ActivityLogRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -21,6 +21,7 @@ class UserController extends AbstractController
     public function __construct(
         private EntityManagerInterface $manager,
         private SerializerInterface $serializer,
+        private ActivityLogRepository $activityLogRepository
     ){
     }
 
@@ -190,6 +191,34 @@ class UserController extends AbstractController
             ['message' => 'User successfully deleted'],
             Response::HTTP_OK
         );
+    }
+
+
+    // GET TOTAL CONNECTION TIME
+    #[Route('/{id}/update-total-connection-time', name: 'update_total_connection_time', methods: ['PUT'])]
+    public function updateTotalConnectionTime(Request $request): JsonResponse
+    {
+        $user = $this->manager->getRepository(User::class)->findOneBy(['id' => $request->get('id')]);
+        if (!$user) {
+            return new JsonResponse(['error' => 'User not found'], Response::HTTP_NOT_FOUND);
+        }
+
+        $totalConnectionTime = $this->activityLogRepository->createQueryBuilder('a')
+            ->select('SUM(a.durationOfConnection)')
+            ->where('a.user = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getSingleScalarResult();
+
+        $user->setTotalConnectionTime($totalConnectionTime ?? 0);
+        $this->manager->persist($user);
+        $this->manager->flush();
+
+
+        return new JsonResponse([
+            'message' => 'Total connection time updated successfully',
+            'totalConnectionTime' => $user->getTotalConnectionTime(),
+        ]);
     }
 
 

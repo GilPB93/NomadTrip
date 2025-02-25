@@ -79,4 +79,5 @@ class ActivityLogController extends AbstractController
             'duration' => $duration
         ]);
     }
+
 }

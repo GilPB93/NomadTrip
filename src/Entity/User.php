@@ -80,6 +80,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: ActivityLog::class, mappedBy: 'user')]
     private Collection $activityLogs;
 
+    #[ORM\Column]
+    private ?int $totalConnectionTime = null;
+
 
     /** @throws RandomException */
     public function __construct()
@@ -306,6 +309,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $activityLog->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getTotalConnectionTime(): ?int
+    {
+        return $this->totalConnectionTime;
+    }
+
+    public function setTotalConnectionTime(int $totalConnectionTime): static
+    {
+        $this->totalConnectionTime = $totalConnectionTime;
 
         return $this;
     }

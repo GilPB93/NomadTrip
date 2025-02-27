@@ -126,6 +126,14 @@ class Travelbook
         return $this;
     }
 
+    #[Groups(['travelbook:read'])]
+    public function getImgCouvertureUrl(): ?string
+    {
+        return $this->imgCouverture
+            ? '/uploads/images/travelbooks/' . $this->imgCouverture
+            : null;
+    }
+
     public function getImgCouvertureFile(): ?File
     {
         return $this->imgCouvertureFile;

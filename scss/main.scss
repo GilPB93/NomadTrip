@@ -802,6 +802,19 @@ p {
     color: black;
     border: none;
 }
+.btnPurgeLogs{
+    font-family: $family-title;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin: 10px;
+    padding: 10px;
+    width: auto;
+    height: auto;
+    border-radius: 30px 15px;
+    border: none;
+    background-color: $color5;
+    color: black;
+}
 
 // MODAL BODY
 .modal-header h1 {

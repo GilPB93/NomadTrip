@@ -116,8 +116,13 @@ function hideAndShowElementsByRoles() {
         }
     });
 }
-    document.addEventListener('DOMContentLoaded', () => {
+
+document.addEventListener('DOMContentLoaded', () => {
         hideAndShowElementsByRoles();
+     
+        if (userConnected()) {
+            setLoginTime(); 
+        }
 
         //SET TIMEOUT TO LOGOUT
         const timeToLogout = 1000 * 60 * 5; // 5 minutes
@@ -135,12 +140,9 @@ function hideAndShowElementsByRoles() {
 
 // UPDATE TOTAL TIME OF CONNECTION
 let loginTime = null;
-
-document.addEventListener('DOMContentLoaded', () => {
-    setLoginTime();
-});
-
 function setLoginTime() { 
+    if (!userConnected()) return;
+
     fetch(apiURL + 'activity-log/set-login-time', {
         method: 'POST',
         headers: {
@@ -162,8 +164,8 @@ function setLoginTime() {
 
 async function setLogoutTime() {
     let loginTime = getCookie(loginTimeCookieName);
+
     if (!loginTime) {
-        console.warn("⚠️ `login_time` est NULL, impossible d'enregistrer le logout.");
         return;
     }
 
@@ -177,71 +179,28 @@ async function setLogoutTime() {
             body: JSON.stringify({ login_time: loginTime })
         });
 
+        console.log("📥 Réponse reçue:", response);
+        debugger;
+
+
+        if (!response.ok) {
+            throw new Error(`❌ Erreur HTTP ${response.status}`);
+        }
+
         const data = await response.json();
         console.log("✅ Déconnexion enregistrée :", data);
 
-        // ✅ Attendre 1 seconde avant de supprimer les cookies et rediriger
         setTimeout(() => {
             eraseCookie(loginTimeCookieName);
             eraseCookie(tokenCookieName);
             eraseCookie(RoleCookieName);
             eraseCookie(UserIdCookieName);
             window.location.replace("/");
-        }, 1000);
+        }, 1000); //
 
     } catch (error) {
-        console.error("⚠️ Erreur enregistrement logout:", error);
+        console.error("🚨 Erreur lors de l’enregistrement du logout:", error);
     }
 }
 
-document.addEventListener("DOMContentLoaded", () => {
-    if (!getCookie(loginTimeCookieName)) {
-        setLoginTime();
-    }
-});
 
-updateTotalConnectionTime();
-function updateTotalConnectionTime() {
-    const userId = getUserId();
-
-    let myHeaders = new Headers();
-    myHeaders.append("X-AUTH-TOKEN", getToken());
-
-    let requestOptions = {
-        method: 'PUT',
-        headers: myHeaders,
-        redirect: 'follow',
-        mode: 'cors',
-        credentials: 'include',
-    };
-
-    fetch(apiURL + `user/${userId}/update-total-connection-time`, requestOptions)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Échec de la mise à jour du temps de connexion.');
-            }
-            return response.json();
-        })
-        .then(data => {
-            console.log("✅ Temps de connexion mis à jour:", data);
-            let formatedTime = formatTime(data.totalConnectionTime);
-            document.getElementById("totalConnectionInfo").innerText = formatedTime;
-        })
-        .catch(error => {
-            console.error("❌ Erreur lors du déclenchement du calcul :", error);
-        });
-}
-
-function formatTime(seconds) {
-    if (isNaN(seconds) || seconds === null || seconds < 0) return "N/A";
-
-    let hours = Math.floor(seconds / 3600);
-    let minutes = Math.floor((seconds % 3600) / 60);
-    let remainingSeconds = seconds % 60;
-
-    return `${hours}h ${minutes}m ${remainingSeconds}s`;
-}
-
-function getUserId() {
-    return getCookie(UserIdCookieName);
-}

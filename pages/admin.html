@@ -24,10 +24,12 @@
     <h2>Les utilisateurs
         <select class="form-select-user" aria-label="select user">
             <option selected>Selectionnez l'utilisateur souhaité</option>
-            <option value="1">X</option>
-            <option value="2">XX</option>
-            <option value="3">XXX</option>
-            <option value="4">XXXX</option>
+            <option value="1">
+                <p>-</p>
+                <button type="button" class="btn btnUserDesactivate" id="btnUserDesactivate">Désactiver</button>
+                <button type="button" class="btn btnUserActivate" id="btnUserActivate">Activer</button>
+                <button type="button" class="btn btnUserDetails" id="btnUserDetails">Détails</button>
+            </option>
         </select>	
     </h2>
     <hr class="separator"> 
@@ -37,12 +39,18 @@
     <h2>Les carnets de voyage
         <select class="form-select-travelbook" aria-label="select travelbook">
             <option selected>Selectionnez le carnet souhaité</option>
-            <option value="1">Y</option>
-            <option value="2">YY</option>
-            <option value="3">YYY</option>
-            <option value="4">YYYY</option>
+            <option value="1">
+                <p>-</p>
+                <button type="button" class="btn btnTravelbookDetails" id="btnTravelbookDetails">Détails</button>
+            </option>
         </select>
     </h2>
+    <hr class="separator"> 
+</div>
+
+<div>
+    <button type="button" class="btnPurgeLogs" id="btnPurgeLogs">Purger les logs avec logout NULL</button>
+
     <hr class="separator"> 
 </div>
 

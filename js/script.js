@@ -180,8 +180,6 @@ async function setLogoutTime() {
         });
 
         console.log("📥 Réponse reçue:", response);
-        debugger;
-
 
         if (!response.ok) {
             throw new Error(`❌ Erreur HTTP ${response.status}`);

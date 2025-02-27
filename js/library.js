@@ -351,7 +351,7 @@ function createTravelbookForm(event) {
 }
 
 
-// SHOW TRAVELBOOKS BY USER
+// DISPLAY TRAVELBOOKS ON LIBRARY BY USER
 fetchUserTravelbooks();
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -390,7 +390,7 @@ function displayTravelbooks(travelbooks) {
         // Détermine l'image du travelbook
         const imageUrl = travelbook.imgCouverture
             ? `http://127.0.0.1:8000/uploads/images/travelbooks/${travelbook.imgCouverture}`
-            : "/img/default.jpg"; // Image par défaut si pas d'image
+            : "/img/default.jpg";
 
         travelCard.innerHTML = `
             <img src="${imageUrl}" class="travel-img" alt="${travelbook.title}">
@@ -406,7 +406,12 @@ function displayTravelbooks(travelbooks) {
     document.querySelectorAll(".btn-show").forEach(button => {
         button.addEventListener("click", (event) => {
             const travelbookId = event.target.getAttribute("data-travelbook-id");
-            loadTravelbookDetails(travelbookId);
+            console.log("📌 ID du travelbook sélectionné :", travelbookId); // 🔴 Debugging
+            if (travelbookId) {
+                loadTravelbookDetails(travelbookId);
+            } else {
+                console.error("⚠️ Aucune ID trouvée sur le bouton !");
+            }
         });
     });
 
@@ -445,38 +450,58 @@ function loadTravelbookDetails(travelbookId) {
 
 function updateModalWithTravelbook(travelbook) {
     document.getElementById("ShowTravelbookModalLabel").innerText = travelbook.title;
-    
-    // Affiche l'image de couverture
-    const imgCoverElement = document.querySelector("#imgCouverture img");
-    imgCoverElement.src = travelbook.imgCouverture 
-        ? `http://127.0.0.1:8000/uploads/images/travelbooks/${travelbook.imgCouverture}`
-        : "/img/default.jpg";
-    
-    imgCoverElement.alt = travelbook.title;
 
-    // Affiche les autres détails du voyage
-    document.getElementById("departureAt").innerHTML = `<h3>Date et heure de départ :</h3> ${travelbook.departureAt}`;
-    document.getElementById("comebackAt").innerHTML = `<h3>Date et heure de retour :</h3> ${travelbook.comebackAt}`;
-    
+    // Récupération et mise à jour de l'image de couverture
+    console.log("🔍 Vérification imgCouvertureUrl :", travelbook.imgCouvertureUrl);
+
+    const imageUrl = travelbook.imgCouvertureUrl 
+        ? travelbook.imgCouvertureUrl 
+        : "/img/default.jpg"; // Image par défaut si aucune couverture
+
+    const imgCoverElement = document.querySelector("#imgCouvertureModalShow img");
+    if (imgCoverElement) {
+        console.log("✅ Image mise à jour :", imageUrl);
+        imgCoverElement.src = imageUrl;
+        imgCoverElement.alt = travelbook.title;
+    } else {
+        console.error("⚠️ L'élément <img> pour la couverture est introuvable !");
+    }
+
+    // Mise à jour des détails du voyage
+    function formatDateTime(datetimeString) {
+        const options = { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' };
+        return new Date(datetimeString).toLocaleDateString('fr-FR', options);
+    }
+    document.getElementById("departureAtModalShow").innerHTML = `
+        <h3>📅 Date et heure de départ :</h3> 
+        <p><strong>${formatDateTime(travelbook.departureAt)}</strong></p>
+    `;
+
+    document.getElementById("comebackAtModalShow").innerHTML = `
+        <h3>📅 Date et heure de retour :</h3> 
+        <p><strong>${formatDateTime(travelbook.comebackAt)}</strong></p>
+    `;
+
     // Calcul du nombre de jours
     const departure = new Date(travelbook.departureAt);
     const comeback = new Date(travelbook.comebackAt);
     const nbDays = Math.ceil((comeback - departure) / (1000 * 60 * 60 * 24));
 
-    document.getElementById("nbDays").innerHTML = `<h3>Nombre de jours :</h3> ${nbDays} jours`;
-    document.getElementById("flightNumber").innerHTML = `<h3>Numéro de vol :</h3> ${travelbook.flightNumber || "Non renseigné"}`;
-    document.getElementById("accommodation").innerHTML = `<h3>Logement :</h3> ${travelbook.accommodation || "Non renseigné"}`;
+    document.getElementById("nbDaysModalShow").innerHTML = `<h3>📅 Nombre de jours :</h3> ${nbDays} jours`;
+    document.getElementById("flightNumberModalShow").innerHTML = `<h3>✈️ Numéro de vol :</h3> ${travelbook.flightNumber || "Non renseigné"}`;
+    document.getElementById("accommodationModalShow").innerHTML = `<h3> 🏨 Logement :</h3> ${travelbook.accommodation || "Non renseigné"}`;
 
-    // Chargement des activités et des photos
-    document.getElementById("allPlacesToVisit").innerHTML = travelbook.places.length > 0 
-        ? travelbook.places.map(place => `<h3>${place.name}</h3>`).join("") 
-        : "<h3>Aucune activité enregistrée</h3>";
+    // Mise à jour des activités et des restaurants/bars
+    document.getElementById("allPlacesToVisitModalShow").innerHTML = travelbook.places.length > 0 
+        ? travelbook.places.map(place => `<h3> 🎟️ ${place.name}</h3>`).join("") 
+        : "<h3>🎟️ Aucune activité enregistrée</h3>";
 
-    document.getElementById("allFBToDo").innerHTML = travelbook.fBs.length > 0
-        ? travelbook.fBs.map(fb => `<h3>${fb.name}</h3>`).join("")
-        : "<h3>Aucun restaurant ou bar enregistré</h3>";
+    document.getElementById("allFBToDoModalShow").innerHTML = travelbook.fBs.length > 0
+        ? travelbook.fBs.map(fb => `<h3>🍽️ ${fb.name}</h3>`).join("")
+        : "<h3>🍽️ Aucun restaurant ou bar enregistré</h3>";
 
-    const photoContainer = document.getElementById("allphotosTravelbook");
+    // Mise à jour des photos
+    const photoContainer = document.getElementById("allphotosTravelbookModalShow");
     photoContainer.innerHTML = "";
     if (travelbook.photos.length > 0) {
         travelbook.photos.forEach(photo => {
@@ -486,9 +511,10 @@ function updateModalWithTravelbook(travelbook) {
             photoContainer.appendChild(img);
         });
     } else {
-        photoContainer.innerHTML = "<h3>Aucune photo enregistrée</h3>";
+        photoContainer.innerHTML = "<h3>📸 Aucune photo enregistrée</h3>";
     }
 }
+
 
 
 // EDIT TRAVELBOOK BY USER

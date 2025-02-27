@@ -67,21 +67,34 @@ class PlacesController extends AbstractController
     public function new(Request $request): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-        $travelbook = $this->manager->getRepository(Travelbook::class)->find($data['travelbook']);
-        if (!$travelbook) {
-            return new JsonResponse('Travelbook not found', Response::HTTP_BAD_REQUEST);
+
+        if (!isset($data['travelbook'])) {
+            return new JsonResponse(['error' => 'Travelbook ID is missing'], Response::HTTP_BAD_REQUEST);
         }
 
-        $places = $this->serializer->deserialize($request->getContent(), Places::class, 'json');
-        $places->setVisitAt(new DateTimeImmutable($data['visitAt']));
-        $places->setTravelbook($travelbook);
+        $travelbook = $this->manager->getRepository(Travelbook::class)->find($data['travelbook']);
+        if (!$travelbook) {
+            return new JsonResponse(['error' => 'Travelbook not found'], Response::HTTP_NOT_FOUND);
+        }
 
-        $this->manager->persist($places);
+        if (!isset($data['name'], $data['address'], $data['visitAt'])) {
+            return new JsonResponse(['error' => 'Missing required fields'], Response::HTTP_BAD_REQUEST);
+        }
+
+        $place = new Places();
+        $place->setName($data['name']);
+        $place->setAddress($data['address']);
+        $place->setVisitAt(new DateTimeImmutable($data['visitAt']));
+        $place->setTravelbook($travelbook);
+
+        $this->manager->persist($place);
         $this->manager->flush();
 
         return new JsonResponse(
-            $this->serializer->serialize($places, 'json', ['groups' => 'places:read']),
+            $this->serializer->serialize($place, 'json', ['groups' => 'places:read']),
             Response::HTTP_CREATED,
+            [],
+            true
         );
     }
 
@@ -124,18 +137,17 @@ class PlacesController extends AbstractController
     )]
     public function show(int $id): JsonResponse
     {
-        $places = $this->placesRepository->findOneBy(['id' => $id]);
+        $place = $this->placesRepository->find($id);
 
-        if(!$places) {
-            return new JsonResponse(
-                'Place not found',
-                Response::HTTP_NOT_FOUND,
-            );
+        if (!$place) {
+            return new JsonResponse(['error' => 'Place not found'], Response::HTTP_NOT_FOUND);
         }
 
         return new JsonResponse(
-            $this->serializer->serialize($places, 'json', ['groups' => 'places:read']),
+            $this->serializer->serialize($place, 'json', ['groups' => 'places:read']),
             Response::HTTP_OK,
+            [],
+            true
         );
     }
 
@@ -179,21 +191,32 @@ class PlacesController extends AbstractController
     )]
     public function edit(int $id, Request $request): JsonResponse
     {
-        $places = $this->placesRepository->findOneBy(['id' => $id]);
+        $place = $this->placesRepository->find($id);
 
-        if(!$places) {
-            return new JsonResponse(
-                'Place not found',
-                Response::HTTP_NOT_FOUND,
-            );
+        if (!$place) {
+            return new JsonResponse(['error' => 'Place not found'], Response::HTTP_NOT_FOUND);
         }
 
-        $this->serializer->deserialize($request->getContent(), Places::class, 'json', [AbstractNormalizer::OBJECT_TO_POPULATE => $places]);
+        $data = json_decode($request->getContent(), true);
+
+        // 🔹 Vérifier et mettre à jour les champs
+        if (isset($data['name'])) {
+            $place->setName($data['name']);
+        }
+        if (isset($data['address'])) {
+            $place->setAddress($data['address']);
+        }
+        if (isset($data['visitAt'])) {
+            $place->setVisitAt(new DateTimeImmutable($data['visitAt']));
+        }
+
         $this->manager->flush();
 
         return new JsonResponse(
-            $this->serializer->serialize($places, 'json', ['groups' => 'places:read']),
+            $this->serializer->serialize($place, 'json', ['groups' => 'places:read']),
             Response::HTTP_OK,
+            [],
+            true
         );
     }
 
@@ -226,21 +249,15 @@ class PlacesController extends AbstractController
     )]
     public function delete(int $id): JsonResponse
     {
-        $places = $this->placesRepository->findOneBy(['id' => $id]);
+        $place = $this->placesRepository->find($id);
 
-        if(!$places) {
-            return new JsonResponse(
-                'Place not found',
-                Response::HTTP_NOT_FOUND,
-            );
+        if (!$place) {
+            return new JsonResponse(['error' => 'Place not found'], Response::HTTP_NOT_FOUND);
         }
 
-        $this->manager->remove($places);
+        $this->manager->remove($place);
         $this->manager->flush();
 
-        return new JsonResponse(
-            'Place deleted',
-            Response::HTTP_OK,
-        );
+        return new JsonResponse(['message' => 'Place deleted'], Response::HTTP_OK);
     }
 }

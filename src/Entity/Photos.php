@@ -4,9 +4,13 @@ namespace App\Entity;
 
 use App\Repository\PhotosRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: PhotosRepository::class)]
+#[Vich\Uploadable]
 class Photos
 {
     #[ORM\Id]
@@ -18,6 +22,10 @@ class Photos
     #[ORM\Column(length: 255)]
     #[Groups(['photos:read', 'photos:write'])]
     private ?string $imgUrl = null;
+
+    #[Vich\UploadableField(mapping: "travelbook_photos", fileNameProperty: "imgUrl")]
+    #[Assert\Image()]
+    private ?File $imgUrlFile = null;
 
     #[ORM\Column]
     #[Groups(['photos:read', 'photos:write'])]
@@ -34,14 +42,29 @@ class Photos
 
     public function getImgUrl(): ?string
     {
-        return $this->imgUrl;
+        return $this->imgUrl ? '/uploads/photos/' . $this->imgUrl : null;
     }
 
-    public function setImgUrl(string $imgUrl): static
+    public function setImgUrl(?string $imgUrl): self
     {
         $this->imgUrl = $imgUrl;
+        return $this;
+    }
+
+    public function setImgUrlFile(?File $file = null): self
+    {
+        $this->imgUrlFile = $file;
+
+        if ($file) {
+            $this->addedAt = new \DateTimeImmutable();
+        }
 
         return $this;
+    }
+
+    public function getImgUrlFile(): ?File
+    {
+        return $this->imgUrlFile;
     }
 
     public function getAddedAt(): ?\DateTimeImmutable

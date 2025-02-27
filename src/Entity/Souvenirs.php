@@ -20,6 +20,7 @@ class Souvenirs
     private ?string $what = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['souvenirs:read', 'souvenirs:write'])]
     private ?string $forWho = null;
 
     #[ORM\ManyToOne(targetEntity: Travelbook::class, cascade: ['persist'], inversedBy: 'souvenirs')]

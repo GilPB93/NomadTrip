@@ -13,7 +13,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -193,16 +192,55 @@ class TravelbookController extends AbstractController
             return new JsonResponse(['message' => 'Travelbook not found'], Response::HTTP_NOT_FOUND);
         }
 
-        // Récupération de l'URL de l'image en tenant compte du serveur frontend (CORS)
-        $baseUrl = 'http://127.0.0.1:8000'; // URL du backend où les images sont stockées
+        $placesData = [];
+        foreach ($travelbook->getPlaces() as $place) {
+            $placesData[] = [
+                'id' => $place->getId(),
+                'name' => $place->getName(),
+                'address' => $place->getAddress(),
+                'visitAt' => $place->getVisitAt()
+            ];
+        }
+
+        $FBData = [];
+        foreach ($travelbook->getFBs() as $fb) {
+            $FBData[] = [
+                'id' => $fb->getId(),
+                'name' => $fb->getName(),
+                'address' => $fb->getAddress(),
+                'visitAt' => $fb->getVisitAt()
+            ];
+        }
+
+        $souvenirsData = [];
+        foreach ($travelbook->getSouvenirs() as $souvenir) {
+            $souvenirsData[] = [
+                'id' => $souvenir->getId(),
+                'what' => $souvenir->getWhat(),
+                'forWho' => $souvenir->getForWho()
+            ];
+        }
+
+        $photoData = [];
+        foreach ($travelbook->getPhotos() as $photo) {
+            $photoData[] = [
+                'id' => $photo->getId(),
+                'imgUrl' => $photo->getImgUrl(),
+                'addedAt' => $photo->getAddedAt()
+            ];
+        }
+
+        $baseUrl = 'http://127.0.0.1:8000';
         $imagePath = $travelbook->getImgCouverture()
             ? '/uploads/images/travelbooks/' . $travelbook->getImgCouverture()
             : null;
+        $travelbookData['imgCouvertureUrl'] = $imagePath ? $baseUrl . $imagePath : null;
 
         $travelbookData = $this->serializer->normalize($travelbook, 'json', ['groups' => ['travelbook:read']]);
-
-        // Ajouter l'URL complète de l'image
-        $travelbookData['imgCouvertureUrl'] = $imagePath ? $baseUrl . $imagePath : null;
+        $travelbookData['places'] = $placesData;
+        $travelbookData['fBs'] = $FBData;
+        $travelbookData['souvenirs'] = $souvenirsData;
+        $travelbookData['photos'] = $photoData;
 
         return new JsonResponse($travelbookData, Response::HTTP_OK);
     }

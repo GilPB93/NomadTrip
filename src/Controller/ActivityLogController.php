@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use OpenApi\Attributes as OA;
-use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/api/activity-log', name: 'app_api_activity_log')]
 class ActivityLogController extends AbstractController

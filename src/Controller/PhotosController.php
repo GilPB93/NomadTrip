@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\Photos;
 use App\Entity\Travelbook;
 use App\Repository\PhotosRepository;
-use App\Repository\TravelbookRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -65,22 +64,32 @@ class PhotosController extends AbstractController
     )]
     public function new(Request $request): JsonResponse
     {
-        $data = json_decode($request->getContent(), true);
-        $travelbook = $this->manager->getRepository(Travelbook::class)->find($data['travelbook']);
+        $photoFile = $request->files->get('imgUrl');
+        $travelbookId = $request->request->get('travelbook');
 
-        if (!$travelbook) {
-            return new JsonResponse('Travelbook not found', Response::HTTP_BAD_REQUEST);
+        if (!$photoFile || !$travelbookId) {
+            return new JsonResponse(['error' => 'Image ou Travelbook ID manquant'], Response::HTTP_BAD_REQUEST);
         }
 
-        $photos = $this->serializer->deserialize($request->getContent(), Photos::class, 'json');
-        $photos->setAddedAt(new \DateTimeImmutable());
-        $photos->setTravelbook($travelbook);
+        $travelbook = $this->manager->getRepository(Travelbook::class)->find($travelbookId);
+        if (!$travelbook) {
+            return new JsonResponse(['error' => 'Travelbook non trouvé'], Response::HTTP_BAD_REQUEST);
+        }
 
-        $this->manager->persist($photos);
+        $photo = new Photos();
+        $photo->setAddedAt(new \DateTimeImmutable());
+        $photo->setTravelbook($travelbook);
+
+        $photoFile = $request->files->get('imgUrl');
+        if ($photoFile) {
+            $photo->setImgUrlFile($photoFile);
+        }
+
+        $this->manager->persist($photo);
         $this->manager->flush();
 
         return new JsonResponse(
-            $this->serializer->serialize($photos, 'json', ['groups' => 'photos:read']),
+            $this->serializer->serialize($photo, 'json', ['groups' => 'photos:read']),
             Response::HTTP_CREATED,
             [],
             true
@@ -125,19 +134,29 @@ class PhotosController extends AbstractController
     )]
     public function show(int $id): JsonResponse
     {
-        $photos = $this->photosRepository->findOneBy(['id' => $id]);
+        $photos = $this->photosRepository->find($id);
 
-        if($photos) {
+        if (!$photos) {
             return new JsonResponse(
-                $this->serializer->serialize($photos, 'json', ['groups' => 'photos:read']),
-                Response::HTTP_OK
+                ['error' => 'Photo not found'],
+                Response::HTTP_NOT_FOUND
             );
         }
 
+        $baseUrl = 'http://127.0.0.1:8000';
+        $photoPath = $photos->getImgUrl()
+            ? '/uploads/photos/' . $photos->getImgUrl()
+            : null;
+        $photoData['imgUrl'] = $photoPath ? $baseUrl . $photoPath : null;
+        $photoData['addedAt'] = $photos->getAddedAt();
+        $photoData['travelbook'] = $photos->getTravelbook()->getId();
+
+        $photoData = $this->serializer->serialize($photos, 'json', ['groups' => 'photos:read']);
+
         return new JsonResponse(
-                'Photo not found',
-                Response::HTTP_NOT_FOUND
-            );
+            $photoData,
+            Response::HTTP_OK
+        );
     }
 
     // UPDATE A PHOTO FROM A TRAVELBOOK

@@ -138,11 +138,9 @@ class ActivityLogController extends AbstractController
 
 
     #[Route('/purge-logout-null', name: 'activity_log_purge_logout_null', methods: ['DELETE'])]
-    #[isGranted('ROLE_ADMIN')]
     #[OA\Delete(
         path: '/api/activity-log/purge-logout-null',
         summary: 'Purge activity logs with null logout',
-        security: [['bearerAuth' => []]],
         tags: ['Activity Log'],
         responses: [
             new OA\Response(response: 200, description: 'Logs purged successfully'),

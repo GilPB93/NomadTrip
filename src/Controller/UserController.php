@@ -3,7 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Enum\AccountStatus;
 use App\Repository\ActivityLogRepository;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -11,7 +13,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Component\Security\Http\Attribute\CurrentUser;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -21,7 +23,8 @@ class UserController extends AbstractController
     public function __construct(
         private EntityManagerInterface $manager,
         private SerializerInterface $serializer,
-        private ActivityLogRepository $activityLogRepository
+        private ActivityLogRepository $activityLogRepository,
+        private UserRepository $userRepository,
     ){
     }
 
@@ -253,14 +256,109 @@ class UserController extends AbstractController
     }
 
 
-
-    // GET TOTAL OF USERS
-
-    // GET TOTAL OF USERS CONNECTED
-
     // GET LIST OF USERS
+    #[Route('/all', name: 'list', methods: ['GET'])]
+    #[isGranted('ROLE_ADMIN')]
+    #[OA\Get(
+        path: "/api/user/all",
+        summary: "Récupérer la liste des utilisateurs",
+        tags: ["Utilisateur"],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Liste des utilisateurs récupérée avec succès",
+                content: new OA\JsonContent(type: "array", items: new OA\Items(ref: "#/components/schemas/User"))
+            )
+        ]
+    )]
+    public function getUsers(): JsonResponse
+    {
+        $users = $this->userRepository->findAll();
+        return new JsonResponse($this->serializer->serialize($users, 'json', ['groups' => 'user:read']), 200, [], true);
+    }
 
-    // GET LAST 5 USERS SIGNED UP
-    
+    // ACTIVATE/DEACTIVATE USER
+    #[Route('/toggle-status/{id}', name: 'toggle_status', methods: ['PATCH'])]
+    #[isGranted('ROLE_ADMIN')]
+    #[OA\Patch(
+        path: "/api/user/toggle-status/{id}",
+        summary: "Activate or deactivate a user",
+        tags: ["Utilisateur"],
+        parameters: [
+            new OA\Parameter(
+                name: "id",
+                description: "User ID",
+                in: "path",
+                required: true,
+                schema: new OA\Schema(type: "integer")
+            )
+        ],
+        responses: [
+            new OA\Response(response: 200, description: "Status updated successfully"),
+            new OA\Response(response: 404, description: "User not found")
+        ]
+    )]
+    public function toggleUserStatus(int $id): JsonResponse
+    {
+        $user = $this->userRepository->find($id);
+        if (!$user) {
+            return new JsonResponse(['message' => 'User not found'], 404);
+        }
+
+        $user->setAccountStatus(
+            $user->getAccountStatus() === AccountStatus::ACTIVE ? AccountStatus::INACTIVE : AccountStatus::ACTIVE
+        );
+
+        $this->manager->flush();
+        return new JsonResponse(['message' => 'Status updated successfully'], 200);
+    }
+
+    // GET USER DETAILS
+    #[Route('/details/{id}', name: 'details', methods: ['GET'])]
+    #[isGranted('ROLE_ADMIN')]
+    #[OA\Get(
+        path: "/api/user/details/{id}",
+        summary: "Get details of a user",
+        tags: ["Utilisateur"],
+        parameters: [
+            new OA\Parameter(
+                name: "id",
+                description: "User ID",
+                in: "path",
+                required: true,
+                schema: new OA\Schema(type: "integer")
+            )
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "User details retrieved successfully",
+                content: new OA\JsonContent(
+                    properties: [
+                    new OA\Property(property: "id", type: "integer", example: 1),
+                    new OA\Property(property: "email", type: "string", example: "user@example.com"),
+                    new OA\Property(property: "firstName", type: "string", example: "John"),
+                    new OA\Property(property: "lastName", type: "string", example: "Doe"),
+                    new OA\Property(property: "pseudo", type: "string", example: "johndoe"),
+                    new OA\Property(property: "accountStatus", type: "string", example: "Actif"),
+                    new OA\Property(property: "createdAt", type: "string", format: "date-time", example: "2024-01-01T12:00:00Z"),
+                    new OA\Property(property: "numberOfTravelbooks", type: "integer", example: 5)
+                    ],
+                ),
+            ),
+            new OA\Response(response: 404, description: "User not found")
+        ]
+    )]
+    public function getUserDetails(int $id): JsonResponse
+    {
+        $user = $this->userRepository->find($id);
+        if (!$user) {
+            return new JsonResponse(['message' => 'User not found'], 404);
+        }
+
+        return new JsonResponse($this->serializer->serialize($user, 'json', ['groups' => 'user:read']), 200, [], true);
+    }
+
+
 
 }

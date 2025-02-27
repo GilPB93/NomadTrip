@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -328,9 +329,70 @@ class TravelbookController extends AbstractController
     }
 
 
-    // GET TOTAL OF TRAVELBOOKS
-
     // GET LIST OF TRAVELBOOKS
+    #[Route('/all', name: 'list', methods: ['GET'])]
+    #[isGranted('ROLE_ADMIN')]
+    #[OA\Get(
+        path: "/api/travelbook/all",
+        summary: "Récupérer la liste des carnets de voyage",
+        tags: ["Carnet de Voyage"],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Liste des carnets de voyage récupérée avec succès",
+                content: new OA\JsonContent(type: "array", items: new OA\Items(ref: "#/components/schemas/Travelbook"))
+            )
+        ]
+    )]
+    public function getTravelbooks(): JsonResponse
+    {
+        $travelbooks = $this->travelbookRepository->findAll();
+        return new JsonResponse($this->serializer->serialize($travelbooks, 'json', ['groups' => 'travelbook:read']), 200, [], true);
+    }
 
+
+    // GET DETAILS OF TRAVELBOOKS
+    #[Route('/details/{id}', name: 'details', methods: ['GET'])]
+    #[isGranted('ROLE_ADMIN')]
+    #[OA\Get(
+        path: "/api/travelbook/details/{id}",
+        summary: "Récupérer les détails d'un carnet de voyage",
+        tags: ["Carnet de Voyage"],
+        parameters: [
+            new OA\Parameter(
+                name: "id",
+                description: "ID du carnet de voyage",
+                in: "path",
+                required: true,
+                schema: new OA\Schema(type: "integer")
+            )
+        ],
+        responses: [
+            new OA\Response(
+                response: 200,
+                description: "Détails du carnet de voyage récupérés",
+                content: new OA\JsonContent(
+                    properties: [
+                        new OA\Property(property: "id", type: "integer", example: 1),
+                        new OA\Property(property: "title", type: "string", example: "Voyage à Paris"),
+                        new OA\Property(property: "departureAt", type: "string", format: "date", example: "2023-06-01"),
+                        new OA\Property(property: "comebackAt", type: "string", format: "date", example: "2023-06-10"),
+                        new OA\Property(property: "createdAt", type: "string", format: "date-time", example: "2023-05-15T14:30:00Z"),
+                        new OA\Property(property: "user", type: "integer", example: 1)
+                    ]
+                ),
+            ),
+            new OA\Response(response: 404, description: "Carnet de voyage non trouvé")
+        ]
+    )]
+    public function getTravelbookDetails(int $id): JsonResponse
+    {
+        $travelbook = $this->travelbookRepository->find($id);
+        if (!$travelbook) {
+            return new JsonResponse(['message' => 'Carnet de voyage non trouvé'], 404);
+        }
+
+        return new JsonResponse($this->serializer->serialize($travelbook, 'json', ['groups' => 'travelbook:read']), 200, [], true);
+    }
 
 }

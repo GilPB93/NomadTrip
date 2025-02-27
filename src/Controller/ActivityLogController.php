@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use OpenApi\Attributes as OA;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/api/activity-log', name: 'app_api_activity_log')]
 class ActivityLogController extends AbstractController
@@ -132,6 +133,34 @@ class ActivityLogController extends AbstractController
             'message' => 'Logout time recorded successfully',
             'logout_time' => $logoutTime->format('Y-m-d H:i:s'),
             'duration' => $duration
+        ]);
+    }
+
+
+    #[Route('/purge-logout-null', name: 'activity_log_purge_logout_null', methods: ['DELETE'])]
+    #[isGranted('ROLE_ADMIN')]
+    #[OA\Delete(
+        path: '/api/activity-log/purge-logout-null',
+        summary: 'Purge activity logs with null logout',
+        security: [['bearerAuth' => []]],
+        tags: ['Activity Log'],
+        responses: [
+            new OA\Response(response: 200, description: 'Logs purged successfully'),
+            new OA\Response(response: 403, description: 'Access denied'),
+        ]
+    )]
+    public function purgeLogsWithNullLogout(): JsonResponse
+    {
+
+        $query = $this->entityManager->createQuery(
+            'DELETE FROM App\Entity\ActivityLog a WHERE a.logout IS NULL'
+        );
+
+        $deletedRows = $query->execute();
+
+        return new JsonResponse([
+            'message' => 'Purge completed successfully',
+            'deleted_rows' => $deletedRows
         ]);
     }
 

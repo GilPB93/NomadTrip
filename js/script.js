@@ -176,6 +176,7 @@ async function setLogoutTime() {
                 'X-AUTH-TOKEN': getToken(),
                 "Content-Type": "application/json"
             },
+            credentials: 'include',
             body: JSON.stringify({ login_time: loginTime })
         });
 
@@ -188,6 +189,11 @@ async function setLogoutTime() {
         const data = await response.json();
         console.log("✅ Déconnexion enregistrée :", data);
 
+        console.log("🗑️ Purge des logs en cours...");
+        debugger;
+        await purgeLogoutNull();
+
+
         setTimeout(() => {
             eraseCookie(loginTimeCookieName);
             eraseCookie(tokenCookieName);
@@ -196,8 +202,46 @@ async function setLogoutTime() {
             window.location.replace("/");
         }, 1000); //
 
+
     } catch (error) {
         console.error("🚨 Erreur lors de l’enregistrement du logout:", error);
+        debugger;
+    }
+}
+
+// PURGE LOGOUT NULL AT LOGOUT
+async function purgeLogoutNull() {
+    try {
+        console.log("🗑️ Purge des logs en cours...");
+        debugger;
+
+        const response = await fetch(apiURL + 'activity-log/purge-logout-null', {
+            method: "DELETE",
+            headers: {
+                'X-AUTH-TOKEN': getToken(),
+                "Content-Type": "application/json"
+            },
+            credentials: 'include',
+        });
+
+        console.log("📥 Réponse reçue:", response);
+        debugger;
+
+        if (!response.ok) {
+            throw new Error(`❌ Erreur HTTP ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log("🗑️ Purge des logs terminée :", data);
+        debugger;
+
+        if (data.deleted_rows === 0) {
+            console.warn("⚠️ Aucun log supprimé. Vérifie s'il y a bien des entrées avec logout NULL.");
+        }
+
+    } catch (error) {
+        console.error("🚨 Erreur lors de la purge des logs :", error);
+        debugger;
     }
 }
 

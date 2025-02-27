@@ -138,29 +138,4 @@ function showTravelbookDetails(travelbookId) {
         });
 }
 
-// PURGE LOGOUTS NULL
-document.getElementById("btnPurgeLogs").addEventListener("click", purgeActivityLogs);
 
-function purgeActivityLogs() {
-    fetch(apiURL + "activity-log/purge-logout-null", {
-        method: "DELETE",
-        headers: {
-            "X-AUTH-TOKEN": getToken(),
-            "Content-Type": "application/json"
-        }
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error("Échec de la purge des logs");
-        }
-        return response.json();
-    })
-    .then(data => {
-        console.log("✅ Logs purgés :", data);
-        alert("Purge effectuée avec succès !");
-    })
-    .catch(error => {
-        console.error("❌ Erreur lors de la purge :", error);
-        alert("Erreur lors de la purge !");
-    });
-}

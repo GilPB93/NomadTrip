@@ -190,7 +190,6 @@ async function setLogoutTime() {
         console.log("✅ Déconnexion enregistrée :", data);
 
         console.log("🗑️ Purge des logs en cours...");
-        debugger;
         await purgeLogoutNull();
 
 
@@ -205,7 +204,6 @@ async function setLogoutTime() {
 
     } catch (error) {
         console.error("🚨 Erreur lors de l’enregistrement du logout:", error);
-        debugger;
     }
 }
 
@@ -213,7 +211,6 @@ async function setLogoutTime() {
 async function purgeLogoutNull() {
     try {
         console.log("🗑️ Purge des logs en cours...");
-        debugger;
 
         const response = await fetch(apiURL + 'activity-log/purge-logout-null', {
             method: "DELETE",
@@ -225,7 +222,6 @@ async function purgeLogoutNull() {
         });
 
         console.log("📥 Réponse reçue:", response);
-        debugger;
 
         if (!response.ok) {
             throw new Error(`❌ Erreur HTTP ${response.status}`);
@@ -233,7 +229,6 @@ async function purgeLogoutNull() {
 
         const data = await response.json();
         console.log("🗑️ Purge des logs terminée :", data);
-        debugger;
 
         if (data.deleted_rows === 0) {
             console.warn("⚠️ Aucun log supprimé. Vérifie s'il y a bien des entrées avec logout NULL.");
@@ -241,7 +236,6 @@ async function purgeLogoutNull() {
 
     } catch (error) {
         console.error("🚨 Erreur lors de la purge des logs :", error);
-        debugger;
     }
 }
 

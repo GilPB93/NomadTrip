@@ -213,22 +213,20 @@
                             
                             <div class="popover" id="popover-photos">
                                 <h3>Ajouter des photos souvenirs</h3>
-                                <input class="popover-photos" type="file" id="photos" placeholder="Choisissez une photo">
+                                <input class="popover-photos" type="file" id="photos" accept="image/*">
                                 <div class="btn-popover">
                                     <button class="text-center" type="submit" id="add-photos">Ajouter</button>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </form>
             </div>
-                
-                    <div class="btn-group-new-travelbook">
-                        <button class="btn btn-create">Valider</button>
-                        <button class="btn btn-cancel" data-bs-dismiss="modal">Annuler</button>
-                        <button type="button" class="btn btn-delete" id="btnDeleteTravelbook">Supprimer</button>
-                    </div>
+            <div class="btn-group-new-travelbook">
+                <button type="submit" class="btn btn-create" id="btnValidateEditTravelbook">Valider</button>
+                <button class="btn btn-cancel" data-bs-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-delete" id="btnDeleteTravelbook">Supprimer</button>
+            </div>
         </div>
     </div>
 </div>

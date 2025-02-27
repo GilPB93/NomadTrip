@@ -14,234 +14,6 @@ EditionTravelbookModal.addEventListener('hidden.bs.modal', function () {
         editTravelbookForm.reset();
 });
 
-
-
-
-        //LIST OF F&B TO DO
-const addButtonFB = document.getElementById('add-button-fb');
-const popoverFB = document.getElementById('popover-fb');
-const addFbButton = document.getElementById('add-fb');
-const todoFb = document.getElementById('todo-fb');
-const fbNameInput = document.getElementById('fb-name');
-const fbDetailsInput = document.getElementById('fb-details');
-const fbDateInput = document.getElementById('fb-date');
-
-addButtonFB.addEventListener('click', () => {
-    popoverFB.style.display = 'block';
-});
-
-addFbButton.addEventListener('click', async (event) => {
-    event.preventDefault();
-
-    const fbName = fbNameInput.value.trim();
-    const fbDetails = fbDetailsInput.value.trim();
-    const fbDate = fbDateInput.value.trim();
-
-    if (!fbName || !fbDetails || !fbDate) {
-        alert('Veuillez renseigner tous les champs');
-        return;
-    }
-
-    const newFB = {
-        name: fbName,
-        address: fbDetails,
-        visitAt: fbDate,
-        travelbook: travelbookId
-    };
-
-    try {
-        // 🔹 Enregistrement en BDD avec fetch
-        const response = await fetch(apiURL + 'fb', {
-            method: 'POST',
-            mode: 'cors',
-            credentials: 'include',
-            headers: {
-                "Content-Type": "application/json",
-                "X-AUTH-TOKEN": getToken() // Fonction pour récupérer le token
-            },
-            body: JSON.stringify(newFB)
-        });
-
-        if (!response.ok) {
-            const errorMsg = await response.text();
-            throw new Error(`Erreur API: ${errorMsg}`);
-        }
-
-        const savedFB = await response.json();
-
-        // 🔹 Ajout à la liste UI
-        const listItem = document.createElement('li');
-
-        const checkbox = document.createElement('input');
-        checkbox.type = 'checkbox';
-        checkbox.className = 'checkmark';
-
-        const itemText = document.createElement('span');
-        itemText.textContent = `${savedFB.name}, ${savedFB.address}, ${savedFB.visitAt}`;
-
-        const deleteButton = document.createElement('button');
-        deleteButton.textContent = 'X';
-        deleteButton.classList.add('delete-button');
-
-        // 🔹 Suppression de l'élément en UI + BDD
-        deleteButton.addEventListener('click', async () => {
-            try {
-                const deleteResponse = await fetch(apiURL + `fb/${savedFB.id}`, {
-                    method: 'DELETE',
-                    headers: {
-                        "X-AUTH-TOKEN": getToken()
-                    }
-                });
-
-                if (!deleteResponse.ok) throw new Error('Erreur lors de la suppression');
-
-                todoFb.removeChild(listItem);
-            } catch (error) {
-                console.error('Erreur lors de la suppression:', error);
-            }
-        });
-
-        listItem.appendChild(checkbox);
-        listItem.appendChild(itemText);
-        listItem.appendChild(deleteButton);
-        todoFb.appendChild(listItem);
-
-        // 🔹 Réinitialisation des inputs
-        fbNameInput.value = '';
-        fbDetailsInput.value = '';
-        fbDateInput.value = '';
-        popoverFB.style.display = 'none';
-
-    } catch (error) {
-        console.error('❌ Erreur lors de l\'ajout:', error);
-    }
-});
-
-// 🔹 Fermeture du popover si on clique en dehors
-window.addEventListener('click', (event) => {
-    if (!popoverFB.contains(event.target) && event.target !== addButtonFB) {
-        popoverFB.style.display = 'none';
-    }
-});
-
-
-
-        //LIST OF SOUVENIRS TO BUY
-const addButtonSouvenirs = document.getElementById('add-button-souvenirs');
-const popoverSouvenirs = document.getElementById('popover-souvenirs');
-const addSouvenirsButton = document.getElementById('add-souvenirs');
-const todoSouvenirs = document.getElementById('todo-souvenirs');
-const souvenirsWhatInput = document.getElementById('souvenirs-what');
-const souvenirsWhoInput = document.getElementById('souvenirs-who');
-
-addButtonSouvenirs.addEventListener('click', () => {
-        popoverSouvenirs.style.display = 'block';
-});
-
-addSouvenirsButton.addEventListener('click', (event) => {
-        event.preventDefault();
-        const souvenirsWhat = souvenirsWhatInput.value.trim();
-        const souvenirsWho = souvenirsWhoInput.value.trim();
-    
-        if (souvenirsWhat) {
-            const listItem = document.createElement('li');
-    
-            const checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.className = 'checkmark';
-    
-            const itemText = document.createElement('span');
-            itemText.textContent = `${souvenirsWhat}, ${souvenirsWho}`;
-    
-            const deleteButton = document.createElement('button');
-            deleteButton.textContent = 'X';
-            deleteButton.classList.add('delete-button');
-    
-            deleteButton.addEventListener('click', (deleteEvent) => {
-                deleteEvent.preventDefault();
-                todoSouvenirs.removeChild(listItem);
-            });
-    
-            listItem.appendChild(checkbox);
-            listItem.appendChild(itemText);
-            listItem.appendChild(deleteButton);
-            todoSouvenirs.appendChild(listItem);
-    
-            souvenirsWhatInput.value = '';
-            souvenirsWhoInput.value = '';
-            popover.style.display = 'none';
-        } else {
-            alert('Saisissez les informations du souvenir à acheter');
-        }
-});
-
-window.addEventListener('click', (event) => {
-        if (event.target !== popoverSouvenirs && !popoverSouvenirs.contains(event.target) && event.target !== addButtonSouvenirs) {
-            popoverSouvenirs.style.display = 'none';
-        }
-});
-
-        //LIST OF PHOTOS TO ADD
-const addButtonPhotos = document.getElementById('add-button-photos');
-const popoverPhotos = document.getElementById('popover-photos');
-const addPhotosButton = document.getElementById('add-photos');
-const todoPhotos = document.getElementById('todo-photos');
-const photosInput = document.getElementById('photos');
-
-addButtonPhotos.addEventListener('click', () => {
-        popoverPhotos.style.display = 'block';
-});
-
-addPhotosButton.addEventListener('click', (event) => {
-        event.preventDefault();
-        const selectedPhoto = photosInput.files[0];
-    
-        if (selectedPhoto) {
-            const listItem = document.createElement('li');
-            listItem.classList.add('thumbnail-item'); 
-    
-        const img = document.createElement('img');
-        img.src = URL.createObjectURL(selectedPhoto); 
-        img.alt = 'Miniature';
-        img.classList.add('thumbnail');
-
-        const deleteButtonPhotos = document.createElement('button');
-        deleteButtonPhotos.textContent = 'X';
-        deleteButtonPhotos.classList.add('delete-button-photos', 'hidden');
-
-        deleteButtonPhotos.addEventListener('click', (deleteEvent) => {
-        deleteEvent.preventDefault();
-        todoPhotos.removeChild(listItem);
-        });
-    
-        listItem.addEventListener('mouseenter', () => {
-        deleteButtonPhotos.classList.remove('hidden');
-        });
-
-        listItem.addEventListener('mouseleave', () => {
-        deleteButtonPhotos.classList.add('hidden');
-        });
-
-        listItem.appendChild(img);
-        listItem.appendChild(deleteButtonPhotos);
-        todoPhotos.appendChild(listItem);
-
-        photosInput.value = '';
-        popoverPhotos.style.display = 'none';
-        } else {
-            alert('Veuillez sélectionner une image.');
-        }
-});
-    
-
-window.addEventListener('click', (event) => {
-        if ( event.target !== popoverPhotos && !popoverPhotos.contains(event.target) && event.target !== addButtonPhotos) {
-        popoverPhotos.style.display = 'none';
-        }
-});
-     
-
-
 // CREATE TRAVELBOOK
 const inputTitle = document.getElementById('title');
 const inputImgCover = document.getElementById('imgCouverture');
@@ -405,7 +177,7 @@ function displayTravelbooks(travelbooks) {
     // Ajoute un EventListener à tous les boutons "Voir"
     document.querySelectorAll(".btn-show").forEach(button => {
         button.addEventListener("click", (event) => {
-            const travelbookId = event.target.getAttribute("data-travelbook-id");
+            let travelbookId = event.target.getAttribute("data-travelbook-id");
             console.log("📌 ID du travelbook sélectionné :", travelbookId); // 🔴 Debugging
             if (travelbookId) {
                 loadTravelbookDetails(travelbookId);
@@ -418,7 +190,7 @@ function displayTravelbooks(travelbooks) {
     // Ajoute un EventListener à tous les boutons "Modifier"
     document.querySelectorAll(".btn-modif").forEach(button => {
         button.addEventListener("click", (event) => {
-            const travelbookId = event.target.getAttribute("data-travelbook-id");
+            let travelbookId = event.target.getAttribute("data-travelbook-id");
             editTravelbook(travelbookId);
         });
     });
@@ -506,7 +278,7 @@ function updateModalWithTravelbook(travelbook) {
     if (travelbook.photos.length > 0) {
         travelbook.photos.forEach(photo => {
             const img = document.createElement("img");
-            img.src = `http://127.0.0.1:8000/uploads/images/travelbooks/${photo.filename}`;
+            img.src = `http://127.0.0.1:8000/uploads/photos/${photo.filename}`;
             img.classList.add("travel-photo");
             photoContainer.appendChild(img);
         });
@@ -516,8 +288,632 @@ function updateModalWithTravelbook(travelbook) {
 }
 
 
-
 // EDIT TRAVELBOOK BY USER
+const travelbookId = document.getElementById("EditionTravelbookModal").getAttribute("data-travelbook-id");
+
+function editTravelbook(travelbookId) {
+    document.getElementById("EditionTravelbookModal").setAttribute("data-travelbook-id", travelbookId);
+
+    fetch(apiURL + `travelbook/${travelbookId}`, {
+        method: "GET",
+        headers: {
+            "X-AUTH-TOKEN": getToken(),
+            "Accept": "application/json"
+        }
+    })
+    .then(response => {
+        if (!response.ok) throw new Error("Erreur lors du chargement du carnet de voyage");
+        return response.json();
+    })
+    .then(travelbook => {
+        console.log("📝 Carnet de voyage en édition :", travelbook);
+        
+        // Remplir les champs principaux
+        document.getElementById("edit-title").value = travelbook.title;
+        document.getElementById("edit-departureAt").value = travelbook.departureAt.substring(0, 16);
+        document.getElementById("edit-comebackAt").value = travelbook.comebackAt.substring(0, 16);
+        document.getElementById("edit-flightNumber").value = travelbook.flightNumber || "";
+        document.getElementById("edit-accommodation").value = travelbook.accommodation || "";
+
+        // Charger chaque liste individuellement
+        loadPlaces(travelbook.places || []);
+        loadFB(travelbook.fBs || []);
+        loadSouvenirs(travelbook.souvenirs || []);
+        loadPhotos(travelbook.photos || []);
+    })
+    .catch(error => console.error("❌ Erreur :", error));
+}
+
+document.getElementById("btnValidateEditTravelbook").addEventListener("click", async (event) => {
+    event.preventDefault();
+    updateTravelbook();
+});
+
+
+async function updateTravelbook() {
+    const updatedTravelbook = {
+        title: document.getElementById("edit-title").value,
+        departureAt: document.getElementById("edit-departureAt").value,
+        comebackAt: document.getElementById("edit-comebackAt").value,
+        flightNumber: document.getElementById("edit-flightNumber").value || null,
+        accommodation: document.getElementById("edit-accommodation").value || null,
+    };
+
+    try {
+        // Envoyer les données mises à jour à l'API
+        const response = await fetch(apiURL + `travelbook/${travelbookId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                "X-AUTH-TOKEN": getToken(),
+            },
+            body: JSON.stringify(updatedTravelbook),
+        });
+
+        if (!response.ok) {
+            throw new Error("Erreur lors de la mise à jour du carnet de voyage.");
+        }
+
+        console.log("✅ Carnet de voyage mis à jour avec succès !");
+        alert("Modifications enregistrées !");
+
+        const modal = bootstrap.Modal.getInstance(document.getElementById("EditionTravelbookModal"));
+        modal.hide();
+
+        fetchUserTravelbooks();
+    } catch (error) {
+        console.error("❌ Erreur :", error);
+        alert("Une erreur s'est produite lors de la mise à jour.");
+    }
+}
+
+    // MANAGE PLACES LIST
+    function loadPlaces(places) {
+        console.log("🔍 Structure complète des places :", JSON.stringify(places, null, 2));
+    
+        const todoPlaces = document.getElementById("todo-places");
+        todoPlaces.innerHTML = ""; // Nettoie la liste
+    
+        if (!places || places.length === 0) {
+            todoPlaces.innerHTML = "<p>Aucun lieu enregistré</p>";
+            return;
+        }
+    
+        places.forEach(place => {
+            console.log("✅ Ajout du lieu :", place);
+            const listItem = createPlaceItem(place);
+            todoPlaces.appendChild(listItem);
+        });
+    }
+    
+    const addButtonPlaces = document.getElementById("add-button-places");
+    const popoverPlaces = document.getElementById("popover-places");
+    const addPlacesButton = document.getElementById("add-place");
+    const todoPlaces = document.getElementById("todo-places");
+    const placeNameInput = document.getElementById("place-name");
+    const placeDetailsInput = document.getElementById("place-details");
+    const placeDateInput = document.getElementById("place-date");
+    
+    addButtonPlaces.addEventListener("click", () => {
+        popoverPlaces.style.display = "block";
+    });
+
+    addPlacesButton.addEventListener("click", async (event) => {
+        event.preventDefault();
+    
+        const name = placeDetailsInput.value.trim();
+        const address = placeDetailsInput.value.trim();
+        const visitAt = placeDateInput.value.trim();
+        let travelbookId = document.getElementById("EditionTravelbookModal").getAttribute("data-travelbook-id");
+
+    
+        if (!name || !address || !visitAt) {
+            alert("Veuillez remplir tous les champs.");
+            return;
+        }
+    
+        const newPlace = { 
+            name, 
+            address, 
+            visitAt, 
+            travelbook: travelbookId 
+        };
+    
+        try {
+            const response = await fetch(apiURL + `places`, {
+                method: "POST",
+                headers: { 
+                    "Content-Type": "application/json", 
+                    "X-AUTH-TOKEN": getToken() 
+                },
+                body: JSON.stringify(newPlace)
+            });
+    
+            if (!response.ok) {
+                throw new Error("Erreur API lors de l'ajout du lieu.");
+            }
+    
+            const savedPlace = await response.json();
+    
+            const listItem = createPlaceItem(savedPlace);
+            todoPlaces.appendChild(listItem);
+    
+            placeNameInput.value = "";
+            placeDetailsInput.value = "";
+            placeDateInput.value = "";
+            popoverPlaces.style.display = "none";
+    
+            console.log("✅ Lieu ajouté :", savedPlace);
+        } catch (error) {
+            console.error("❌ Erreur lors de l'ajout du lieu :", error);
+        }
+    });
+
+    
+    function createPlaceItem(place) { 
+        const listItem = document.createElement("li");
+        listItem.dataset.id = place.id;
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.className = "checkmark";
+
+        const placeNameText = place.name ? place.name : "❌ Aucun lieu";
+        const placeDetailsText = place.address ? place.address : "❌ Non spécifié";
+        const placeDateText = place.visitAt ? place.visitAt : "❌ Non spécifié";
+
+    
+        const itemText = document.createElement("span");
+        itemText.textContent = `${placeNameText}, ${placeDetailsText}, ${placeDateText}`;
+    
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "X";
+        deleteButton.classList.add("delete-button");
+    
+        deleteButton.addEventListener("click", async (event) => {
+            if (confirm("Voulez-vous supprimer ce lieu ?")) {
+                try {
+                    const response = await fetch(apiURL + `places/${place.id}`, {
+                        method: "DELETE",
+                        headers: { 
+                            "X-AUTH-TOKEN": getToken() 
+                        }
+                    });
+    
+                    if (!response.ok) {
+                        throw new Error("Erreur lors de la suppression.");
+                    }
+    
+                    listItem.remove();
+                    console.log("✅ Lieu supprimé !");
+                } catch (error) {
+                    console.error("❌ Erreur lors de la suppression :", error);
+                }
+            }
+        });
+    
+        listItem.appendChild(checkbox);
+        listItem.appendChild(itemText);
+        listItem.appendChild(deleteButton);
+    
+        return listItem;
+    };
+    
+    window.addEventListener("click", (event) => {
+        if (!popoverPlaces.contains(event.target) && event.target !== addButtonPlaces) {
+            popoverPlaces.style.display = "none";
+        }
+    });
+    
+    
+    
+    // MANAGE FB LIST
+    function loadFB(restaurants) { 
+        const todoFB = document.getElementById("todo-fb");
+        todoFB.innerHTML = ""; // Nettoie la liste
+    
+        if (!restaurants || restaurants.length === 0) {
+            todoFB.innerHTML = "<p>Aucun restaurant/bar enregistré</p>";
+            return;
+        }
+    
+        restaurants.forEach(fb => {
+            console.log("✅ Ajout du restaurant/bar :", fb);
+            const listItem = createFBItem(fb);
+            todoFB.appendChild(listItem);
+        });
+    }
+    
+    const addButtonFB = document.getElementById("add-button-fb");
+    const popoverFB = document.getElementById("popover-fb");
+    const addFBButton = document.getElementById("add-fb");
+    const todoFB = document.getElementById("todo-fb");
+    const fbNameInput = document.getElementById("fb-name");
+    const fbDetailsInput = document.getElementById("fb-details");
+    const fbDateInput = document.getElementById("fb-date");
+    
+    addButtonFB.addEventListener("click", () => {
+        popoverFB.style.display = "block";
+    });
+    
+    addFBButton.addEventListener("click", async (event) => {
+        event.preventDefault();
+    
+        const name = fbNameInput.value.trim();
+        const address = fbDetailsInput.value.trim();
+        const visitAt = fbDateInput.value.trim();
+        let travelbookId = document.getElementById("EditionTravelbookModal").getAttribute("data-travelbook-id");
+    
+        if (!name || !address || !visitAt) {
+            alert("Veuillez remplir tous les champs.");
+            return;
+        }
+    
+        const newFB = { 
+            name, 
+            address, 
+            visitAt, 
+            travelbook: travelbookId 
+        };
+    
+        try {
+            const response = await fetch(apiURL + `fb`, {
+                method: "POST",
+                headers: { 
+                    "Content-Type": "application/json", 
+                    "X-AUTH-TOKEN": getToken() 
+                },
+                body: JSON.stringify(newFB)
+            });
+    
+            if (!response.ok) {
+                throw new Error("Erreur API lors de l'ajout du restaurant/bar.");
+            }
+    
+            const savedFB = await response.json();
+    
+            const listItem = createFBItem(savedFB);
+            todoFB.appendChild(listItem);
+    
+            fbNameInput.value = "";
+            fbDetailsInput.value = "";
+            fbDateInput.value = "";
+            popoverFB.style.display = "none";
+    
+            console.log("✅ Restaurant/Bar ajouté :", savedFB);
+        } catch (error) {
+            console.error("❌ Erreur lors de l'ajout du restaurant/bar :", error);
+        }
+    });
+    
+    function createFBItem(fb) {
+        console.log("📌 Création d'un élément Restaurant/Bar :", fb);
+    
+        const listItem = document.createElement("li");
+        listItem.dataset.id = fb.id;
+
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.className = "checkmark";
+
+        const fbNameText = fb.name ? fb.name : "❌ Aucun restaurant/bar";
+        const fbDetailsText = fb.address ? fb.address : "❌ Non spécifié";
+        const fbDateText = fb.visitAt ? fb.visitAt : "❌ Non spécifié";
+    
+        const itemText = document.createElement("span");
+        itemText.textContent = `${fbNameText}, ${fbDetailsText}, ${fbDateText}`;
+    
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "X";
+        deleteButton.classList.add("delete-button");
+    
+        deleteButton.addEventListener("click", async () => {
+            if (confirm("Voulez-vous supprimer ce restaurant/bar ?")) {
+                try {
+                    const response = await fetch(apiURL + `fb/${fb.id}`, {
+                        method: "DELETE",
+                        headers: { 
+                            "X-AUTH-TOKEN": getToken() 
+                        }
+                    });
+    
+                    if (!response.ok) {
+                        throw new Error("Erreur lors de la suppression.");
+                    }
+    
+                    listItem.remove();
+                    console.log("✅ Restaurant/Bar supprimé !");
+                } catch (error) {
+                    console.error("❌ Erreur lors de la suppression :", error);
+                }
+            }
+        });
+    
+        listItem.appendChild(checkbox);
+        listItem.appendChild(itemText);
+        listItem.appendChild(deleteButton);
+    
+        return listItem;
+    }
+    
+    window.addEventListener("click", (event) => {
+        if (!popoverFB.contains(event.target) && event.target !== addButtonFB) {
+            popoverFB.style.display = "none";
+        }
+    });
+    
+    
+    // MANAGE SOUVENIRS LIST
+    function loadSouvenirs(souvenirs) {
+        const todoSouvenirs = document.getElementById("todo-souvenirs");
+        todoSouvenirs.innerHTML = "";
+    
+        if (!souvenirs || souvenirs.length === 0) {
+            todoSouvenirs.innerHTML = "<p>Aucun souvenir enregistré</p>";
+            return;
+        }
+    
+        souvenirs.forEach(souvenir => {
+            console.log("✅ Ajout de souvenir :", souvenir);
+            const listItem = createSouvenirItem(souvenir);
+            todoSouvenirs.appendChild(listItem);
+        });
+    }
+    
+    const addButtonSouvenirs = document.getElementById("add-button-souvenirs");
+    const popoverSouvenirs = document.getElementById("popover-souvenirs");
+    const addSouvenirsButton = document.getElementById("add-souvenirs");
+    const todoSouvenirs = document.getElementById("todo-souvenirs");
+    const souvenirsWhatInput = document.getElementById("souvenirs-what");
+    const souvenirsWhoInput = document.getElementById("souvenirs-who");
+
+    addButtonSouvenirs.addEventListener("click", () => {
+        popoverSouvenirs.style.display = "block";
+    });
+
+    addSouvenirsButton.addEventListener("click", async (event) => {
+    event.preventDefault();
+
+    const souvenirsWhat = souvenirsWhatInput.value.trim();
+    const souvenirsWho = souvenirsWhoInput.value.trim();
+    let travelbookId = document.getElementById("EditionTravelbookModal").getAttribute("data-travelbook-id");
+
+    if (!souvenirsWhat) {
+        alert("Saisissez le souvenir à acheter.");
+        return;
+    }
+
+    const newSouvenir = {
+        what: souvenirsWhat,
+        forWho: souvenirsWho,
+        travelbook: travelbookId
+    };
+
+    try {
+        const response = await fetch(apiURL + "souvenirs", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-AUTH-TOKEN": getToken(),
+            },
+            body: JSON.stringify(newSouvenir),
+        });
+
+        if (!response.ok) {
+            throw new Error("Erreur lors de l'ajout du souvenir.");
+        }
+
+        const savedSouvenir = await response.json();
+
+        const listItem = createSouvenirItem(savedSouvenir);
+        todoSouvenirs.appendChild(listItem);
+
+        souvenirsWhatInput.value = "";
+        souvenirsWhoInput.value = "";
+        popoverSouvenirs.style.display = "none";
+
+        console.log("✅ Souvenir ajouté :", savedSouvenir);
+    } catch (error) {
+        console.error("❌ Erreur lors de l'ajout du souvenir :", error);
+    }
+    });
+
+    function createSouvenirItem(souvenir) {    
+        const listItem = document.createElement("li");
+        listItem.dataset.id = souvenir.id;
+    
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.className = "checkmark";
+    
+        const whatText = souvenir.what ? souvenir.what : "❌ Aucun élément";
+        const forWhoText = souvenir.forWho ? souvenir.forWho : "❌ Non spécifié";
+    
+        const itemText = document.createElement("span");
+        itemText.textContent = `${whatText}, ${forWhoText}`;
+    
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "X";
+        deleteButton.classList.add("delete-button");
+    
+        deleteButton.addEventListener("click", async () => {
+            if (confirm("Voulez-vous supprimer ce souvenir ?")) {
+                try {
+                    const response = await fetch(apiURL + `souvenirs/${souvenir.id}`, {
+                        method: "DELETE",
+                        headers: { "X-AUTH-TOKEN": getToken() },
+                    });
+    
+                    if (!response.ok) {
+                        throw new Error("Erreur lors de la suppression.");
+                    }
+    
+                    listItem.remove();
+                    console.log("✅ Souvenir supprimé !");
+                } catch (error) {
+                    console.error("❌ Erreur lors de la suppression :", error);
+                }
+            }
+        });
+    
+        listItem.appendChild(checkbox);
+        listItem.appendChild(itemText);
+        listItem.appendChild(deleteButton);
+    
+        return listItem;
+    }
+    
+    window.addEventListener("click", (event) => {
+        if (!popoverSouvenirs.contains(event.target) && event.target !== addButtonSouvenirs) {
+            popoverSouvenirs.style.display = "none";
+        }
+    });
+    
+
+    // MANAGE PHOTOS LIST
+    function loadPhotos(photos) {   
+        const todoPhotos = document.getElementById("todo-photos");
+        todoPhotos.innerHTML = ""; // Nettoie la liste
+    
+        if (!photos || photos.length === 0) {
+            todoPhotos.innerHTML = "<p>Aucune photo ajoutée</p>";
+            return;
+        }
+    
+        photos.forEach(photo => {
+            console.log("✅ Ajout de la photo :", photo);
+            const listItem = createPhotoItem(photo);
+            todoPhotos.appendChild(listItem);
+        });
+    }
+    
+    const addButtonPhotos = document.getElementById("add-button-photos");
+    const popoverPhotos = document.getElementById("popover-photos");
+    const addPhotosButton = document.getElementById("add-photos");
+    const todoPhotos = document.getElementById("todo-photos");
+    const photosInput = document.getElementById("photos");
+
+    
+    addButtonPhotos.addEventListener("click", () => {
+        popoverPhotos.style.display = "block";
+    });
+    
+    addPhotosButton.addEventListener("click", async (event) => {
+        event.preventDefault();
+    
+        const file = photosInput.files[0];
+        let travelbookId = document.getElementById("EditionTravelbookModal").getAttribute("data-travelbook-id");
+        if (!file) {
+            alert("Veuillez sélectionner une image.");
+            return;
+        }
+    
+        const formData = new FormData();
+        formData.append("imgUrl", file);
+        formData.append("travelbook", travelbookId);
+    
+        try {
+            const response = await fetch(apiURL + `photos`, {
+                method: "POST",
+                headers: { "X-AUTH-TOKEN": getToken() },
+                body: formData
+            });
+    
+            if (!response.ok) {
+                throw new Error("Erreur API lors de l'ajout de la photo.");
+            }
+    
+            const savedPhoto = await response.json();
+    
+            const listItem = createPhotoItem(savedPhoto);
+            todoPhotos.appendChild(listItem);
+    
+            photosInput.value = "";
+            popoverPhotos.style.display = "none";
+    
+            console.log("✅ Photo ajoutée :", savedPhoto);
+        } catch (error) {
+            console.error("❌ Erreur lors de l'ajout de la photo :", error);
+        }
+    });
+    
+    function createPhotoItem(photo) {
+        console.log("📌 Création d'un élément Photo :", photo);
+    
+        const listItem = document.createElement("li");
+        listItem.dataset.id = photo.id;
+        listItem.classList.add("thumbnail-item");
+    
+        const img = document.createElement("img");
+        img.src = `${photo.imgUrl}`;
+        img.alt = "Photo souvenir";
+        img.classList.add("thumbnail");
+    
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "X";
+        deleteButton.classList.add("delete-button-photos");
+    
+        deleteButton.addEventListener("click", async () => {
+            if (confirm("Voulez-vous supprimer cette photo ?")) {
+                try {
+                    const response = await fetch(apiURL + `photos/${photo.id}`, {
+                        method: "DELETE",
+                        headers: { "X-AUTH-TOKEN": getToken() }
+                    });
+    
+                    if (!response.ok) {
+                        throw new Error("Erreur lors de la suppression.");
+                    }
+    
+                    listItem.remove();
+                    console.log("✅ Photo supprimée !");
+                } catch (error) {
+                    console.error("❌ Erreur lors de la suppression :", error);
+                }
+            }
+        });
+    
+        listItem.appendChild(img);
+        listItem.appendChild(deleteButton);
+        
+        return listItem;
+    }
+    
+    window.addEventListener("click", (event) => {
+        if (!popoverPhotos.contains(event.target) && event.target !== addButtonPhotos) {
+            popoverPhotos.style.display = "none";
+        }
+    });
+    
+
+
+
+    // CREATE LIST ITEM
+    function createListItem(id, text, deleteFunction) {
+        const listItem = document.createElement("li");
+        listItem.dataset.id = id;
+    
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.className = "checkmark";
+    
+        const itemText = document.createElement("span");
+        itemText.textContent = text;
+    
+        const deleteButton = document.createElement("button");
+        deleteButton.textContent = "X";
+        deleteButton.classList.add("delete-button");
+        deleteButton.addEventListener("click", () => deleteFunction(id));
+    
+        listItem.appendChild(checkbox);
+        listItem.appendChild(itemText);
+        listItem.appendChild(deleteButton);
+    
+        return listItem;
+    }
+    
+
+
 
 
 // DELETE TRAVELBOOK BY USER

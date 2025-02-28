@@ -31,7 +31,10 @@ function checkCredentials(event) {
             } else {
                 inputEmail.classList.add('is-invalid');
                 inputPassword.classList.add('is-invalid');
+                alert("Les identifiants sont incorrects");
+
                 throw new Error('Invalid credentials');
+
             }
         })
         .then(result => {

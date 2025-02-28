@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Repository\UserRepository;
 use App\Repository\TravelbookRepository;
+use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,6 +18,7 @@ class AdminStatsController extends AbstractController
     ) {
     }
 
+    // GET TOTALS OF USERS AND TRAVELBOOKS
     #[Route('/totals', name: 'totals', methods: ['GET'])]
     public function getTotals(): JsonResponse
     {
@@ -39,4 +41,55 @@ class AdminStatsController extends AbstractController
             'lastSignups' => $lastSignupData
         ]);
     }
+
+
+    // GET LIST OF USERS
+    #[Route('/list-users', name: 'list_users', methods: ['GET'])]
+    public function fetchListUsers(): JsonResponse
+    {
+        $users = $this->userRepository->findAll();
+
+        $usersData = array_map(function ($user) {
+            return [
+                'id' => $user->getId(),
+                'name' => $user->getFirstName() . ' ' . $user->getLastName(),
+                'email' => $user->getEmail(),
+                'createdAt' => $user->getCreatedAt()->format('d/m/Y H:i')
+            ];
+        }, $users);
+
+        return new JsonResponse($usersData);
+    }
+
+    // GET LIST OF TRAVELBOOKS GROUPED BY USER
+    #[Route('/list-travelbooks', name: 'list_travelbooks', methods: ['GET'])]
+    public function fetchListTravelbooks(): JsonResponse
+    {
+        $travelbooks = $this->travelbookRepository->findAll();
+
+        $groupedTravelbooks = [];
+
+        foreach ($travelbooks as $travelbook) {
+            $user = $travelbook->getUser();
+            $userName = $user ? $user->getFirstName() . ' ' . $user->getLastName() : 'Inconnu';
+
+            if (!isset($groupedTravelbooks[$userName])) {
+                $groupedTravelbooks[$userName] = [
+                    'createdBy' => $userName,
+                    'travelbooks' => []
+                ];
+            }
+
+            $groupedTravelbooks[$userName]['travelbooks'][] = [
+                'id' => $travelbook->getId(),
+                'title' => $travelbook->getTitle(),
+                'createdAt' => $travelbook->getCreatedAt()->format('d/m/Y H:i')
+            ];
+        }
+
+        return new JsonResponse(array_values($groupedTravelbooks));
+    }
+
+
+
 }

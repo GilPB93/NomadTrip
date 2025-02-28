@@ -882,9 +882,6 @@ async function updateTravelbook() {
             popoverPhotos.style.display = "none";
         }
     });
-    
-
-
 
     // CREATE LIST ITEM
     function createListItem(id, text, deleteFunction) {
@@ -913,7 +910,47 @@ async function updateTravelbook() {
 
 
 
-
 // DELETE TRAVELBOOK BY USER
+const deleteTravelbookButton = document.getElementById("btnDeleteTravelbook");
+
+deleteTravelbookButton.addEventListener("click", function () {
+    const travelbookId = document.getElementById("EditionTravelbookModal").getAttribute("data-travelbook-id");
+
+    if (!travelbookId) {
+        console.error("❌ Aucun ID de travelbook trouvé pour la suppression.");
+        alert("Une erreur est survenue : impossible de supprimer le carnet de voyage.");
+        return;
+    }
+
+    if (confirm("Voulez-vous vraiment supprimer ce carnet de voyage ?")) {
+        fetch(`${apiURL}travelbook/${travelbookId}`, {
+            method: "DELETE",
+            headers: {
+                "X-AUTH-TOKEN": getToken()
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                console.log("✅ Travelbook supprimé avec succès.");
+                alert("Le carnet de voyage a bien été supprimé.");
+
+                // Fermer le modal
+                const modalElement = document.getElementById("EditionTravelbookModal");
+                const modalInstance = bootstrap.Modal.getInstance(modalElement);
+                if (modalInstance) modalInstance.hide();
+
+                // Rafraîchir la liste des carnets de voyage
+                fetchUserTravelbooks();
+            } else {
+                throw new Error("❌ Erreur lors de la suppression du travelbook");
+            }
+        })
+        .catch(error => {
+            console.error("❌ Erreur :", error);
+            alert("Une erreur est survenue lors de la suppression du carnet de voyage.");
+        });
+    }
+});
+
 
 

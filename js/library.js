@@ -199,11 +199,11 @@ function displayTravelbooks(travelbooks) {
 
 
 // SHOW MODAL TRAVELBOOK
-function loadTravelbookDetails(travelbookId) {
+function fetchTravelbookData(travelbookId, callback) {
     fetch(apiURL + `travelbook/${travelbookId}`, {
         method: "GET",
         headers: {
-            "X-AUTH-TOKEN": getToken(), 
+            "X-AUTH-TOKEN": getToken(),
             "Accept": "application/json"
         }
     })
@@ -213,79 +213,76 @@ function loadTravelbookDetails(travelbookId) {
         }
         return response.json();
     })
-    .then(travelbook => {
-        console.log("📖 Travelbook chargé :", travelbook);
-        updateModalWithTravelbook(travelbook);
-    })
+    .then(callback)
     .catch(error => console.error("❌ Erreur :", error));
 }
 
 function updateModalWithTravelbook(travelbook) {
     document.getElementById("ShowTravelbookModalLabel").innerText = travelbook.title;
 
-    // Récupération et mise à jour de l'image de couverture
-    console.log("🔍 Vérification imgCouvertureUrl :", travelbook.imgCouvertureUrl);
-
-    const imageUrl = travelbook.imgCouvertureUrl 
-        ? travelbook.imgCouvertureUrl 
-        : "/img/default.jpg"; // Image par défaut si aucune couverture
-
     const imgCoverElement = document.querySelector("#imgCouvertureModalShow img");
-    if (imgCoverElement) {
-        console.log("✅ Image mise à jour :", imageUrl);
-        imgCoverElement.src = imageUrl;
-        imgCoverElement.alt = travelbook.title;
-    } else {
-        console.error("⚠️ L'élément <img> pour la couverture est introuvable !");
-    }
+    imgCoverElement.src = travelbook.imgCouverture 
+        ? `http://127.0.0.1:8000/uploads/images/travelbooks/${travelbook.imgCouverture}`
+        : "/img/default.jpg";
+    imgCoverElement.alt = travelbook.title;
 
-    // Mise à jour des détails du voyage
-    function formatDateTime(datetimeString) {
-        const options = { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' };
-        return new Date(datetimeString).toLocaleDateString('fr-FR', options);
-    }
-    document.getElementById("departureAtModalShow").innerHTML = `
-        <h3>📅 Date et heure de départ :</h3> 
-        <p><strong>${formatDateTime(travelbook.departureAt)}</strong></p>
-    `;
+    document.getElementById("departureAtModalShow").innerHTML = `<h3>🛫 Date et heure de départ :</h3> ${formatDateTime(travelbook.departureAt)}`;
+    document.getElementById("comebackAtModalShow").innerHTML = `<h3>🛬 Date et heure de retour :</h3> ${formatDateTime(travelbook.comebackAt)}`;
 
-    document.getElementById("comebackAtModalShow").innerHTML = `
-        <h3>📅 Date et heure de retour :</h3> 
-        <p><strong>${formatDateTime(travelbook.comebackAt)}</strong></p>
-    `;
+    document.getElementById("nbDaysModalShow").innerHTML = `<h3>📆 Nombre de jours :</h3> ${calculateNbDays(travelbook.departureAt, travelbook.comebackAt)} jours`;
 
-    // Calcul du nombre de jours
-    const departure = new Date(travelbook.departureAt);
-    const comeback = new Date(travelbook.comebackAt);
-    const nbDays = Math.ceil((comeback - departure) / (1000 * 60 * 60 * 24));
-
-    document.getElementById("nbDaysModalShow").innerHTML = `<h3>📅 Nombre de jours :</h3> ${nbDays} jours`;
     document.getElementById("flightNumberModalShow").innerHTML = `<h3>✈️ Numéro de vol :</h3> ${travelbook.flightNumber || "Non renseigné"}`;
-    document.getElementById("accommodationModalShow").innerHTML = `<h3> 🏨 Logement :</h3> ${travelbook.accommodation || "Non renseigné"}`;
+    document.getElementById("accommodationModalShow").innerHTML = `<h3>🏨 Logement :</h3> ${travelbook.accommodation || "Non renseigné"}`;
 
-    // Mise à jour des activités et des restaurants/bars
-    document.getElementById("allPlacesToVisitModalShow").innerHTML = travelbook.places.length > 0 
-        ? travelbook.places.map(place => `<h3> 🎟️ ${place.name}</h3>`).join("") 
-        : "<h3>🎟️ Aucune activité enregistrée</h3>";
+    updateListContent("allPlacesToVisitModalShow", travelbook.places, "🎟️");
+    updateListContent("allFBToDoModalShow", travelbook.fBs, "🍽️");
 
-    document.getElementById("allFBToDoModalShow").innerHTML = travelbook.fBs.length > 0
-        ? travelbook.fBs.map(fb => `<h3>🍽️ ${fb.name}</h3>`).join("")
-        : "<h3>🍽️ Aucun restaurant ou bar enregistré</h3>";
+    updatePhotoGallery(travelbook.photos);
+}
 
-    // Mise à jour des photos
+function formatDateTime(datetimeString) {
+    return new Date(datetimeString).toLocaleDateString('fr-FR', { 
+        weekday: 'long', day: '2-digit', month: 'long', year: 'numeric', 
+        hour: '2-digit', minute: '2-digit' 
+    });
+}
+
+function calculateNbDays(departureAt, comebackAt) {
+    const departure = new Date(departureAt);
+    const comeback = new Date(comebackAt);
+    return Math.ceil((comeback - departure) / (1000 * 60 * 60 * 24));
+}
+
+function updateListContent(elementId, items, emoji) {
+    const element = document.getElementById(elementId);
+    element.innerHTML = items.length > 0 
+        ? items.map(item => `<h3>${emoji} ${item.name}</h3>`).join("") 
+        : `<h3>${emoji} Aucune donnée disponible</h3>`;
+}
+
+function updatePhotoGallery(photos) {
     const photoContainer = document.getElementById("allphotosTravelbookModalShow");
     photoContainer.innerHTML = "";
-    if (travelbook.photos.length > 0) {
-        travelbook.photos.forEach(photo => {
+
+    if (photos.length > 0) {
+        console.log("📸 Photos du Travelbook :", photos);
+        photos.forEach(photo => {
             const img = document.createElement("img");
-            img.src = `http://127.0.0.1:8000/uploads/photos/${photo.filename}`;
+            img.src = `http://127.0.0.1:8000/${photo.imgUrl}`;
             img.classList.add("travel-photo");
+            img.alt = "Photo souvenir";
             photoContainer.appendChild(img);
         });
     } else {
         photoContainer.innerHTML = "<h3>📸 Aucune photo enregistrée</h3>";
     }
 }
+
+function loadTravelbookDetails(travelbookId) {
+    fetchTravelbookData(travelbookId, updateModalWithTravelbook);
+}
+
+
 
 
 // EDIT TRAVELBOOK BY USER
@@ -338,6 +335,7 @@ async function updateTravelbook() {
         flightNumber: document.getElementById("edit-flightNumber").value || null,
         accommodation: document.getElementById("edit-accommodation").value || null,
     };
+    let travelbookId = document.getElementById("EditionTravelbookModal").getAttribute("data-travelbook-id");
 
     try {
         // Envoyer les données mises à jour à l'API
@@ -845,7 +843,7 @@ async function updateTravelbook() {
         listItem.classList.add("thumbnail-item");
     
         const img = document.createElement("img");
-        img.src = `${photo.imgUrl}`;
+        img.src = `http://127.0.0.1:8000/${photo.imgUrl}`;
         img.alt = "Photo souvenir";
         img.classList.add("thumbnail");
     

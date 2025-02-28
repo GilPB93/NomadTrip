@@ -29,6 +29,9 @@ class ContactMessage
     #[ORM\Column]
     private ?\DateTimeImmutable $sentAt = null;
 
+    #[ORM\Column(length: 20, options: ["default" => "unread"])]
+    private ?string $status = "unread";
+
     public function getId(): ?int
     {
         return $this->id;
@@ -91,6 +94,17 @@ class ContactMessage
     {
         $this->sentAt = $sentAt;
 
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): static
+    {
+        $this->status = $status;
         return $this;
     }
 }

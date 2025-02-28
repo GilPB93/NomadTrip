@@ -61,6 +61,7 @@ class AdminStatsController extends AbstractController
         return new JsonResponse($usersData);
     }
 
+
     // GET LIST OF TRAVELBOOKS GROUPED BY USER
     #[Route('/list-travelbooks', name: 'list_travelbooks', methods: ['GET'])]
     public function fetchListTravelbooks(): JsonResponse
@@ -91,5 +92,6 @@ class AdminStatsController extends AbstractController
     }
 
 
+    // GET MESSAGES
 
 }

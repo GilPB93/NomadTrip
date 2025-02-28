@@ -58,7 +58,58 @@ class ContactMessageController extends AbstractController
     )]
     public function get(ContactMessageRepository $repository): JsonResponse
     {
-        $messages = $repository->findAll();
-        return new JsonResponse($messages, 200);
+        $messages = $repository->findBy(['status' => 'unread']); // Filtrer uniquement les messages non répondus
+
+        $data = array_map(function (ContactMessage $message) {
+            return [
+                'id' => $message->getId(),
+                'name' => $message->getName(),
+                'email' => $message->getEmail(),
+                'subject' => $message->getSubject(),
+                'message' => $message->getMessage(),
+                'sentAt' => $message->getSentAt()->format('Y-m-d H:i:s'),
+                'status' => $message->getStatus(),
+            ];
+        }, $messages);
+
+        return new JsonResponse($data, 200);
     }
+
+    #[Route('/reply/{id}', name: 'replyContactMessage', methods: ['PATCH'])]
+    public function markAsReplied(int $id, ContactMessageRepository $repository, EntityManagerInterface $entityManager): JsonResponse
+    {
+        $message = $repository->find($id);
+
+        if (!$message) {
+            return new JsonResponse(['error' => 'Message non trouvé'], 404);
+        }
+
+        $message->setStatus('replied');
+        $entityManager->persist($message);
+        $entityManager->flush();
+
+        return new JsonResponse(['message' => 'Message marqué comme répondu'], 200);
+    }
+
+    #[Route('/replied', name: 'getRepliedMessages', methods: ['GET'])]
+    public function getRepliedMessages(ContactMessageRepository $repository): JsonResponse
+    {
+        $messages = $repository->findBy(['status' => 'replied']); // Filtrer uniquement les messages répondus
+
+        $data = array_map(function (ContactMessage $message) {
+            return [
+                'id' => $message->getId(),
+                'name' => $message->getName(),
+                'email' => $message->getEmail(),
+                'subject' => $message->getSubject(),
+                'message' => $message->getMessage(),
+                'sentAt' => $message->getSentAt()->format('Y-m-d H:i:s'),
+                'status' => $message->getStatus(),
+            ];
+        }, $messages);
+
+        return new JsonResponse($data, 200);
+    }
+
+
 }

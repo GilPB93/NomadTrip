@@ -352,7 +352,7 @@ class TravelbookController extends AbstractController
     )]
     public function delete(int $id): Response
     {
-        $travelbook = $this->travelbookRepository->findOneBy(['id' => $id]);
+        $travelbook = $this->travelbookRepository->find($id);
 
         if (!$travelbook) {
             return new JsonResponse(

@@ -29,9 +29,10 @@
     </h2>
 </div>
 <div id="userDetails" class="user-details">
-    <h3>Nom : <span class="spanUserDetails" id="userName"><span class="loader"></span></h3>
-    <h3>Email : <span class="spanUserDetails" id="userEmail"><span class="loader"></span></h3>
-    <h3>Créé le : <span class="spanUserDetails" id="userCreatedAt"><span class="loader"></span></h3>
+    <h4 class="text-decoration-underline">En attente de selection d'un carnet de voyage <span class="loader"></span></h4>
+    <h3>Nom : <span class="spanUserDetails" id="userName">-</h3>
+    <h3>Email : <span class="spanUserDetails" id="userEmail">-</h3>
+    <h3>Créé le : <span class="spanUserDetails" id="userCreatedAt">-</h3>
 </div>
 <hr class="separator"> 
 </section>
@@ -46,26 +47,50 @@
     </h2>
 </div>
 <div id="travelbookDetails" class="travelbook-details">
-    <h3>Titre : <span class="spanTravelbookDetails" id="travelbookTitle"><span class="loader"></span></h3>
-    <h3>Créé par : <span class="spanTravelbookDetails" id="travelbookCreatedBy"><span class="loader"></span></h3>
-    <h3>Créé le : <span class="spanTravelbookDetails" id="travelbookCreatedAt"><span class="loader"></span></h3>
+    <h4 class="text-decoration-underline">En attente de selection d'un carnet de voyage <span class="loader"></span></h4>
+    <h3>Titre : <span class="spanTravelbookDetails" id="travelbookTitle">-</span></h3>
+    <h3>Créé par : <span class="spanTravelbookDetails" id="travelbookCreatedBy">-</h3>
+    <h3>Créé le : <span class="spanTravelbookDetails" id="travelbookCreatedAt">-</h3>
 </div>
 <hr class="separator"> 
 </section>
 
 
-
-<div class="new-messages text-center">
-    <h2>Les nouveaux messages</h2>
-    <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-    <div class="btn-group row">
-        <button type="button" class="btn col-12 col-lg-4">Message précedent</button>
-        <button type="button" class="btn col-12 col-lg-4">Répondre au message</button>
-        <button type="button" class="btn col-12 col-lg-4">Message suivant</button>
+<section>
+    <div class="new-messages text-center">
+        <h2>Les messages</h2>
+        <div class="messageContainer" id="message-container">
+            <h3>Objet : <span class="spanmessages" id="message-subject"></span> </h3>
+            <h3>De : <span class="spanmessages" id="message-name"></span> </h3>
+            <h3>Email : <span class="spanmessages" id="message-email"></span></h3>
+            <textarea class="form-control" id="message-content" rows="5" readonly></textarea>
+        </div>
+        <div class="btn-group row mt-3">
+            <button type="button" class="btn btn-primary col-12 col-lg-4" id="prev-message">Message précédent</button>
+            <button type="button" class="btn btn-success col-12 col-lg-4" id="reply-message">Répondre au message</button>
+            <button type="button" class="btn btn-primary col-12 col-lg-4" id="next-message">Message suivant</button>
+        </div>
     </div>
-</div>
+    <hr class="separator">
+</section>
 
-
+<section class="admin-contactmessages">
+    <div class="select-contactmessage">
+        <h2>Les messages traités
+            <select id="messageSelect" class="form-select-message" aria-label="Sélectionner un message">
+                <option selected>Sélectionnez un message</option>
+            </select>
+        </h2>
+    </div>
+    <div id="messageDetails" class="message-details">
+        <h4 class="text-decoration-underline">En attente de selection d'un message <span class="loader"></span></h4>
+        <h3>Sujet : <span class="spanMessageDetails" id="messageSubject">-</span></h3>
+        <h3>Envoyé par : <span class="spanMessageDetails" id="messageName">-</h3>
+        <h3>Email : <span class="spanMessageDetails" id="messageEmail">-</h3>
+        <h3>Reçu le : <span class="spanMessageDetails" id="messageSentAt">-</span></h3>
+        <textarea class="form-control" id="messageContent" rows="3" readonly></textarea>
+    </div>
+</section>
 
 
 </section>

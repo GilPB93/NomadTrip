@@ -199,7 +199,7 @@ async function setLogoutTime() {
             eraseCookie(RoleCookieName);
             eraseCookie(UserIdCookieName);
             window.location.replace("/");
-        }, 1000); //
+        }, 1000);
 
 
     } catch (error) {
@@ -238,5 +238,3 @@ async function purgeLogoutNull() {
         console.error("🚨 Erreur lors de la purge des logs :", error);
     }
 }
-
-

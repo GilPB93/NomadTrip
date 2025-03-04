@@ -7,12 +7,14 @@ use App\Entity\Travelbook;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Faker\Factory;
 
 class PhotosFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        $faker = \Faker\Factory::create();
+        $faker = Factory::create();
+
         $travelbooks = $manager->getRepository(Travelbook::class)->findAll();
         if (empty($travelbooks)) {
             throw new \Exception('No users found. Please load TravelbookFixtures first.');

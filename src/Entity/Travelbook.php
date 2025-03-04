@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\TravelbookRepository;
+use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -92,6 +93,8 @@ class Travelbook
 
     public function __construct()
     {
+        $this->createdAt = new DateTimeImmutable();
+        $this->updatedAt = new DateTimeImmutable();
         $this->places = new ArrayCollection();
         $this->fBs = new ArrayCollection();
         $this->souvenirs = new ArrayCollection();
@@ -166,10 +169,12 @@ class Travelbook
         return $this->comebackAt;
     }
 
-    public function setComebackAt(\DateTimeImmutable $comebackAt): static
+    public function setComebackAt(DateTimeImmutable $comebackAt): static
     {
+        if ($this->departureAt && $comebackAt < $this->departureAt) {
+            throw new \InvalidArgumentException('The comeback date must be after the departure date.');
+        }
         $this->comebackAt = $comebackAt;
-
         return $this;
     }
 
@@ -214,10 +219,9 @@ class Travelbook
         return $this->updatedAt;
     }
 
-    public function setUpdatedAt(\DateTimeImmutable $updatedAt): static
+    public function setUpdatedAt(DateTimeImmutable $updatedAt = null): static
     {
-        $this->updatedAt = $updatedAt;
-
+        $this->updatedAt = $updatedAt ?? new DateTimeImmutable();
         return $this;
     }
 

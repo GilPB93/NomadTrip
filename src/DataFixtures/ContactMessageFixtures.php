@@ -18,7 +18,9 @@ class ContactMessageFixtures extends Fixture
                 ->setEmail($faker->email)
                 ->setSubject($faker->sentence)
                 ->setMessage($faker->paragraph)
-                ->setSentAt(\DateTimeImmutable::createFromMutable($faker->dateTimeBetween('now', '+1 year')));
+                ->setSentAt(\DateTimeImmutable::createFromMutable($faker->dateTimeBetween('now', '+1 year')))
+                ->setStatus($faker->randomElement(['unread', 'read']));
+
             $manager->persist($contactMessage);
         }
 

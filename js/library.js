@@ -858,6 +858,8 @@ async function updateTravelbook() {
                         method: "DELETE",
                         headers: { "X-AUTH-TOKEN": getToken() }
                     });
+
+                    console.log("🔍 Réponse de suppression :", response);
     
                     if (!response.ok) {
                         throw new Error("Erreur lors de la suppression.");

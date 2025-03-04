@@ -37,8 +37,8 @@ class ActivityLogController extends AbstractController
         ),
         tags: ['Activity Log'],
         responses: [
-            new OA\Response(response: 200, description: 'Login time recorded successfully', content: ['application/json']),
-            new OA\Response(response: 403, description: 'User not authenticated', content: ['application/json'])
+            new OA\Response(response: 200, description: 'Login time recorded successfully'),
+            new OA\Response(response: 403, description: 'User not authenticated')
         ]
     )]
     public function setLoginTime(): JsonResponse
@@ -79,10 +79,10 @@ class ActivityLogController extends AbstractController
         ),
         tags: ['Activity Log'],
         responses: [
-            new OA\Response(response: 200, description: 'Logout time recorded successfully', content: ['application/json']),
-            new OA\Response(response: 400, description: 'Missing login_time', content: ['application/json']),
-            new OA\Response(response: 403, description: 'User not authenticated', content: ['application/json']),
-            new OA\Response(response: 404, description: 'No matching login time found', content: ['application/json'])
+            new OA\Response(response: 200, description: 'Logout time recorded successfully'),
+            new OA\Response(response: 400, description: 'Missing login_time'),
+            new OA\Response(response: 403, description: 'User not authenticated'),
+            new OA\Response(response: 404, description: 'No matching login time found')
         ]
     )]
     public function setLogoutTime(Request $request): JsonResponse
@@ -129,7 +129,7 @@ class ActivityLogController extends AbstractController
         summary: 'Purge logs with null logout',
         tags: ['Activity Log'],
         responses: [
-            new OA\Response(response: 200, description: 'Purge completed successfully', content: ['application/json'])
+            new OA\Response(response: 200, description: 'Purge completed successfully')
         ]
     )]
     public function purgeLogsWithNullLogout(): JsonResponse

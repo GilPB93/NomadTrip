@@ -28,7 +28,7 @@ class AdminStatsController extends AbstractController
         summary: 'Get totals of users and travelbooks',
         tags: ['Admin Stats'],
         responses: [
-            new OA\Response(response: 200, description: 'Totals retrieved successfully', content: ['application/json'])
+            new OA\Response(response: 200, description: 'Totals retrieved successfully')
         ]
     )]
     public function getTotals(): JsonResponse
@@ -58,12 +58,13 @@ class AdminStatsController extends AbstractController
     #[Route('/list-users', name: 'list_users', methods: ['GET'])]
     #[isGranted('ROLE_ADMIN')]
     #[OA\Get(
-        path: '/api/admin/stats/users',
+        path: '/api/admin/stats/list-users',
         description: 'Get the list of users.',
         summary: 'Get list of users',
         tags: ['Admin Stats'],
         responses: [
-            new OA\Response(response: 200, description: 'List of users retrieved successfully', content: ['application/json'])
+            new OA\Response(
+                response: 200, description: 'List of users retrieved successfully')
         ]
     )]
     public function fetchListUsers(): JsonResponse
@@ -87,12 +88,12 @@ class AdminStatsController extends AbstractController
     #[Route('/list-travelbooks', name: 'list_travelbooks', methods: ['GET'])]
     #[isGranted('ROLE_ADMIN')]
     #[OA\Get(
-        path: '/api/admin/stats/travelbooks',
+        path: '/api/admin/stats/list-travelbooks',
         description: 'Get the list of travelbooks grouped by user.',
         summary: 'Get list of travelbooks',
         tags: ['Admin Stats'],
         responses: [
-            new OA\Response(response: 200, description: 'List of travelbooks retrieved successfully', content: ['application/json'])
+            new OA\Response(response: 200, description: 'List of travelbooks retrieved successfully')
         ]
     )]
     public function fetchListTravelbooks(): JsonResponse

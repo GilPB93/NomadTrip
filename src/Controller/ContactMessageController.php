@@ -105,7 +105,7 @@ class ContactMessageController extends AbstractController
 
     #[Route('/replied', name: 'getRepliedMessages', methods: ['GET'])]
     #[OA\Get(
-        path: "/api/contact/replied/{id}",
+        path: "/api/contact/replied",
         summary: "Get all replied contact messages",
         tags: ["Contact Message"],
         responses: [

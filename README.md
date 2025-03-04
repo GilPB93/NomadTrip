@@ -1,85 +1,84 @@
-# App NomadTrip : Partie Back-End
+# NomadTrip App: Back-End Part
 
-La partie Back-end (API) du projet NomadTrip a été réalisé avec Visual Studio Code (Version: 1.95.3).
-Ce projet est une API backend construite avec Symfony. Il comprend une authentification utilisateur sécurisée, 
-une gestion de base de données via Doctrine, et des endpoints pour interagir avec les données liées aux utilisateurs et aux carnets de voyage.
+The Back-end (API) part of the NomadTrip project was developed using Visual Studio Code (Version: 1.95.3).  
+This project is a backend API built with Symfony. It includes secure user authentication, database management via Doctrine, and endpoints to interact with user-related data and travel logs.
 
 [![Author](https://img.shields.io/badge/author-gilpb.tech%40hotmail.com-green.svg)](https://github.com/GilPB93)
 
-## 📋 Pré-requis
+## 📋 Prerequisites
 
-### Environnement de développement
-- **IDE** : PhpStorm 2024.3.2
-- **PHP** : Version 8.3.13 (CLI)
+### Development Environment
+- **IDE**: PhpStorm 2024.3.2
+- **PHP**: Version 8.3.13 (CLI)
 
-## 🛠️ Extensions et outils
+## 🛠️ Extensions and Tools
 
-### Extensions PHP nécessaires
-Assurez-vous d'avoir installé et activé les extensions nécessaires à Doctrine et Symfony, telles que :
-- PDO (avec le support pour votre base de données)
+### Required PHP Extensions
+Make sure you have installed and enabled the necessary extensions for Doctrine and Symfony, such as:
+- PDO (with support for your database)
 - Intl
 - Mbstring
 - XML
 
-### Outils supplémentaires
-- **Composer** : pour la gestion des dépendances
-- **Git** : pour le contrôle de version
+### Additional Tools
+- **Composer**: for dependency management
+- **Git**: for version control
 
----
+---  
 
-## ⚙️ Dépendances principales
+## ⚙️ Main Dependencies
 
-Voici les principales bibliothèques et outils utilisés dans ce projet :
+Here are the main libraries and tools used in this project:
 
 ### **Doctrine**
-- `doctrine/orm` : ORM pour la gestion des entités et des relations
-- `doctrine/migrations` : Gestion des migrations
-- `doctrine/doctrine-bundle` : Intégration avec Symfony
+- `doctrine/orm`: ORM for entity and relationship management
+- `doctrine/migrations`: Migration management
+- `doctrine/doctrine-bundle`: Integration with Symfony
 
 ### **Symfony**
-- `symfony/framework-bundle` : Intégration des composants Symfony
-- `symfony/security-bundle` : Sécurisation de l'application
-- `symfony/serializer` : Sérialisation et désérialisation des données
-- `symfony/twig-bundle` : Moteur de templates Twig
+- `symfony/framework-bundle`: Symfony component integration
+- `symfony/security-bundle`: Application security
+- `symfony/serializer`: Data serialization and deserialization
+- `symfony/twig-bundle`: Twig templating engine
 
-### **Autres**
-- `nelmio/api-doc-bundle` : Documentation interactive de l'API
-- `phpunit/phpunit` : Framework pour les tests unitaires
-- `symfony/maker-bundle` : Génération de code
-- `vich/uploader-bundle` : Gestion des fichiers uploadés
-- `nelmio/cors-bundle` : Configuration des CORS
+### **Others**
+- `nelmio/api-doc-bundle`: Interactive API documentation
+- `phpunit/phpunit`: Testing framework
+- `symfony/maker-bundle`: Code generation
+- `vich/uploader-bundle`: File upload management
+- `nelmio/cors-bundle`: CORS configuration
 
-Pour une liste complète, consultez le fichier [composer.json](composer.json).
+For a complete list, check the [composer.json](composer.json) file.
 
----
+---  
 
-## 🚀 Installation et configuration
+## 🚀 Installation and Configuration
 
-### 1. Cloner le dépôt
+### 1. Clone the Repository
 ```bash
 git clone https://github.com/GilPB93/NomadTripBackEnd
 cd NomadTripBackEnd
 ```
 
-### 2. Installer les dépendances
-Assurez-vous que Composer est installé, puis exécutez :
+### 2. Install Dependencies
+Ensure Composer is installed, then run:
 ```bash
 composer install
 ```
 
-### 3. Configurer les variables d'environnement
-Créez un fichier `.env.local` à la racine du projet et configurez les variables d'environnement nécessaires.
+### 3. Configure Environment Variables
+Create a .env.local file at the root of the project and configure the necessary environment variables.
 ```bash
 cp .env .env.local
 ```
 
-### 4. Créer la base de données et exécuter les migrations pour mettre à jour la base de données :
+### 4. Create the Database and Run Migrations to Update It
 ```bash
 php bin/console doctrine:database:create
 php bin/console doctrine:migrations:migrate
 ```
 
-### 5. Démarrer le serveur de développement
+### 5. Start the Development Server
 ```bash
 symfony server:start
 ```
@@ -87,16 +86,15 @@ symfony server:start
 ---
 
 ## 🌱 Branches
-Ce projet utilise les branches suivantes :
-
-- `main` : Branche principale contenant la version stable et prête pour la production.
-- `dev` : Branche dédiée au développement et aux tests. Utilisez cette branche pour tester de nouvelles fonctionnalités et apporter des modifications.
+This project uses the following branches:
+- `main`: The main branch containing the stable, production-ready version.
+- `dev`: The development and testing branch. Use this branch to test new features and make modifications.
 
 
 ---
 
 ## 🧪 Tests
-Les tests unitaires et fonctionnels peuvent être exécutés avec PHPUnit :
+Unit and functional tests can be run using PHPUnit:
 ```bash
 php bin/phpunit
 ```
@@ -104,8 +102,8 @@ php bin/phpunit
 ---
 
 ## 📝 Documentation
-La documentation de l'API est générée automatiquement à l'aide de NelmioApiDocBundle.
-Pour accéder à la documentation, ouvrez votre navigateur et accédez à l'URL suivante :
+The API documentation is automatically generated using NelmioApiDocBundle.
+To access the documentation, open your browser and navigate to the following URL:
 ```
 http://127.0.0.1:8000/api/doc
 ```

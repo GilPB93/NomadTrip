@@ -30,7 +30,9 @@ class ContactMessageController extends AbstractController
             )
         ),
         tags: ["Contact Message"],
-        responses: [new OA\Response(response: 201, description: "Message enregistré")]
+        responses: [
+            new OA\Response(response: 201, description: "Message enregistré")
+        ]
     )]
     public function save(Request $request, EntityManagerInterface $entityManager): JsonResponse
     {
@@ -54,7 +56,9 @@ class ContactMessageController extends AbstractController
         path: "/api/contact/all",
         summary: "Get all contact messages",
         tags: ["Contact Message"],
-        responses: [new OA\Response(response: 200, description: "Liste des messages")]
+        responses: [
+            new OA\Response(response: 200, description: "Liste des messages")
+        ]
     )]
     public function get(ContactMessageRepository $repository): JsonResponse
     {
@@ -76,6 +80,14 @@ class ContactMessageController extends AbstractController
     }
 
     #[Route('/reply/{id}', name: 'replyContactMessage', methods: ['PATCH'])]
+    #[OA\Patch(
+        path: "/api/contact/reply/{id}",
+        summary: "Mark a contact message as replied",
+        tags: ["Contact Message"],
+        responses: [
+            new OA\Response(response: 200, description: "Message changed to replied"),
+            new OA\Response(response: 404, description: "Message not found")]
+    )]
     public function markAsReplied(int $id, ContactMessageRepository $repository, EntityManagerInterface $entityManager): JsonResponse
     {
         $message = $repository->find($id);
@@ -92,6 +104,14 @@ class ContactMessageController extends AbstractController
     }
 
     #[Route('/replied', name: 'getRepliedMessages', methods: ['GET'])]
+    #[OA\Get(
+        path: "/api/contact/replied/{id}",
+        summary: "Get all replied contact messages",
+        tags: ["Contact Message"],
+        responses: [
+            new OA\Response(response: 200, description: "List of replied messages")
+        ]
+    )]
     public function getRepliedMessages(ContactMessageRepository $repository): JsonResponse
     {
         $messages = $repository->findBy(['status' => 'replied']); // Filtrer uniquement les messages répondus

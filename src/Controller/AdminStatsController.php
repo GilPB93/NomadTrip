@@ -8,6 +8,7 @@ use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/api/admin/stats', name: 'admin_stats_')]
 class AdminStatsController extends AbstractController
@@ -20,6 +21,16 @@ class AdminStatsController extends AbstractController
 
     // GET TOTALS OF USERS AND TRAVELBOOKS
     #[Route('/totals', name: 'totals', methods: ['GET'])]
+    #[isGranted('ROLE_ADMIN')]
+    #[OA\Get(
+        path: '/api/admin/stats/totals',
+        description: 'Get the total number of users and travelbooks, as well as the last 5 signups.',
+        summary: 'Get totals of users and travelbooks',
+        tags: ['Admin Stats'],
+        responses: [
+            new OA\Response(response: 200, description: 'Totals retrieved successfully', content: ['application/json'])
+        ]
+    )]
     public function getTotals(): JsonResponse
     {
         $totalUsers = $this->userRepository->count([]);
@@ -45,6 +56,16 @@ class AdminStatsController extends AbstractController
 
     // GET LIST OF USERS
     #[Route('/list-users', name: 'list_users', methods: ['GET'])]
+    #[isGranted('ROLE_ADMIN')]
+    #[OA\Get(
+        path: '/api/admin/stats/users',
+        description: 'Get the list of users.',
+        summary: 'Get list of users',
+        tags: ['Admin Stats'],
+        responses: [
+            new OA\Response(response: 200, description: 'List of users retrieved successfully', content: ['application/json'])
+        ]
+    )]
     public function fetchListUsers(): JsonResponse
     {
         $users = $this->userRepository->findAll();
@@ -64,6 +85,16 @@ class AdminStatsController extends AbstractController
 
     // GET LIST OF TRAVELBOOKS GROUPED BY USER
     #[Route('/list-travelbooks', name: 'list_travelbooks', methods: ['GET'])]
+    #[isGranted('ROLE_ADMIN')]
+    #[OA\Get(
+        path: '/api/admin/stats/travelbooks',
+        description: 'Get the list of travelbooks grouped by user.',
+        summary: 'Get list of travelbooks',
+        tags: ['Admin Stats'],
+        responses: [
+            new OA\Response(response: 200, description: 'List of travelbooks retrieved successfully', content: ['application/json'])
+        ]
+    )]
     public function fetchListTravelbooks(): JsonResponse
     {
         $travelbooks = $this->travelbookRepository->findAll();

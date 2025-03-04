@@ -5,7 +5,6 @@ namespace App\Controller;
 use App\Entity\FB;
 use App\Entity\Travelbook;
 use App\Repository\FBRepository;
-use App\Repository\TravelbookRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Attributes as OA;
@@ -14,7 +13,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\SerializerInterface;
 
@@ -32,32 +30,36 @@ class FBController extends AbstractController
     #[Route(name: 'new', methods: ['POST'])]
     #[OA\Post(
         path: "/api/fb",
-        summary: "Create a new Restaurant/Bar for a Travelbook",
+        summary: "Add a new F&B place to a travelbook",
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\JsonContent(
                 properties: [
-                    new OA\Property(property: "name", type: "string", example: "Restaurant name test"),
-                    new OA\Property(property: "address", type: "string", example: "Restaurant address test"),
-                    new OA\Property(property: "visitAt", type: "string", format: "date-time", example: "2021-09-01T00:00:00+00:00"),
+                    new OA\Property(property: "name", type: "string", example: "Restaurant name example"),
+                    new OA\Property(property: "address", type: "string", example: "Restaurant address example"),
+                    new OA\Property(property: "visitAt", type: "datetime", example: "2021-12-31T23:59:59"),
                     new OA\Property(property: "travelbook", type: "integer", example: 1)
                 ]
             )
         ),
-        tags: ["Restaurant/Bar for Travelbook"],
+        tags: ["F&B for a travelbook"],
         responses: [
             new OA\Response(
                 response: 201,
-                description: "Restaurant/Bar created",
+                description: "F&B place added to travelbook",
                 content: new OA\JsonContent(
                     properties: [
                         new OA\Property(property: "id", type: "integer", example: 1),
-                        new OA\Property(property: "name", type: "string", example: "Restaurant name test"),
-                        new OA\Property(property: "address", type: "string", example: "Restaurant address test"),
-                        new OA\Property(property: "visitAt", type: "string", format: "date-time", example: "2021-09-01T00:00:00+00:00"),
+                        new OA\Property(property: "name", type: "string", example: "Restaurant name example"),
+                        new OA\Property(property: "address", type: "string", example: "Restaurant address example"),
+                        new OA\Property(property: "visitAt", type: "datetime", example: "2021-12-31T23:59:59"),
                         new OA\Property(property: "travelbook", type: "integer", example: 1)
                     ]
                 )
+            ),
+            new OA\Response(
+                response: 400,
+                description: "Travelbook not found"
             )
         ]
     )]
@@ -85,34 +87,11 @@ class FBController extends AbstractController
     #[Route('/{id}', name: 'show', methods: ['GET'])]
     #[OA\Get(
         path: "/api/fb/{id}",
-        summary: "Get an Restaurant/Bar by ID",
-        tags: ["Restaurant/Bar for Travelbook"],
-        parameters: [
-            new OA\Parameter(
-                name: "id",
-                description: "The Restaurant/Bar ID",
-                in: "path",
-                required: true,
-                schema: new OA\Schema(type: "integer")
-            ),
-        ],
+        summary: "Get a F&B place by ID",
+        tags: ["F&B for a travelbook"],
         responses: [
-            new OA\Response(
-                response:200,
-                description:"Restaurant/Bar found",
-                content: new OA\JsonContent(
-                    properties: [
-                        new OA\Property(property: "id", type: "integer", example: 1),
-                        new OA\Property(property: "name", type: "string", example: "Restaurant name test"),
-                        new OA\Property(property: "address", type: "string", example: "Restaurant address test"),
-                        new OA\Property(property: "visitAt", type: "string", format: "date-time", example: "2021-09-01T00:00:00+00:00"),
-                        new OA\Property(property: "travelbook", type: "integer", example: 1)
-                    ]
-                )
-            ),
-            new OA\Response(
-                response:404,
-                description:"Restaurant not found")
+            new OA\Response(response: 200, description: "F&B place found"),
+            new OA\Response(response: 404, description: "F&B place not found")
         ]
     )]
     public function show(int $id): JsonResponse
@@ -133,46 +112,33 @@ class FBController extends AbstractController
     #[Route('/{id}', name: 'update', methods: ['PUT'])]
     #[OA\Put(
         path: "/api/fb/{id}",
-        summary: "Update an existing Restaurant/Bar",
+        summary: "Update a F&B place by ID",
         requestBody: new OA\RequestBody(
             required: true,
             content: new OA\JsonContent(
                 properties: [
-                    new OA\Property(property: "name", type: "string"),
-                    new OA\Property(property: "address", type: "string"),
-                    new OA\Property(property: "visitAt", type: "string", format: "date-time"),
-                    new OA\Property(property: "travelbook", type: "integer")
+                    new OA\Property(property: "name", type: "string", example: "Restaurant name example"),
+                    new OA\Property(property: "address", type: "string", example: "Restaurant address example"),
+                    new OA\Property(property: "visitAt", type: "datetime", example: "2021-12-31T23:59:59"),
+                    new OA\Property(property: "travelbook", type: "integer", example: 1)
                 ]
             )
         ),
-        tags: ["Restaurant/Bar for Travelbook"],
+        tags: ["F&B for a travelbook"],
         parameters: [
             new OA\Parameter(
                 name: "id",
-                description: "The Restaurant/Bar ID",
+                description: "ID of the F&B place to update",
                 in: "path",
                 required: true,
-                schema: new OA\Schema(type: "integer")
-            ),
+                schema: new OA\Schema(type: "integer", example: 1)
+            )
         ],
         responses: [
-            new OA\Response(
-                response:200,
-                description:"Restaurant/Bar updated",
-                content: new OA\JsonContent(
-                    properties: [
-                        new OA\Property(property: "id", type: "integer", example: 1),
-                        new OA\Property(property: "name", type: "string", example: "Restaurant name test"),
-                        new OA\Property(property: "address", type: "string", example: "Restaurant address test"),
-                        new OA\Property(property: "visitAt", type: "string", format: "date-time", example: "2021-09-01T00:00:00+00:00"),
-                        new OA\Property(property: "travelbook", type: "integer", example: 1)
-                    ]
-                )
-            ),
-            new OA\Response(
-                response:404,
-                description:"Restaurant not found")
+            new OA\Response(response: 200, description: "F&B place updated"),
+            new OA\Response(response: 404, description: "F&B place not found")
         ]
+
     )]
     public function update(int $id, Request $request): JsonResponse
     {
@@ -199,26 +165,20 @@ class FBController extends AbstractController
     #[Route('/{id}', name: 'delete', methods: ['DELETE'])]
     #[OA\Delete(
         path: "/api/fb/{id}",
-        summary: "Delete an existing Restaurant/Bar",
-        tags: ["Restaurant/Bar for Travelbook"],
+        summary: "Delete a F&B place by ID",
+        tags: ["F&B for a travelbook"],
         parameters: [
             new OA\Parameter(
                 name: "id",
-                description: "The Restaurant/Bar ID",
+                description: "ID of the F&B place to delete",
                 in: "path",
                 required: true,
-                schema: new OA\Schema(type: "integer")
-            ),
+                schema: new OA\Schema(type: "integer", example: 1)
+            )
         ],
         responses: [
-            new OA\Response(
-                response:200,
-                description:"Restaurant/Bar deleted"
-            ),
-            new OA\Response(
-                response:404,
-                description:"Restaurant not found"
-            )
+            new OA\Response(response: 200, description: "FB deleted"),
+            new OA\Response(response: 404, description: "FB not found")
         ]
     )]
     public function delete(int $id): JsonResponse

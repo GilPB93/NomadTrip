@@ -24,24 +24,21 @@ class ActivityLogController extends AbstractController
     #[Route('/set-login-time', name: 'activity_log_set_login_time', methods: ['POST'])]
     #[OA\Post(
         path: '/api/activity-log/set-login-time',
+        description: 'Record the login time of the user',
         summary: 'Set login time',
         requestBody: new OA\RequestBody(
-            description: 'No request body required, user session is used'
+            description: 'The login time of the user',
+            required: true,
+            content: new OA\JsonContent(
+                properties: [
+                    new OA\Property(property: 'login_time', type: 'string', format: 'date-time', example: '2021-09-01T00:00:00+00:00')
+                ]
+            )
         ),
         tags: ['Activity Log'],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Login time recorded successfully',
-                content: new OA\JsonContent(
-                    properties: [
-                        new OA\Property(property: 'message', type: 'string', example: 'Login time recorded successfully'),
-                        new OA\Property(property: 'login_time', type: 'string', format: 'date-time', example: '2025-02-25T10:55:57.000Z')
-                    ],
-                    type: 'object'
-                )
-            ),
-            new OA\Response(response: 403, description: 'User not authenticated'),
+            new OA\Response(response: 200, description: 'Login time recorded successfully', content: ['application/json']),
+            new OA\Response(response: 403, description: 'User not authenticated', content: ['application/json'])
         ]
     )]
     public function setLoginTime(): JsonResponse
@@ -69,34 +66,23 @@ class ActivityLogController extends AbstractController
     #[Route('/set-logout-time', name: 'activity_log_set_logout_time', methods: ['POST'])]
     #[OA\Post(
         path: '/api/activity-log/set-logout-time',
+        description: 'Record the logout time of the user',
         summary: 'Set logout time',
         requestBody: new OA\RequestBody(
-            description: 'Send the login time to calculate the session duration',
+            description: 'The logout time of the user',
             required: true,
             content: new OA\JsonContent(
                 properties: [
-                    new OA\Property(property: 'login_time', type: 'string', format: 'date-time', example: '2025-02-25T10:55:57.000Z')
-                ],
-                type: 'object'
+                    new OA\Property(property: 'login_time', type: 'string', format: 'date-time', example: '2021-09-01T00:00:00+00:00')
+                ]
             )
         ),
         tags: ['Activity Log'],
         responses: [
-            new OA\Response(
-                response: 200,
-                description: 'Logout time recorded successfully',
-                content: new OA\JsonContent(
-                    properties: [
-                        new OA\Property(property: 'message', type: 'string', example: 'Logout time recorded successfully'),
-                        new OA\Property(property: 'logout_time', type: 'string', format: 'date-time', example: '2025-02-25T11:25:57.000Z'),
-                        new OA\Property(property: 'duration', type: 'integer', example: 1800)
-                    ],
-                    type: 'object'
-                )
-            ),
-            new OA\Response(response: 400, description: 'Missing login_time'),
-            new OA\Response(response: 403, description: 'User not authenticated'),
-            new OA\Response(response: 404, description: 'No matching login time found'),
+            new OA\Response(response: 200, description: 'Logout time recorded successfully', content: ['application/json']),
+            new OA\Response(response: 400, description: 'Missing login_time', content: ['application/json']),
+            new OA\Response(response: 403, description: 'User not authenticated', content: ['application/json']),
+            new OA\Response(response: 404, description: 'No matching login time found', content: ['application/json'])
         ]
     )]
     public function setLogoutTime(Request $request): JsonResponse
@@ -139,11 +125,11 @@ class ActivityLogController extends AbstractController
     #[Route('/purge-logout-null', name: 'activity_log_purge_logout_null', methods: ['DELETE'])]
     #[OA\Delete(
         path: '/api/activity-log/purge-logout-null',
-        summary: 'Purge activity logs with null logout',
+        description: 'Purge activity logs with null logout time',
+        summary: 'Purge logs with null logout',
         tags: ['Activity Log'],
         responses: [
-            new OA\Response(response: 200, description: 'Logs purged successfully'),
-            new OA\Response(response: 403, description: 'Access denied'),
+            new OA\Response(response: 200, description: 'Purge completed successfully', content: ['application/json'])
         ]
     )]
     public function purgeLogsWithNullLogout(): JsonResponse

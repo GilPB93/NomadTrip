@@ -367,10 +367,4 @@ class TravelbookController extends AbstractController
         return new JsonResponse(null, Response::HTTP_NO_CONTENT);
     }
 
-
-    // GET LIST OF TRAVELBOOKS
-
-
-    // GET DETAILS OF TRAVELBOOKS
-
 }

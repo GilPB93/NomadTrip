@@ -33,12 +33,11 @@ class PhotosController extends AbstractController
         path: '/api/photos',
         summary: 'Create a new photo for a travelbook',
         requestBody: new OA\RequestBody(
-            description: 'Photo object that needs to be added to the travelbook',
+            description: 'Photo object that needs to be added',
             required: true,
             content: new OA\JsonContent(
                 properties: [
                     new OA\Property(property: 'imgUrl', description: 'The URL of the photo', type: 'string', example: 'https://example.com/image.jpg'),
-                    new OA\Property(property: 'addedAt', type: 'string', format: 'date-time', example: '2021-09-01T12:00:00Z'),
                     new OA\Property(property: 'travelbook', type: 'integer', example: 1)
                 ]
             )
@@ -59,9 +58,14 @@ class PhotosController extends AbstractController
             ),
             new OA\Response(
                 response: '400',
-                description: 'Invalid input'
+                description: 'Image or Travelbook ID missing'
+            ),
+            new OA\Response(
+                response: '404',
+                description: 'Travelbook not found'
             )
         ]
+
     )]
     public function new(Request $request): JsonResponse
     {

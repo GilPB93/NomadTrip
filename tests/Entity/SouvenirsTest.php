@@ -3,25 +3,34 @@
 namespace App\Tests\Entity;
 
 use App\Entity\Souvenirs;
+use App\Entity\Travelbook;
 use PHPUnit\Framework\TestCase;
 
 class SouvenirsTest extends TestCase
 {
-    public function testGettersAndSetters()
+    public function testGetAndSetWhat(): void
     {
         $souvenir = new Souvenirs();
-        $souvenir->setWhat('Hat')
-            ->setForWho('John Doe');
+        $souvenir->setWhat('Eiffel Tower Keychain');
 
-        $this->assertEquals('Hat', $souvenir->getWhat());
-        $this->assertEquals('John Doe', $souvenir->getForWho());
+        $this->assertEquals('Eiffel Tower Keychain', $souvenir->getWhat());
     }
 
-    public function testSetTravelbook()
+    public function testGetAndSetForWho(): void
     {
         $souvenir = new Souvenirs();
-        $souvenir->setTravelbook(null);  // Assuming you may have a Travelbook object
+        $souvenir->setForWho('Mom');
 
-        $this->assertNull($souvenir->getTravelbook());
+        $this->assertEquals('Mom', $souvenir->getForWho());
+    }
+
+    public function testGetAndSetTravelbook(): void
+    {
+        $souvenir = new Souvenirs();
+        $travelbook = new Travelbook();
+
+        $souvenir->setTravelbook($travelbook);
+
+        $this->assertSame($travelbook, $souvenir->getTravelbook());
     }
 }

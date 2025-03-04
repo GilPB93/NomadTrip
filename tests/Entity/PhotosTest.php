@@ -5,30 +5,34 @@ namespace App\Tests\Entity;
 use App\Entity\Photos;
 use App\Entity\Travelbook;
 use PHPUnit\Framework\TestCase;
+use DateTimeImmutable;
+use Symfony\Component\HttpFoundation\File\File;
 
 class PhotosTest extends TestCase
 {
-    public function testSetGetImgUrl(): void
+    public function testGetAndSetImgUrl(): void
     {
         $photo = new Photos();
-        $photo->setImgUrl('https://example.com/photo.jpg');
+        $photo->setImgUrl('photo1.jpg');
 
-        $this->assertEquals('https://example.com/photo.jpg', $photo->getImgUrl());
+        $this->assertEquals('/uploads/photos/photo1.jpg', $photo->getImgUrl());
     }
 
-    public function testSetGetAddedAt(): void
+    public function testGetAndSetAddedAt(): void
     {
         $photo = new Photos();
-        $date = new \DateTimeImmutable('2025-01-29');
-        $photo->setAddedAt($date);
+        $addedAt = new DateTimeImmutable();
 
-        $this->assertEquals($date, $photo->getAddedAt());
+        $photo->setAddedAt($addedAt);
+
+        $this->assertEquals($addedAt, $photo->getAddedAt());
     }
 
-    public function testSetGetTravelbook(): void
+    public function testGetAndSetTravelbook(): void
     {
         $photo = new Photos();
         $travelbook = new Travelbook();
+
         $photo->setTravelbook($travelbook);
 
         $this->assertSame($travelbook, $photo->getTravelbook());

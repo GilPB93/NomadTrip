@@ -5,24 +5,43 @@ namespace App\Tests\Entity;
 use App\Entity\FB;
 use App\Entity\Travelbook;
 use PHPUnit\Framework\TestCase;
+use DateTimeImmutable;
 
 class FBTest extends TestCase
 {
-    public function testFBSettersAndGetters(): void
+    public function testGetAndSetName(): void
     {
-        $travelbook = new Travelbook();
-        $travelbook->setTitle("Travelbook 1");
-
         $fb = new FB();
-        $fb->setName("Restaurant 1")
-            ->setAddress("123 Street")
-            ->setVisitAt(new \DateTimeImmutable())
-            ->setTravelbook($travelbook);
+        $fb->setName('Le Meurice');
 
-        $this->assertEquals("Restaurant 1", $fb->getName());
-        $this->assertEquals("123 Street", $fb->getAddress());
-        $this->assertInstanceOf(\DateTimeImmutable::class, $fb->getVisitAt());
-        $this->assertEquals($travelbook, $fb->getTravelbook());
+        $this->assertEquals('Le Meurice', $fb->getName());
     }
 
+    public function testGetAndSetAddress(): void
+    {
+        $fb = new FB();
+        $fb->setAddress('228 Rue de Rivoli, 75001 Paris, France');
+
+        $this->assertEquals('228 Rue de Rivoli, 75001 Paris, France', $fb->getAddress());
+    }
+
+    public function testGetAndSetVisitAt(): void
+    {
+        $fb = new FB();
+        $visitAt = new DateTimeImmutable('2024-06-01');
+
+        $fb->setVisitAt($visitAt);
+
+        $this->assertEquals($visitAt, $fb->getVisitAt());
+    }
+
+    public function testGetAndSetTravelbook(): void
+    {
+        $fb = new FB();
+        $travelbook = new Travelbook();
+
+        $fb->setTravelbook($travelbook);
+
+        $this->assertSame($travelbook, $fb->getTravelbook());
+    }
 }

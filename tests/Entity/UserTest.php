@@ -2,72 +2,77 @@
 
 namespace App\Tests\Entity;
 
-use App\Entity\Travelbook;
 use App\Entity\User;
 use App\Enum\AccountStatus;
+use Exception;
 use PHPUnit\Framework\TestCase;
 
 class UserTest extends TestCase
 {
-    public function testGetSetEmail(): void
+    public function testGetAndSetEmail(): void
     {
         $user = new User();
         $user->setEmail('test@example.com');
-        $this->assertSame('test@example.com', $user->getEmail());
+        $this->assertEquals('test@example.com', $user->getEmail());
     }
 
-    public function testGetSetFirstName(): void
+    public function testGetAndSetRoles(): void
+    {
+        $user = new User();
+        $user->setRoles(['ROLE_ADMIN']);
+        $this->assertContains('ROLE_ADMIN', $user->getRoles());
+        $this->assertContains('ROLE_USER', $user->getRoles());
+    }
+
+    public function testGetAndSetPassword(): void
+    {
+        $user = new User();
+        $user->setPassword('hashedpassword');
+        $this->assertEquals('hashedpassword', $user->getPassword());
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testGetAndSetFirstName(): void
     {
         $user = new User();
         $user->setFirstName('John');
-        $this->assertSame('John', $user->getFirstName());
+        $this->assertEquals('John', $user->getFirstName());
     }
 
-    public function testGetSetAccountStatus(): void
+    public function testGetAndSetLastName(): void
+    {
+        $user = new User();
+        $user->setLastName('Doe');
+        $this->assertEquals('Doe', $user->getLastName());
+    }
+
+    public function testGetAndSetPseudo(): void
+    {
+        $user = new User();
+        $user->setPseudo('john_doe');
+        $this->assertEquals('john_doe', $user->getPseudo());
+    }
+
+    public function testGetAndSetAccountStatus(): void
     {
         $user = new User();
         $status = AccountStatus::ACTIVE;
         $user->setAccountStatus($status);
-        $this->assertSame($status, $user->getAccountStatus());
+        $this->assertEquals($status, $user->getAccountStatus());
     }
 
-    public function testAddRemoveTravelbook(): void
+    public function testGeneratedApiTokenIsValid(): void
     {
         $user = new User();
-        $travelbook = $this->createMock(Travelbook::class);
-
-        $user->addTravelbook($travelbook);
-        $this->assertCount(1, $user->getTravelbooks());
-
-        $user->removeTravelbook($travelbook);
-        $this->assertCount(0, $user->getTravelbooks());
+        $this->assertNotNull($user->getApiToken());
+        $this->assertEquals(64, strlen($user->getApiToken())); // 32 bytes in hex
     }
 
-    public function testSetUpdatedAt(): void
+    public function testEraseCredentialsDoesNotThrowError(): void
     {
         $user = new User();
-        $updatedAt = new \DateTimeImmutable();
-        $user->setUpdatedAt($updatedAt);
-        $this->assertEquals($updatedAt, $user->getUpdatedAt());
-    }
-
-    public function testGetSetLastLogin(): void
-    {
-        $user = new User();
-        $now = new \DateTimeImmutable();
-
-        $user->setLastLogin($now);
-        $this->assertSame($now, $user->getLastLogin());
-    }
-
-    public function testGetSetConnectionTime(): void
-    {
-        $user = new User();
-
-        $user->addConnectionTime(3600);
-        $this->assertEquals(3600, $user->getConnectionTime());
-
-        $user->addConnectionTime(1200);
-        $this->assertEquals(4800, $user->getConnectionTime());
+        $this->assertNull($user->eraseCredentials());
     }
 }

@@ -3,31 +3,45 @@
 namespace App\Tests\Entity;
 
 use App\Entity\Places;
+use App\Entity\Travelbook;
 use PHPUnit\Framework\TestCase;
+use DateTimeImmutable;
 
 class PlacesTest extends TestCase
 {
-    public function testGettersAndSetters(): void
+    public function testGetAndSetName(): void
     {
         $place = new Places();
-        $place->setName('Test Place')
-            ->setAddress('Test Address')
-            ->setVisitAt(new \DateTimeImmutable())
-            ->setTravelbook(null);  // Remplacez par une instance valide de Travelbook si nécessaire
+        $place->setName('Louvre Museum');
 
-        $this->assertEquals('Test Place', $place->getName());
-        $this->assertEquals('Test Address', $place->getAddress());
-        $this->assertInstanceOf(\DateTimeImmutable::class, $place->getVisitAt());
-        $this->assertNull($place->getTravelbook());
+        $this->assertEquals('Louvre Museum', $place->getName());
     }
 
-    public function testPlaceEntity(): void
+    public function testGetAndSetAddress(): void
     {
         $place = new Places();
-        $place->setName('New Place')
-            ->setAddress('456 New Address');
+        $place->setAddress('Rue de Rivoli, 75001 Paris, France');
 
-        $this->assertInstanceOf(Places::class, $place);
+        $this->assertEquals('Rue de Rivoli, 75001 Paris, France', $place->getAddress());
     }
 
+    public function testGetAndSetVisitAt(): void
+    {
+        $place = new Places();
+        $visitAt = new DateTimeImmutable('2024-06-01');
+
+        $place->setVisitAt($visitAt);
+
+        $this->assertEquals($visitAt, $place->getVisitAt());
+    }
+
+    public function testGetAndSetTravelbook(): void
+    {
+        $place = new Places();
+        $travelbook = new Travelbook();
+
+        $place->setTravelbook($travelbook);
+
+        $this->assertSame($travelbook, $place->getTravelbook());
+    }
 }

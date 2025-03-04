@@ -8,6 +8,7 @@ use App\Repository\PhotosRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use OpenApi\Attributes as OA;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -254,20 +255,23 @@ class PhotosController extends AbstractController
     )]
     public function delete(int $id): JsonResponse
     {
-        $photos = $this->photosRepository->findOneBy(['id' => $id]);
+        $photo = $this->photosRepository->findOneBy(['id' => $id]);
 
-        if($photos) {
-            $this->manager->remove($photos);
-            $this->manager->flush();
-
-            return new JsonResponse(
-                null,
-                Response::HTTP_NO_CONTENT
-            );
+        if (!$photo) {
+            return new JsonResponse(['error' => 'Photo not found'], Response::HTTP_NOT_FOUND);
         }
-        return new JsonResponse(
-            null,
-            Response::HTTP_NOT_FOUND
-        );
+
+        // 📌 Suppression du fichier sur le serveur
+        $filesystem = new Filesystem();
+        $filePath = $this->getParameter('kernel.project_dir') . '/public' . $photo->getImgUrl();
+        if ($filesystem->exists($filePath)) {
+            $filesystem->remove($filePath);
+        }
+
+        // 📌 Suppression de la photo en base de données
+        $this->manager->remove($photo);
+        $this->manager->flush();
+
+        return new JsonResponse(['message' => 'Photo supprimée'], Response::HTTP_OK);
     }
 }

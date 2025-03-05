@@ -7,15 +7,7 @@ const RoleCookieName = "role";
 const loginTimeCookieName = "login_time";
 
 // FETCH API BACK-END
-fetch("https://nomadtripbackend-61f128d18029.herokuapp.com/api/route")
-  .then(response => {
-    if (!response.ok) {
-      throw new Error("Erreur de connexion à l'API");
-    }
-    return response.json();
-  })
-  .then(data => console.log(data))
-  .catch(error => console.error("Erreur :", error));
+
 
 
 // TOKEN MANAGEMENT

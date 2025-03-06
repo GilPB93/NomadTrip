@@ -27,7 +27,7 @@ class SecurityController extends AbstractController
     }
 
     //REGISTER
-    #[Route('/register', name: 'register', methods: ['POST', 'OPTIONS'])]
+    #[Route('/register', name: 'register', methods: ['POST'])]
     #[OA\Post(
         path: '/api/register',
         summary: 'Register a new user',
@@ -63,15 +63,6 @@ class SecurityController extends AbstractController
     )]
     public function register (Request $request, UserPasswordHasherInterface $passwordHasher) : JsonResponse
     {
-        if ($request->isMethod('OPTIONS')) {
-            return new JsonResponse(null, 204, [
-                'Access-Control-Allow-Origin' => 'https://nomadtripfrontend-934f654ec662.herokuapp.com',
-                'Access-Control-Allow-Methods' => 'GET, POST, OPTIONS, PUT, DELETE, PATCH',
-                'Access-Control-Allow-Headers' => 'Content-Type, Authorization, X-AUTH-TOKEN',
-                'Access-Control-Allow-Credentials' => 'true',
-            ]);
-        }
-
         $data = json_decode($request->getContent(), true);
 
         $existingUser = $this->manager->getRepository(User::class)->findOneBy(['email' => $data['email']]);

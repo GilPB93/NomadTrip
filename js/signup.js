@@ -92,10 +92,12 @@ function signupForm(event) {
     };
 
     fetch(apiURL + "register", requestOptions)
-        .then(response => response.json().then(data => ({ status: response.status, body: data })))
+        .then(response => {
+            console.log("Headers reçus :", response.headers);
+            response.json().then(data => ({ status: response.status, body: data }))
+        })
         .then(result => {
             if (result.status === 201) {
-                console.log("Headers reçus :", response.headers);
                 alert("Bravo " + inputFirstName.value + ", vous êtes maintenant inscrit, vous pouvez vous connecter.");
                 window.location.href = "/signin";
             } else {

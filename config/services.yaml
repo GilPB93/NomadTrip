@@ -11,14 +11,6 @@ services:
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
         public: true        # Permet d'assurer que les services sont accessibles (optionnel)
 
-    # Enregistre le CORS Listener
-    App\EventListener\CorsListener:
-        autowire: true
-        autoconfigure: true
-        tags:
-            - { name: kernel.event_listener, event: kernel.response }
-
-    # Charge automatiquement tous les services de `src/`
     App\:
         resource: '../src/'
         exclude:

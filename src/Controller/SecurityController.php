@@ -130,7 +130,11 @@ class SecurityController extends AbstractController
     public function login (#[CurrentUser] ?User $user) : JsonResponse
     {
         if(null === $user) {
-            return new JsonResponse(['message' => 'Invalid credentials'], Response::HTTP_UNAUTHORIZED);
+            return new JsonResponse(
+                ['message' => 'Invalid credentials'],
+                Response::HTTP_UNAUTHORIZED,
+                ['Access-Control-Allow-Origin' => 'https://nomadtripfrontend-934f654ec662.herokuapp.com']
+            );
         }
 
         return new JsonResponse([
@@ -182,6 +186,9 @@ class SecurityController extends AbstractController
             [AbstractNormalizer::GROUPS => ['user:read']]
         );
 
-        return new JsonResponse($responseData, Response::HTTP_OK, [], true);
+        return new JsonResponse($responseData,
+            Response::HTTP_OK,
+            ['Access-Control-Allow-Origin' => 'https://nomadtripfrontend-934f654ec662.herokuapp.com'],
+            true);
     }
 }

@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "build-css": "sass scss/main.scss css/main.css",
+    "heroku-postbuild": "npm run build-css"
+  },
+
+  "dependencies": {
+    "bootstrap": "^5.3.3"
+  }
+}

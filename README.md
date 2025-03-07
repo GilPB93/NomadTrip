@@ -38,10 +38,12 @@ cd NomadTripApp
 ```
 
 
-### 2. Install Dependencies
-Ensure that Node.js is installed, then run:
+### 2. Install Dependencies and compile SCSS
+Ensure that Node.js is installed, go to frontend folder
 ```bash
+cd public/frontend
 npm install
+npm run build-css
 ```
 
 ### 3. Configure the Sass Compiler

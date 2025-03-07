@@ -8,12 +8,6 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DefaultController extends AbstractController
 {
-    #[Route('/')]
-    public function home(): Response
-    {
-        return new Response("Bienvenue sur votre accueil!") ;
-    }
-
     #[Route('/{slug}', name: 'frontend', requirements: ['slug' => '^(?!api).*$'])]
     public function index(): Response
     {

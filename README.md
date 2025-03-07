@@ -33,8 +33,8 @@ These dependencies are installed via `npm`. See the "Installation" section for m
 
 ### 1. **Clone the Repository**  
 ```bash
-git clone https://github.com/GilPB93/ZooNomadTripFrontEnd.git
-cd NomadTripFrontEnd
+git clone https://github.com/GilPB93/NomadTrip
+cd NomadTripApp
 ```
 
 
@@ -78,7 +78,7 @@ The Sass files allow overriding Bootstrap variables to customize the theme.
 ---
 
 ## 📝 Useful Links
-- [GitHub Repository](https://github.com/GilPB93/ZooArcadiaFrontEnd)
+- [GitHub Repository](https://github.com/GilPB93/NomadTrip)
 - [Bootstrap Documentation](https://getbootstrap.com/docs/5.3/)
 
 
@@ -142,33 +142,32 @@ For a complete list, check the [composer.json](composer.json) file.
 
 ## 🚀 Installation and Configuration
 
-### 1. Clone the Repository
-```bash
-git clone https://github.com/GilPB93/NomadTripBackEnd
-cd NomadTripBackEnd
-```
-
-### 2. Install Dependencies
+### 1. Install Dependencies
 Ensure Composer is installed, then run:
 ```bash
 composer install
 ```
 
-### 3. Configure Environment Variables
+### 2. Configure Environment Variables
 Create a .env.local file at the root of the project and configure the necessary environment variables.
 ```bash
 cp .env .env.local
 ```
 
-### 4. Create the Database and Run Migrations to Update It
+### 3. Create the Database and Run Migrations to Update It
 ```bash
 php bin/console doctrine:database:create
 php bin/console doctrine:migrations:migrate
 ```
 
-### 5. Start the Development Server
+### 4. Start the Development Server
 ```bash
 symfony server:start
+```
+
+### 5. Implement data with fixtures
+```bash
+php bin/console doctrine:fixtures:load
 ```
 
 ---

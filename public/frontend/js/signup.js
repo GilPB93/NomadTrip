@@ -92,7 +92,7 @@ function signupForm(event) {
         mode: "cors",
     };
 
-    fetch(apiURL + "register", requestOptions)
+    fetch("/api/register", requestOptions)
         .then(response => {
             console.log("Headers reçus :", response.headers);
             response.json().then(data => ({ status: response.status, body: data }))

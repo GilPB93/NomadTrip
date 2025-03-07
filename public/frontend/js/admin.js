@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
 fetchStats();
 
 function fetchStats() {
-    fetch(apiURL + 'admin/stats/totals', {
+    fetch('/api/admin/stats/totals', {
         method: 'GET',
         headers: {
             'X-AUTH-TOKEN' : getToken()
@@ -34,7 +34,7 @@ function fetchStats() {
 fetchListUsers();
 
 function fetchListUsers() {
-    fetch(apiURL + 'admin/stats/list-users', {
+    fetch('/api/admin/stats/list-users', {
         method: 'GET',
         headers: {
             'X-AUTH-TOKEN': getToken()
@@ -95,7 +95,7 @@ fetchListTravelbooks();
 const userID = getUserId();
 
 function fetchListTravelbooks() {
-    fetch(apiURL + 'admin/stats/list-travelbooks', {
+    fetch('/api/admin/stats/list-travelbooks', {
         method: 'GET',
         headers: {
             'X-AUTH-TOKEN': getToken()
@@ -181,7 +181,7 @@ console.log("Script JS chargé et prêt.");
 function fetchMessages() {
     console.log("Envoi de la requête pour récupérer les messages...");
 
-    fetch(apiURL + 'contact/all', {
+    fetch('/api/contact/all', {
         method: 'GET',
         headers: {
             'X-AUTH-TOKEN': getToken()
@@ -261,7 +261,7 @@ document.getElementById("reply-message").addEventListener("click", function (eve
         console.log("Ouverture du client mail pour:", email);
         window.open("mailto:" + email + "?subject=Re:%20" + document.getElementById("message-subject").innerText);
             
-            fetch(apiURL + `contact/reply/${messageId}`, { 
+            fetch(`/api/contact/reply/${messageId}`, { 
                 method: "PATCH",
                 headers: {
                     'X-AUTH-TOKEN': getToken()
@@ -297,7 +297,7 @@ let repliedMessages = [];
 console.log("Chargement des messages répondus...");
 
 function fetchRepliedMessages() {
-    fetch(apiURL + 'contact/replied', {
+    fetch('/api/contact/replied', {
         method: 'GET',
         headers: {
             'X-AUTH-TOKEN': getToken()

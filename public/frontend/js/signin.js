@@ -24,7 +24,7 @@ function checkCredentials(event) {
         redirect: 'follow',
     };
 
-    fetch(apiURL + "login", requestOptions)
+    fetch("/api/login", requestOptions)
         .then(response => {
             if (response.ok) {
                 return response.json();

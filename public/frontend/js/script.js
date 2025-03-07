@@ -1,5 +1,4 @@
 //CONSTANTS
-const apiURL = "https://nomadtripbackendapi-9416dc608e6c.herokuapp.com/api/";
 const tokenCookieName = "accesstoken"; 
 const btnSignout = document.getElementById('btnSignout');
 const UserIdCookieName = 'user.Id';
@@ -146,7 +145,7 @@ let loginTime = null;
 function setLoginTime() { 
     if (!userConnected()) return;
 
-    fetch(apiURL + 'activity-log/set-login-time', {
+    fetch('/api/activity-log/set-login-time', {
         method: 'POST',
         headers: {
             'X-AUTH-TOKEN': getToken(),
@@ -173,7 +172,7 @@ async function setLogoutTime() {
     }
 
     try {
-        const response = await fetch(apiURL + 'activity-log/set-logout-time', {
+        const response = await fetch('/api/activity-log/set-logout-time', {
             method: "POST",
             headers: {
                 'X-AUTH-TOKEN': getToken(),
@@ -215,7 +214,7 @@ async function purgeLogoutNull() {
     try {
         console.log("🗑️ Purge des logs en cours...");
 
-        const response = await fetch(apiURL + 'activity-log/purge-logout-null', {
+        const response = await fetch('/api/activity-log/purge-logout-null', {
             method: "DELETE",
             headers: {
                 'X-AUTH-TOKEN': getToken(),

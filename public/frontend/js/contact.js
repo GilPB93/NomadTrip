@@ -25,7 +25,7 @@ function saveContactMessage (event){
         redirect: 'follow'
     };
 
-    fetch(apiURL + "contact/save", requestOptions)
+    fetch("/api/contact/save", requestOptions)
     .then(response => {
         if(response.ok){
             alert("Message envoyé avec succès.");

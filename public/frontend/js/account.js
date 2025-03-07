@@ -18,7 +18,7 @@ function getInfosUser() {
         credentials: 'include',
     };
 
-    fetch(apiURL + "accountInfo", requestOptions)
+    fetch("/api/accountInfo", requestOptions)
         .then(response => {
             if (response.ok) {
                 return response.json();
@@ -74,7 +74,7 @@ function updatePseudo() {
         redirect: 'follow'
     };
 
-    fetch(apiURL + `user/${userId}`, requestOptions)
+    fetch(`/api/user/${userId}`, requestOptions)
         .then(response => {
             if (response.ok) {
                 return response.json();
@@ -155,7 +155,7 @@ async function updatePassword() {
             redirect: 'follow'
         };
 
-        const response = await fetch(apiURL + `user/${userId}/password`, requestOptions);
+        const response = await fetch(`/api/user/${userId}/password`, requestOptions);
         
         if (!response.ok) {
             throw new Error('Erreur lors de la mise à jour du mot de passe');
@@ -229,7 +229,7 @@ function deleteAccount() {
         redirect: 'follow'
     };
 
-    fetch(apiURL + `user/${userId}`, requestOptions)
+    fetch(`/api/user/${userId}`, requestOptions)
         .then(response => {
             if (response.ok) {
                 return response.json();
@@ -274,7 +274,7 @@ function updateTotalConnectionTime() {
         credentials: 'include',
     };
 
-    fetch(apiURL + `user/${userId}/update-total-connection-time`, requestOptions)
+    fetch(`/api/user/${userId}/update-total-connection-time`, requestOptions)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Échec de la mise à jour du temps de connexion.');

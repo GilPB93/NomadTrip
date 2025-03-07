@@ -86,7 +86,7 @@ function createTravelbookForm(event) {
         formData.append("imgCouvertureFile", inputImgCover.files[0]);
     }
 
-    fetch(apiURL + 'travelbook', {
+    fetch('/api/travelbook', {
         method: 'POST',
         mode: 'cors',
         credentials: 'include',
@@ -131,7 +131,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 function fetchUserTravelbooks() {
-    fetch(apiURL + "travelbook/user", {
+    fetch("/api/travelbook/user", {
         method: "GET",
         headers: {
             "X-AUTH-TOKEN": getToken(), // Ajoute le token si ton API est protégée
@@ -200,7 +200,7 @@ function displayTravelbooks(travelbooks) {
 
 // SHOW MODAL TRAVELBOOK
 function fetchTravelbookData(travelbookId, callback) {
-    fetch(apiURL + `travelbook/${travelbookId}`, {
+    fetch(`/api/travelbook/${travelbookId}`, {
         method: "GET",
         headers: {
             "X-AUTH-TOKEN": getToken(),
@@ -291,7 +291,7 @@ const travelbookId = document.getElementById("EditionTravelbookModal").getAttrib
 function editTravelbook(travelbookId) {
     document.getElementById("EditionTravelbookModal").setAttribute("data-travelbook-id", travelbookId);
 
-    fetch(apiURL + `travelbook/${travelbookId}`, {
+    fetch(`/api/travelbook/${travelbookId}`, {
         method: "GET",
         headers: {
             "X-AUTH-TOKEN": getToken(),
@@ -339,7 +339,7 @@ async function updateTravelbook() {
 
     try {
         // Envoyer les données mises à jour à l'API
-        const response = await fetch(apiURL + `travelbook/${travelbookId}`, {
+        const response = await fetch(`/api/travelbook/${travelbookId}`, {
             method: "PUT",
             headers: {
                 "Content-Type": "application/json",
@@ -418,7 +418,7 @@ async function updateTravelbook() {
         };
     
         try {
-            const response = await fetch(apiURL + `places`, {
+            const response = await fetch(`/api/places`, {
                 method: "POST",
                 headers: { 
                     "Content-Type": "application/json", 
@@ -471,7 +471,7 @@ async function updateTravelbook() {
         deleteButton.addEventListener("click", async (event) => {
             if (confirm("Voulez-vous supprimer ce lieu ?")) {
                 try {
-                    const response = await fetch(apiURL + `places/${place.id}`, {
+                    const response = await fetch(`/api/places/${place.id}`, {
                         method: "DELETE",
                         headers: { 
                             "X-AUTH-TOKEN": getToken() 
@@ -555,7 +555,7 @@ async function updateTravelbook() {
         };
     
         try {
-            const response = await fetch(apiURL + `fb`, {
+            const response = await fetch(`/api/fb`, {
                 method: "POST",
                 headers: { 
                     "Content-Type": "application/json", 
@@ -608,7 +608,7 @@ async function updateTravelbook() {
         deleteButton.addEventListener("click", async () => {
             if (confirm("Voulez-vous supprimer ce restaurant/bar ?")) {
                 try {
-                    const response = await fetch(apiURL + `fb/${fb.id}`, {
+                    const response = await fetch(`/api/fb/${fb.id}`, {
                         method: "DELETE",
                         headers: { 
                             "X-AUTH-TOKEN": getToken() 
@@ -688,7 +688,7 @@ async function updateTravelbook() {
     };
 
     try {
-        const response = await fetch(apiURL + "souvenirs", {
+        const response = await fetch("/api/souvenirs", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -737,7 +737,7 @@ async function updateTravelbook() {
         deleteButton.addEventListener("click", async () => {
             if (confirm("Voulez-vous supprimer ce souvenir ?")) {
                 try {
-                    const response = await fetch(apiURL + `souvenirs/${souvenir.id}`, {
+                    const response = await fetch(`/api/souvenirs/${souvenir.id}`, {
                         method: "DELETE",
                         headers: { "X-AUTH-TOKEN": getToken() },
                     });
@@ -811,7 +811,7 @@ async function updateTravelbook() {
         formData.append("travelbook", travelbookId);
     
         try {
-            const response = await fetch(apiURL + `photos`, {
+            const response = await fetch(`/api/photos`, {
                 method: "POST",
                 headers: { "X-AUTH-TOKEN": getToken() },
                 body: formData
@@ -854,7 +854,7 @@ async function updateTravelbook() {
         deleteButton.addEventListener("click", async () => {
             if (confirm("Voulez-vous supprimer cette photo ?")) {
                 try {
-                    const response = await fetch(apiURL + `photos/${photo.id}`, {
+                    const response = await fetch(`/api/photos/${photo.id}`, {
                         method: "DELETE",
                         headers: { "X-AUTH-TOKEN": getToken() }
                     });
@@ -925,7 +925,7 @@ deleteTravelbookButton.addEventListener("click", function () {
     }
 
     if (confirm("Voulez-vous vraiment supprimer ce carnet de voyage ?")) {
-        fetch(`${apiURL}travelbook/${travelbookId}`, {
+        fetch(`/api/travelbook/${travelbookId}`, {
             method: "DELETE",
             headers: {
                 "X-AUTH-TOKEN": getToken()

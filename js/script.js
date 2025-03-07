@@ -1,6 +1,5 @@
 //CONSTANTS
-const apiURL = "https://nomadtripbackend-61f128d18029.herokuapp.com/api/";
-
+const apiURL = "https://nomadtripbackendapi-9416dc608e6c.herokuapp.com/api/";
 const tokenCookieName = "accesstoken"; 
 const btnSignout = document.getElementById('btnSignout');
 const UserIdCookieName = 'user.Id';

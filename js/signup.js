@@ -88,7 +88,8 @@ function signupForm(event) {
     let requestOptions = {
         method: "POST",
         headers: myHeaders,
-        body: raw
+        body: raw,
+        mode: "no-cors",
     };
 
     fetch(apiURL + "register", requestOptions)

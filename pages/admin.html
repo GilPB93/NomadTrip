@@ -1,0 +1,96 @@
+<section class="admin-page">
+<div class="title-admin ">
+    <h1 class="text-center">Mon espace admin</h1>
+</div>
+
+<div class="stats-admin">
+    <div class="number-users">
+        <h3><span class="badge" id="totalUsers">-</span>Nombre total d'utilisateurs</h3>
+    </div>
+    <div class="number-travelbooks">
+        <h3><span class="badge" id="totalTravelbooks">-</span>Nombre total de carnets</h3>
+    </div>
+    <hr class="separator">  
+    <div class="last-signup">
+        <h3>Les 5 derniers utilisateurs inscrits</h3>
+        <div class="lastUsersBox">
+            <span class="badgeLastSignup" id="lastSignup">-</span>
+        </div>
+    </div>
+    <hr class="separator">  
+</div>
+
+<section class="admin-users">
+<div class="select-user">
+    <h2>Les utilisateurs
+        <select id="userSelect" class="form-select-user" aria-label="Sélectionner un utilisateur">
+            <option selected>Sélectionnez l'utilisateur souhaité</option>
+        </select>    
+    </h2>
+</div>
+<div id="userDetails" class="user-details">
+    <h4 class="text-decoration-underline">En attente de selection d'un carnet de voyage <span class="loader"></span></h4>
+    <h3>Nom : <span class="spanUserDetails" id="userName">-</h3>
+    <h3>Email : <span class="spanUserDetails" id="userEmail">-</h3>
+    <h3>Créé le : <span class="spanUserDetails" id="userCreatedAt">-</h3>
+</div>
+<hr class="separator"> 
+</section>
+
+
+<section class="admin-travelbooks">
+<div class="select-travelbook">
+    <h2>Les carnets de voyage
+        <select id="travelbookSelect" class="form-select-travelbook" aria-label="select travelbook">
+            <option selected>Selectionnez le carnet souhaité</option>>
+        </select>
+    </h2>
+</div>
+<div id="travelbookDetails" class="travelbook-details">
+    <h4 class="text-decoration-underline">En attente de selection d'un carnet de voyage <span class="loader"></span></h4>
+    <h3>Titre : <span class="spanTravelbookDetails" id="travelbookTitle">-</span></h3>
+    <h3>Créé par : <span class="spanTravelbookDetails" id="travelbookCreatedBy">-</h3>
+    <h3>Créé le : <span class="spanTravelbookDetails" id="travelbookCreatedAt">-</h3>
+</div>
+<hr class="separator"> 
+</section>
+
+
+<section>
+    <div class="new-messages text-center">
+        <h2>Les messages</h2>
+        <div class="messageContainer" id="message-container">
+            <h3>Objet : <span class="spanmessages" id="message-subject"></span> </h3>
+            <h3>De : <span class="spanmessages" id="message-name"></span> </h3>
+            <h3>Email : <span class="spanmessages" id="message-email"></span></h3>
+            <textarea class="form-control" id="message-content" rows="5" readonly></textarea>
+        </div>
+        <div class="btn-group row mt-3">
+            <button type="button" class="btn btn-primary col-12 col-lg-4" id="prev-message">Message précédent</button>
+            <button type="button" class="btn btn-success col-12 col-lg-4" id="reply-message">Répondre au message</button>
+            <button type="button" class="btn btn-primary col-12 col-lg-4" id="next-message">Message suivant</button>
+        </div>
+    </div>
+    <hr class="separator">
+</section>
+
+<section class="admin-contactmessages">
+    <div class="select-contactmessage">
+        <h2>Les messages traités
+            <select id="messageSelect" class="form-select-message" aria-label="Sélectionner un message">
+                <option selected>Sélectionnez un message</option>
+            </select>
+        </h2>
+    </div>
+    <div id="messageDetails" class="message-details">
+        <h4 class="text-decoration-underline">En attente de selection d'un message <span class="loader"></span></h4>
+        <h3>Sujet : <span class="spanMessageDetails" id="messageSubject">-</span></h3>
+        <h3>Envoyé par : <span class="spanMessageDetails" id="messageName">-</h3>
+        <h3>Email : <span class="spanMessageDetails" id="messageEmail">-</h3>
+        <h3>Reçu le : <span class="spanMessageDetails" id="messageSentAt">-</span></h3>
+        <textarea class="form-control" id="messageContent" rows="3" readonly></textarea>
+    </div>
+</section>
+
+
+</section>

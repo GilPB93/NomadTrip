@@ -1,0 +1,12 @@
+{
+  "name": "nomadtripfrontend",
+  "version": "1.0.0",
+  "description": "Frontend deployed on Heroku",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.3"
+  }
+}

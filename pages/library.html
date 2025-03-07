@@ -1,0 +1,234 @@
+<section class="library">
+    <div class="text-center">
+        <h1>Mes Carnets</h1>
+        <p>Tous vos souvenirs au même endroit ! Explorez, modifiez ou ajoutez de nouveaux carnets de voyage pour revivre vos aventures. Chaque carnet est une porte ouverte sur vos plus belles découvertes.</p>
+    </div>
+    <div class="create-travelbook text-center" id="createTravelbook"> <!--Button to create a new travelbook-->
+        <p class="d-inline-flex gap-1">
+            <button class="btn" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCreateTravelbook" aria-expanded="false" aria-controls="collapseCreateTravelbook">
+              Créer un nouveau carnet
+            </button>
+        </p>
+        <div class="collapse-create-travelbook collapse" id="collapseCreateTravelbook">
+            <div class="card card-body">
+                <h1>Nouveau carnet</h1>
+                <form id="newTravelbookForm">
+                    <div class="row gap-3 new-travelbook-group">
+                        <div class="col-12 col-lg-4">
+                            <h2>Destination</h2>
+                            <input type="text" class="form-control" id="title" placeholder="ex.: Paris - France">
+                        </div>
+                        <div class="col-12 col-lg-4">
+                            <h2>Couverture</h2>
+                            <input type="file" class="form-control" id="imgCouverture" placeholder="Choisissez une image">
+                        </div>
+                    </div>
+                    <div>
+                        <h2 class="h2-new-travelbook">Date et heure de départ</h2>
+                        <input type="datetime-local" class="form-control" id="departureAt" placeholder="Quand partez-vous ?">
+                    </div>
+                    <div>
+                        <h2 class="h2-new-travelbook">Date et heure de retour</h2>
+                        <input type="datetime-local" class="form-control" id="comebackAt" placeholder="Quand revenez-vous ?">
+                    </div>
+                    <div>
+                        <h2 class="h2-new-travelbook">Numéro de vol</h2>
+                        <input type="text" class="form-control" id="flightNumber" placeholder="Quel est votre numéro de vol ? (facultatif)">
+                    </div>
+                    <div>
+                        <h2 class="h2-new-travelbook">Logement</h2>
+                        <input type="text" class="form-control" id="accommodation" placeholder="Où logez-vous ? (facultatif)">
+                    </div>
+                </form>
+                <div class="btn-group-new-travelbook">
+                    <button type="submit" class="btn btn-create" id="btnCreateTravelbook">Valider</button>
+                    <button type="button" class="btn btn-cancel" data-bs-toggle="collapse" data-bs-target="#collapseCreateTravelbook" aria-expanded="false" aria-controls="collapseCreateTravelbook">Annuler</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="travelbooks"> <!--Travelbook's library-->
+        <div class="row" id="allTravelCards">
+            <!-- New travelbooks will added here -->
+        </div>
+    </div>
+</section>
+
+
+<!-- Modal to show the travelbook -->
+<div class="modal fade" id="ShowTravelbookModal" tabindex="-1" aria-labelledby="ShowTravelbookModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content show-content">
+            <div class="modal-header show-header text-center">
+                <h1 class="modal-title text-center" id="ShowTravelbookModalLabel" id="titleModalShow">Florence</h1>
+            </div>
+            <div class="modal-body show-body">
+                <div class="photos-souvenir">
+                    <div id="imgCouvertureModalShow">
+                        <img src="/" class="travel-photo" alt="Florence">
+                    </div>
+                    <hr class="separator">
+                    <div>
+                        <h2 class="text-decoration-underline text-center">Détails du voyage</h2>
+                        <div id="departureAtModalShow">
+                            <h3>Date et heure de départ :</h3>
+                        </div>
+                        <div id="comebackAtModalShow">
+                            <h3>Date et heure de retour :</h3>
+                        </div>
+                        <div id="nbDaysModalShow">
+                            <h3>Nombre de jours :</h3>
+                        </div>
+                        <div id="flightNumberModalShow">
+                            <h3>Numéro de vol :</h3>
+                        </div>
+                        <div id="accommodationModalShow">
+                            <h3>Logement</h3>
+                        </div>
+                        <hr class="separator">
+                        <h2 class="text-decoration-underline text-center">Activités</h2>
+                        <div id="allPlacesToVisitModalShow">
+                            <h3>Visite de la ville</h3>
+                        </div>
+                        <div id="allFBToDoModalShow">
+                            <h3>Restaurants & Bars</h3>
+                        </div>
+                    </div>
+                    <section class="photos-travelbook" id="allPhotos">
+                        <div>
+                            <h2 class="text-decoration-underline text-center">Les photos souvenirs</h2>
+                        </div>
+                        <div id="allphotosTravelbookModalShow">
+                            <img src="/img/flipbook/flo1.jpg" class="travel-photo" alt="Madrid">
+                        </div>
+                    </section>
+                    <div class="text-center align-content-center">
+                        <button class="btn btn-cancel" data-bs-dismiss="modal">Fermer</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal to edit a travelbook -->
+<div class="modal fade" id="EditionTravelbookModal" tabindex="-1" aria-labelledby="EditionTravelbookModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content edit-content">
+            <div class="modal-header edit-header">
+                <h1 class="modal-title text-center" id="EditionTravelbookModalLabel">Modifier le carnet de voyage</h1>
+            </div>
+            <div class="modal-body edit-body">
+                <form id="editTravelbookForm">
+                    <div>
+                        <h2>Destination</h2>
+                        <input type="text" class="form-control" id="edit-title" placeholder="ex.: Paris - France" name="title">
+                    </div>
+                    <div>
+                        <h2>Couverture</h2>
+                        <input type="file" class="form-control" id="edit-imgCouverture" placeholder="Choisissez une image" name="imgCouverture">
+                    </div>
+                    <div>
+                        <h2 class="h2-new-travelbook">Date et heure de départ</h2>
+                        <input type="datetime-local" class="form-control" id="edit-departureAt" placeholder="Quand partez-vous ?" name="departureAt">
+                    </div>
+                    <div>
+                        <h2 class="h2-new-travelbook">Date et heure de retour</h2>
+                        <input type="datetime-local" class="form-control" id="edit-comebackAt" placeholder="Quand revenez-vous ?" name="comebackAt">
+                    </div>
+                    <div>
+                        <h2 class="h2-new-travelbook">Numéro de vol</h2>
+                        <input type="text" class="form-control" id="edit-flightNumber" placeholder="Quel est votre numéro de vol ? (facultatif)" name="flightNumber">
+                    </div>
+                    <div>
+                        <h2 class="h2-new-travelbook">Logement</h2>
+                        <input type="text" class="form-control" id="edit-accommodation" placeholder="Où logez-vous ? (facultatif)" name="accommodation">
+                        <hr class="separator">
+                    </div>
+                    <div class="edit-travelbook-lists"> 
+                        <div class="places-to-visit" id="edit-listPlaces"> <!-- LIST OF PLACES TO VISIT -->
+                            <div class="container">
+                                <h2>Liste des lieux à visiter</h2>
+                                <ul id="todo-places">
+                                    <!-- Items will be added here -->
+                                </ul>
+                            </div>
+                            <button type="button" class="add-button-places rounded" id="add-button-places">+</button>
+                        
+                            <div class="popover" id="popover-places">
+                                <h3>Ajouter des lieux à visiter</h3>
+                                <input class="popover-places place-name" type="text" id="place-name" placeholder="Saisissez le nom du lieu">
+                                <input class="popover-places" type="text" id="place-details" placeholder="Saisissez ici l'adresse du lieu à visiter">
+                                <input class="popover-places" type="datetime-local" id="place-date" placeholder="Quand souhaitez-vous visiter ce lieu ?">
+                                <div class="btn-popover">    
+                                    <button class="text-center" type="submit" id="add-place">Ajouter</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="fb-to-do" id="edit-listFB"> <!-- LIST OF RESTAURANTS/BARS TO DO -->
+                            <div class="container">
+                                <h2>Liste des restaurants et bars à faire</h2>
+                                <ul id="todo-fb">
+                                    <!-- Items will be added here -->
+                                </ul>
+                            </div>
+                                <button type="button" class="add-button-fb rounded btn-dark" id="add-button-fb">+</button>
+                            
+                            <div class="popover" id="popover-fb">
+                                <h3 class="text-center">Ajouter les restaurants et les bars à faire</h3>
+                                <input class="popover-fb" type="text" id="fb-name" placeholder="Saisissez le nom du restaurant/bar">
+                                <input class="popover-fb" type="text" id="fb-details" placeholder="Saisissez ici l'adresse du restaurant/bar à faire">
+                                <input class="popover-fb" type="datetime-local" id="fb-date" placeholder="Quand souhaitez-vous tester ce restaurant/bar ?">
+                                <div class="btn-popover">
+                                    <button class="text-center" type="submit" id="add-fb">Ajouter</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="souvenirs-to-buy" id="edit-listSouvenirs"> <!-- LIST OF SOUVENIRS TO BUY -->
+                            <div class="container">
+                                <h2>Liste des souvenirs à acheter</h2>
+                                <ul id="todo-souvenirs">
+                                    <!-- Items will be added here -->
+                                </ul>
+                            </div>
+                            <button type="button" class="add-button-souvenirs rounded btn-dark" id="add-button-souvenirs">+</button>
+                            
+                            <div class="popover" id="popover-souvenirs">
+                                <h3>Ajouter les souvenir à acheter</h3>
+                                <input class="popover-souvenirs" type="text" id="souvenirs-what" placeholder="Quoi acheter?">
+                                <input class="popover-souvenirs" type="text" id="souvenirs-who" placeholder="Pour qui?">
+                                <div class="btn-popover">
+                                    <button class="text-center" type="submit" id="add-souvenirs">Ajouter</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="photos-souvenir" id="edit-listPhotos"> <!-- LIST OF PHOTOS -->
+                            <div class="container">
+                                <h2>Photos souvenirs</h2>
+                                <ul id="todo-photos">
+                                    <!-- Items will be added here -->
+                                </ul>
+                            </div>
+                            <button type="button" class="add-button-photos rounded btn-dark" id="add-button-photos">+</button>
+                            
+                            <div class="popover" id="popover-photos">
+                                <h3>Ajouter des photos souvenirs</h3>
+                                <input class="popover-photos" type="file" id="photos" accept="image/*">
+                                <div class="btn-popover">
+                                    <button class="text-center" type="submit" id="add-photos">Ajouter</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="btn-group-new-travelbook">
+                <button type="submit" class="btn btn-create" id="btnValidateEditTravelbook">Valider</button>
+                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-delete" id="btnDeleteTravelbook">Supprimer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+

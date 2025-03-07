@@ -1,0 +1,149 @@
+<section class="account-page">
+    <h1 class="text-center">Mon compte</h1>
+    <p class="text-center">Bienvenue dans votre espace personnel. Ici, vous pouvez mettre à jour votre pseudo, modifier votre adresse email ou changer votre mot de passe pour garder votre compte NomadTrip toujours à jour.</p>
+    <div class="current-info">
+      <h2 class="text-center text-decoration-underline">Mes informations actuelles</h2>
+      <div>
+          <h3 class="text-center">Nom : <span class="badge-account" id="lastNameInfo">-</span></h3>
+      </div>
+      <div>
+          <h3 class="text-center">Prénom : <span class="badge-account" id="firstNameInfo">-</span></h3>
+      </div>
+      <div>
+          <h3 class="text-center">Pseudo : <span class="badge-account" id="pseudoInfo">-</span></h3>
+      </div>
+      <div>
+          <h3 class="text-center">Email : <span class="badge-account" id="emailInfo">-</span></h3>
+      </div>
+      <div>
+        <h3 class="text-center">Total de temps connecté : <span class="badge-account" id="totalConnectionInfo">-</span></h3>
+      </div>
+    </div>
+    <form>
+        <div class="change-pseudo mb-3">
+            <div>
+                <label for="NewPseudoInput" class="form-label">Nouveau Pseudo</label>
+                <input type="text" class="form-control" id="NewPseudoInput" placeholder="Saisissez un nouveau pseudo" name="NewPseudo">
+            </div>
+            <div class="text-center new-pseudo">
+                <button type="button" class="btn btn-black" id="btnModifyPseudo" data-bs-toggle="modal" data-bs-target="#confirmPseudoModal">
+                    Modifier Pseudo
+                </button>
+            </div>
+            <hr class="separator">
+        </div>
+        <div class="change-email mb-3">
+            <div>
+                <label for="NewEmailInput" class="form-label">Nouvel Email</label>
+                <input type="email" class="form-control" id="NewEmailInput" placeholder="Saissisez votre nouvel email" name="NewEmail"> 
+            </div>
+            <div class="text-center new-email">
+                <button type="button" class="btn btn-black" id="btnModifyEmail" data-bs-toggle="modal" data-bs-target="#confirmEmailModal">Modifier Email</button>
+            </div>
+            <hr class="separator">
+        </div>
+        <div class="change-password mb-3">
+            <div class="password-input">
+              <label for="NewPasswordInput" class="form-label">Nouveau Password</label>
+              <input type="password" class="form-control" id="NewPasswordInput" placeholder="Saissisez votre nouveau mot de passe" name="NewPassword">
+              <p>Votre mot de passe doit contenir au moins 8 caractères, incluant une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial.</p>
+            </div>
+            <div class="mb-3">
+              <label for="ValidateNewPasswordInput" class="form-label">Confirmation Password</label>
+              <input type="password" class="form-control" id="ValidateNewPasswordInput" placeholder="Confirmez votre nouveau mot de passe" name="NewPasswordConfirm">
+            </div>
+            <div class="text-center new-password">
+              <button type="button" class="btn btn-black" id="btnModifyPassword" data-bs-toggle="modal" data-bs-target="#confirmPasswordModal">
+                Modifier Password
+              </button>
+            </div>
+            <hr class="separator">
+        </div>
+        <div class="text-center delete-account">
+            <button type="button" class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#deleteAccountModal">Supprimer mon compte</button>
+        </div>
+    </form>
+</section>
+
+
+
+
+<!-- Modal edit pseudo -->
+<div class="modal fade" id="confirmPseudoModal" tabindex="-1" aria-labelledby="confirmPseudoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title" id="confirmPseudoModalLabel">Confirmation</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Êtes-vous sûr de vouloir modifier votre pseudo en <strong id="newPseudoText"></strong> ? <br>
+                <small>Cette action est irréversible.</small>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-danger" id="confirmPseudoChange">Confirmer</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal edit email -->
+<div class="modal fade" id="confirmEmailModal" tabindex="-1" aria-labelledby="confirmEmailModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title" id="confirmEmailModalLabel">Confirmer la modification</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Êtes-vous sûr de vouloir modifier votre email vers <strong id="newEmailDisplay"></strong> ?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Annuler</button>
+          <button type="button" class="btn btn-danger" id="confirmModifyEmail">Confirmer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+<!-- Modal edit password -->
+<div class="modal fade" id="confirmPasswordModal" tabindex="-1" aria-labelledby="confirmPasswordModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title" id="confirmPasswordModalLabel">Confirmation de Modification</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>Votre mot de passe a été modifié avec succès !</p>
+          <p>Assurez-vous de vous souvenir de votre nouveau mot de passe pour vous connecter à votre compte à l'avenir.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Annuler</button>
+          <button type="button" class="btn btn-danger" id="btnConfirmPasswordChange">Confirmer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<!-- Modal delete account -->
+<div class="modal fade" id="deleteAccountModal" tabindex="-1" aria-labelledby="deleteAccountModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteAccountModalLabel">Confirmation de suppression</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-warning" data-bs-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-danger" id="confirmDeleteButton">Supprimer mon compte</button>
+            </div>
+        </div>
+    </div>
+</div>

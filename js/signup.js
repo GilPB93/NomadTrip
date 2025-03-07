@@ -89,7 +89,7 @@ function signupForm(event) {
         method: "POST",
         headers: myHeaders,
         body: raw,
-        mode: "no-cors",
+        mode: "cors",
     };
 
     fetch(apiURL + "register", requestOptions)

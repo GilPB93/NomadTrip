@@ -85,7 +85,6 @@ class SecurityController extends AbstractController
         return new JsonResponse(
             ['user' => $user->getUserIdentifier(), 'apiToken' => $user->getApiToken(), 'roles' => $user->getRoles()],
             Response::HTTP_CREATED,
-            ['Access-Control-Allow-Origin' => 'https://nomadtripfrontend-934f654ec662.herokuapp.com']
         );
     }
 
@@ -133,7 +132,6 @@ class SecurityController extends AbstractController
             return new JsonResponse(
                 ['message' => 'Invalid credentials'],
                 Response::HTTP_UNAUTHORIZED,
-                ['Access-Control-Allow-Origin' => 'https://nomadtripfrontend-934f654ec662.herokuapp.com']
             );
         }
 
@@ -188,7 +186,7 @@ class SecurityController extends AbstractController
 
         return new JsonResponse($responseData,
             Response::HTTP_OK,
-            ['Access-Control-Allow-Origin' => 'https://nomadtripfrontend-934f654ec662.herokuapp.com'],
+            [],
             true);
     }
 }

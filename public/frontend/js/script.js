@@ -201,6 +201,7 @@ async function setLogoutTime() {
 
 
     } catch (error) {
+        debugger;
         console.error("🚨 Erreur lors de l’enregistrement du logout:", error);
     }
 }
@@ -233,6 +234,7 @@ async function purgeLogoutNull() {
         }
 
     } catch (error) {
+        debugger;
         console.error("🚨 Erreur lors de la purge des logs :", error);
     }
 }

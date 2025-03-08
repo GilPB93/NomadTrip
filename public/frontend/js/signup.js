@@ -108,7 +108,7 @@ function signupForm(event) {
 
             if (result.status === 201) {
                 alert("Bravo " + inputFirstName.value + ", vous êtes maintenant inscrit. Vous allez être redirigé.");
-                window.location.href = "/signin";
+                window.location.href = "#/signin";
             } else if (result.status === 409) {
                 alert("Cet email ou pseudo est déjà utilisé. Veuillez en choisir un autre.");
             } else {

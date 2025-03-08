@@ -70,6 +70,8 @@ function validatePasswordValidate(inputPassword, inputValidatePassword) {
 
 btnValidate.addEventListener("click", signupForm);
 
+btnValidate.addEventListener("click", signupForm);
+
 function signupForm(event) {
     event.preventDefault();
 
@@ -89,27 +91,38 @@ function signupForm(event) {
         method: "POST",
         headers: myHeaders,
         body: raw,
-        mode: "cors",
     };
 
     fetch("/api/register", requestOptions)
         .then(response => {
-            console.log("Headers reçus :", response.headers);
-            response.json().then(data => ({ status: response.status, body: data }))
+            console.log("Statut HTTP reçu :", response.status); // ✅ Debug : Afficher le statut HTTP
+            if (!response.ok) {
+                return response.json().then(errData => {
+                    throw new Error(JSON.stringify({ status: response.status, body: errData }));
+                });
+            }
+            return response.json().then(data => ({ status: response.status, body: data }));
         })
         .then(result => {
+            console.log("Réponse serveur :", result); // ✅ DEBUG : Voir la réponse complète
+
             if (result.status === 201) {
-                alert("Bravo " + inputFirstName.value + ", vous êtes maintenant inscrit, vous pouvez vous connecter.");
+                alert("Bravo " + inputFirstName.value + ", vous êtes maintenant inscrit. Vous allez être redirigé.");
                 window.location.href = "/signin";
+            } else if (result.status === 409) {
+                alert("Cet email ou pseudo est déjà utilisé. Veuillez en choisir un autre.");
             } else {
                 let errorMessage = "Erreur lors de l'inscription : ";
-                if (result.body.errors) {
+                if (result.body?.errors) {
                     errorMessage += Object.values(result.body.errors).join(", ");
                 } else {
-                    errorMessage += result.body.message || "Veuillez vérifier vos informations.";
+                    errorMessage += result.body?.message || "Veuillez vérifier vos informations.";
                 }
                 alert(errorMessage);
             }
         })
-        .catch(error => console.error('Erreur:', error));
+        .catch(error => {
+            console.error('Erreur Fetch:', error);
+            alert("Une erreur s'est produite lors de l'inscription. Veuillez réessayer.");
+        });
 }

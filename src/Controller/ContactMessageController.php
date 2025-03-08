@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use OpenApi\Attributes as OA;
 
-#[Route('/api/contact', name: 'app_api_contact_')]
+#[Route('/api/contact', name: 'app_api_contact_', requirements: ['_format' => 'json'])]
 class ContactMessageController extends AbstractController
 {
     #[Route('/save',name: 'saveContactMessage', methods: ['POST'])]

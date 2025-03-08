@@ -54,9 +54,9 @@ function checkCredentials(event) {
             setCookie(UserIdCookieName, userId, 7);
 
             if (role.includes("ROLE_ADMIN")) {
-                window.location.replace("/admin");
+                window.location.replace("#/admin");
             } else {
-                window.location.replace("/library");
+                window.location.replace("#/library");
             }
         })
         .catch(error => console.log('error', error));

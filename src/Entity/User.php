@@ -80,8 +80,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: ActivityLog::class, mappedBy: 'user')]
     private Collection $activityLogs;
 
-    #[ORM\Column]
-    private ?int $totalConnectionTime = null;
+    #[ORM\Column(options: ["default" => 0])]
+    private int $totalConnectionTime = 0;
+    
 
 
     /** @throws RandomException */

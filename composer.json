@@ -68,17 +68,19 @@
         "symfony/polyfill-php82": "*"
     },
     "scripts": {
-        "auto-scripts": {
-            "cache:clear": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd"
-        },
-        "post-install-cmd": [
-            "@auto-scripts"
-        ],
-        "post-update-cmd": [
-            "@auto-scripts"
-        ]
+    "auto-scripts": {
+        "cache:clear": "symfony-cmd",
+        "assets:install %PUBLIC_DIR%": "symfony-cmd"
     },
+    "post-install-cmd": [
+        "@auto-scripts",
+        "chmod -R 777 var/"
+    ],
+    "post-update-cmd": [
+        "@auto-scripts"
+    ]
+    },
+
     "conflict": {
         "symfony/symfony": "*"
     },
@@ -86,6 +88,9 @@
         "symfony": {
             "allow-contrib": true,
             "require": "7.2.*"
+        },
+        "heroku": {
+            "apache2": "public/"
         }
     },
     "require-dev": {

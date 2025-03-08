@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "build-css": "sass public/frontend/scss/main.scss public/frontend/scss/main.css",
+    "build-css": "sass scss/main.scss scss/main.css",
     "heroku-postbuild": "npm run build-css"
   },
 

@@ -25,7 +25,7 @@ function saveContactMessage (event){
         redirect: 'follow'
     };
 
-    fetch("/api/contact/save", requestOptions)
+    fetch("https://nomadtripapp-cd6df251bb07.herokuapp.com/api/contact/save", requestOptions)
     .then(response => {
         if(response.ok){
             alert("Message envoyé avec succès.");

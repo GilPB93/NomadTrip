@@ -8,16 +8,16 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DefaultController extends AbstractController
 {
-    #[Route('/{slug}', name: 'frontend', requirements: ['slug' => '^(?!api).*$'])]
+    #[Route('/{route}', name: 'frontend', requirements: ['route' => '^(?!api|bundles|uploads|css|js|img|scss).*$'], defaults: ['route' => ''])]
     public function index(): Response
     {
-        $filePath = $this->getParameter('kernel.project_dir').'/public/frontend/index.html';
-        
+        $filePath = $this->getParameter('kernel.project_dir') . '/public/frontend/index.html';
+
         if (!file_exists($filePath)) {
             return new Response("Le fichier frontend/index.html est introuvable", 404);
         }
 
         return new Response(file_get_contents($filePath));
     }
-
 }
+

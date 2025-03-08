@@ -5,10 +5,6 @@ const UserIdCookieName = 'user.Id';
 const RoleCookieName = "role";
 const loginTimeCookieName = "login_time";
 
-// FETCH API BACK-END
-
-
-
 // TOKEN MANAGEMENT
 function setToken(token){ 
     setCookie(tokenCookieName, token, 7); 

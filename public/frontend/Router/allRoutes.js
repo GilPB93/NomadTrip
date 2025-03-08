@@ -2,14 +2,14 @@ import Route from "./Route.js";
 
 //Définir ici les routes
 export const allRoutes = [
-    new Route("/", "Accueil", "/public/frontend/pages/home.html", []),
-    new Route("/contact", "Contact", "./pages/contact.html", [], "./js/contact.js"),
-    new Route("/signup", "Inscription", "./pages/signup.html", [], "./js/signup.js"),
-    new Route("/signin", "Connexion", "./pages/signin.html", [], "./js/signin.js"),
-    new Route("/account", "Mon Compte", "./pages/account.html", ["ROLE_USER"], "./js/account.js"),
-    new Route("/admin", "Mon Espace Admin", "./pages/admin.html", ["ROLE_ADMIN,ROLE_USER"], "./js/admin.js"),
-    new Route("/library", "Mes Carnets", "./pages/library.html", ["ROLE_USER"], "./js/library.js"),
-    new Route("/about", "A Propos", "./pages/about.html", []),
+    new Route("/", "Accueil", "./frontend/pages/home.html", []),
+    new Route("/contact", "Contact", "./frontend/pages/contact.html", [], "./frontend/js/contact.js"),
+    new Route("/signup", "Inscription", "./frontend/pages/signup.html", [], "./frontend/js/signup.js"),
+    new Route("/signin", "Connexion", "./frontend/pages/signin.html", [], "./frontend/js/signin.js"),
+    new Route("/account", "Mon Compte", "./frontend/pages/account.html", ["ROLE_USER"], "./frontend/js/account.js"),
+    new Route("/admin", "Mon Espace Admin", "./frontend/pages/admin.html", ["ROLE_ADMIN,ROLE_USER"], "./frontend/js/admin.js"),
+    new Route("/library", "Mes Carnets", "./frontend/pages/library.html", ["ROLE_USER"], "./frontend/js/library.js"),
+    new Route("/about", "A Propos", "./frontend/pages/about.html", []),
 
 ];
 
